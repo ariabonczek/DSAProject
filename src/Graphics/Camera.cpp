@@ -44,8 +44,6 @@ void Camera::UpdateViewMatrix()
 {
 	view = Matrix::CreateLookAt(position, position + forward, up);
 
-	// Cache the viewProjection matrix
-	viewProjection = projection * view;
 	dirty = false;
 }
 
@@ -80,8 +78,6 @@ void Camera::LookAt(Vector3 target, Vector3 up)
 	right = temp.Right();
 	this->up = temp.Up();
 	forward = temp.Forward();
-
-	viewProjection = projection * view;
 }
 
 void Camera::Pitch(float angle)
@@ -130,16 +126,17 @@ void Camera::RotateY(float angle)
 
 Matrix Camera::GetView()const
 {
+	if (dirty)
+	{
+		UpdateViewMatrix();
+		dirty = false;
+	}
 	return view;
 }
 
 Matrix Camera::GetProjection()const
-{	
-	return projection;
-}
-Matrix Camera::GetViewProjection()const
 {
-	return viewProjection;
+	return projection;
 }
 
 Vector3 Camera::GetPosition()const

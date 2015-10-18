@@ -104,7 +104,6 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
-    <ClCompile Include="Graphics\CameraSingletonDSA.cpp" />
     <ClCompile Include="Graphics\Data.cpp" />
     <ClCompile Include="Graphics\GameObject.cpp" />
     <ClCompile Include="Graphics\Material.cpp" />
@@ -126,7 +125,6 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Graphics\Camera.hpp" />
-    <ClInclude Include="Graphics\CameraSingletonDSA.hpp" />
     <ClInclude Include="Graphics\Data.hpp" />
     <ClInclude Include="Graphics\GameObject.hpp" />
     <ClInclude Include="Graphics\Graphics.hpp" />
