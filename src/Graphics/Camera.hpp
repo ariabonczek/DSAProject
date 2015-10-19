@@ -81,15 +81,7 @@ public:
 	/// <summary>
 	/// Returns the view matrix. Updates it if needed before returning
 	/// </summary>
-<<<<<<< HEAD
 	Matrix GetView();
-=======
-<<<<<<< HEAD
-	Matrix GetView();
-=======
-	Matrix GetView()const;
->>>>>>> e7d90fc108f923c66549330108ad8b5fea7daa75
->>>>>>> 0cdfa846a0055293bf0cd560f821923eb2bd52ba
 
 	/// <summary>
 	/// Returns the projection matrix
@@ -122,14 +114,7 @@ private:
 
 	Matrix view;
 	Matrix projection;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 0cdfa846a0055293bf0cd560f821923eb2bd52ba
 };
-=======
-=};
->>>>>>> e7d90fc108f923c66549330108ad8b5fea7daa75
 
 NS_END
 
