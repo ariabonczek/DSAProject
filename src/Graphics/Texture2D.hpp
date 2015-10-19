@@ -1,0 +1,29 @@
+#ifndef TEXTURE2D_HPP
+#define TEXTURE2D_HPP
+
+#include "../Config.hpp"
+
+NS_BEGIN
+
+struct Image
+{
+	int width, height, components;
+	unsigned char* data;
+};
+
+class Texture2D
+{
+public:
+	Texture2D(Image& image);
+	~Texture2D();
+
+	void Bind(uint slot = 0);
+
+private:
+	uint texture;
+};
+
+NS_END
+
+
+#endif

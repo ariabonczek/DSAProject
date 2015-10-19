@@ -6,6 +6,9 @@
 NS_BEGIN
 class GameObject;
 
+/// <summary>
+/// Encapsulates object position, rotation, and scale information
+/// </summary>
 class Transform
 {
 public:

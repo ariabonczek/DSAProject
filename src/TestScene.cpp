@@ -1,6 +1,6 @@
 #include "TestScene.hpp"
 #include "Utility\Timer.hpp"
-#include "Graphics\CameraSingletonDSA.hpp"
+#include "Utility\FileSystem.hpp"
 
 TestScene::TestScene()
 {}
@@ -20,9 +20,12 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(MeshBuilder::CreateSphere(1.5f, 4, Color::RebeccaPurple)));
 	meshes.push_back(new Mesh(MeshBuilder::CreateTorus(1.2f, 0.6f, 20, Color::PapayaWhip)));
 
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
+
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[0]->LoadShader("Shaders/default.frag", ShaderType::Fragment);
+	mats[0]->SetTexture2D("diffuse", textures[0]);
 
 	GameObject* cone = new GameObject("Cone");
 	cone->SetMesh(meshes[0]);
@@ -91,6 +94,8 @@ void TestScene::UnloadAssets()
 {
 	for (Mesh* m : meshes)
 		delete m;
+	for (Texture2D* t : textures)
+		delete t;
 	for (Material* m : mats)
 		delete m;
 	for (GameObject* g : objects)
