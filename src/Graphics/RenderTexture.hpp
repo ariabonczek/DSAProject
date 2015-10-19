@@ -24,8 +24,6 @@ private:
 	uint depthBuffer;
 	uint texture;
 	uint depth;
-	RenderTexture();
-	~RenderTexture();
 private:
 };
 
