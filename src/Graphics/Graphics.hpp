@@ -7,5 +7,8 @@
 #include "MeshBuilder.hpp"
 #include "Camera.hpp"
 #include "GameObject.hpp"
+#include "Texture2D.hpp"
+#include "RenderTexture.hpp"
+#include "PostProcess.hpp"
 
 #endif

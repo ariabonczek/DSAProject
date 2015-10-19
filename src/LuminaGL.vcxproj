@@ -104,12 +104,14 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
-    <ClCompile Include="Graphics\CameraSingletonDSA.cpp" />
     <ClCompile Include="Graphics\Data.cpp" />
     <ClCompile Include="Graphics\GameObject.cpp" />
     <ClCompile Include="Graphics\Material.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\MeshBuilder.cpp" />
+    <ClCompile Include="Graphics\PostProcess.cpp" />
+    <ClCompile Include="Graphics\RenderTexture.cpp" />
+    <ClCompile Include="Graphics\Texture2D.cpp" />
     <ClCompile Include="Graphics\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math\Math.cpp" />
@@ -126,13 +128,15 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Graphics\Camera.hpp" />
-    <ClInclude Include="Graphics\CameraSingletonDSA.hpp" />
     <ClInclude Include="Graphics\Data.hpp" />
     <ClInclude Include="Graphics\GameObject.hpp" />
     <ClInclude Include="Graphics\Graphics.hpp" />
     <ClInclude Include="Graphics\Material.hpp" />
     <ClInclude Include="Graphics\Mesh.hpp" />
     <ClInclude Include="Graphics\MeshBuilder.hpp" />
+    <ClInclude Include="Graphics\PostProcess.hpp" />
+    <ClInclude Include="Graphics\RenderTexture.hpp" />
+    <ClInclude Include="Graphics\Texture2D.hpp" />
     <ClInclude Include="Graphics\Transform.hpp" />
     <ClInclude Include="LuminaGL.hpp" />
     <ClInclude Include="Math\LVector.hpp" />
@@ -144,12 +148,17 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="TestScene.hpp" />
     <ClInclude Include="Utility\FileSystem.hpp" />
     <ClInclude Include="Utility\Input.hpp" />
+    <ClInclude Include="Utility\stb_image.h" />
     <ClInclude Include="Utility\Timer.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\content\Shaders\default.frag" />
     <None Include="..\content\Shaders\default.vert" />
+    <None Include="..\content\Shaders\PostProcess\DrawToScreen.frag" />
+    <None Include="..\content\Shaders\PostProcess\Vertex.vert" />
+    <None Include="..\content\Shaders\textured.frag" />
+    <None Include="..\content\Shaders\textured.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -90,7 +90,7 @@ bool Material::LoadShader(std::string filepath, ShaderType type)
 		int length;
 		glGetShaderiv(*index, GL_INFO_LOG_LENGTH, &length);
 		glGetShaderInfoLog(*index, length, 0, log);
-		std::cout << log << std::endl;
+		std::cout << "Shader error in " << filepath << ": " << log << std::endl;
 
 		return 0;
 	}
@@ -106,7 +106,6 @@ bool Material::LoadShader(std::string filepath, ShaderType type)
 		int length;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
 		glGetShaderInfoLog(program, length, 0, log);
-		std::cout << log << std::endl;
 		glDeleteProgram(program);
 
 		return 0;
@@ -119,6 +118,10 @@ bool Material::LoadShader(std::string filepath, ShaderType type)
 void Material::Bind()
 {
 	glUseProgram(program);
+	for (std::unordered_map<std::string, Texture2D*>::iterator it = textures.begin(); it != textures.end(); ++it)
+	{
+		it->second->Bind();
+	}
 }
 
 uint Material::GetProgram()const
@@ -160,6 +163,11 @@ void Material::SetColor(std::string name, Color& color)
 {
 	uint location = glGetUniformLocation(program, name.c_str());
 	glProgramUniform4f(program, location, color.r, color.g, color.b, color.a);
+}
+
+void Material::SetTexture2D(std::string name, Texture2D* texture)
+{
+	textures[name] = texture;
 }
 
 NS_END

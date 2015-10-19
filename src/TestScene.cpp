@@ -1,6 +1,6 @@
 #include "TestScene.hpp"
 #include "Utility\Timer.hpp"
-#include "Graphics\CameraSingletonDSA.hpp"
+#include "Utility\FileSystem.hpp"
 
 TestScene::TestScene()
 {}
@@ -20,9 +20,17 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(MeshBuilder::CreateSphere(1.5f, 4, Color::RebeccaPurple)));
 	meshes.push_back(new Mesh(MeshBuilder::CreateTorus(1.2f, 0.6f, 20, Color::PapayaWhip)));
 
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
+
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[0]->LoadShader("Shaders/default.frag", ShaderType::Fragment);
+
+	mats.push_back(new Material());
+	mats[1]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
+	mats[1]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
+	mats[1]->SetTexture2D("diffuse", textures[1]);
 
 	GameObject* cone = new GameObject("Cone");
 	cone->SetMesh(meshes[0]);
@@ -35,7 +43,7 @@ void TestScene::LoadAssets()
 	cylinder->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 3.0f));
 
 	GameObject* cube = new GameObject("Cube");
-	cube->SetMaterial(mats[0]);
+	cube->SetMaterial(mats[1]);
 	cube->SetMesh(meshes[2]);
 	cube->GetTransform()->SetLocalPosition(Vector3(10.0f, 0.0f, 0.0f));
 
@@ -91,6 +99,8 @@ void TestScene::UnloadAssets()
 {
 	for (Mesh* m : meshes)
 		delete m;
+	for (Texture2D* t : textures)
+		delete t;
 	for (Material* m : mats)
 		delete m;
 	for (GameObject* g : objects)
