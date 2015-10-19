@@ -21,12 +21,19 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(MeshBuilder::CreateTorus(1.2f, 0.6f, 20, Color::PapayaWhip)));
 
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
+<<<<<<< HEAD
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
+=======
+>>>>>>> 0cdfa846a0055293bf0cd560f821923eb2bd52ba
 
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[0]->LoadShader("Shaders/default.frag", ShaderType::Fragment);
+<<<<<<< HEAD
 	mats[0]->SetTexture2D("diffuse", textures[1]);
+=======
+	mats[0]->SetTexture2D("diffuse", textures[0]);
+>>>>>>> 0cdfa846a0055293bf0cd560f821923eb2bd52ba
 
 	GameObject* cone = new GameObject("Cone");
 	cone->SetMesh(meshes[0]);

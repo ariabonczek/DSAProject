@@ -45,6 +45,7 @@ char* FileSystem::LoadTextFile(const char* filepath)
 
 Image FileSystem::LoadImageFile(const char* filepath)
 {
+<<<<<<< HEAD
 	Image image;
 
 	image.data = stbi_load(filepath, &image.width, &image.height, &image.components, 0);
@@ -93,6 +94,25 @@ Image FileSystem::LoadImageFile(const char* filepath)
 	}
 
 	return image;
+=======
+	Image i;
+
+	i.data = stbi_load(filepath, &i.width, &i.height, &i.components, 0);
+
+	std::cout << filepath << std::endl;
+	std::cout << i.width << std::endl;
+	std::cout << i.height << std::endl;
+
+	for (uint j = 0; j < 1; j++)
+	{
+		for (uint c = 0; c < i.width * 4; c += 4)
+		{
+			std::cout << "R: " << (uint)i.data[c] << " G: " <<(uint) i.data[c + 1] << " B: " << (uint)i.data[c + 2] << " A: " << (uint)i.data[c + 3] << std::endl;
+		}
+	}
+
+	return i;
+>>>>>>> 0cdfa846a0055293bf0cd560f821923eb2bd52ba
 }
 
 NS_END
