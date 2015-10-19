@@ -162,4 +162,11 @@ void Material::SetColor(std::string name, Color& color)
 	glProgramUniform4f(program, location, color.r, color.g, color.b, color.a);
 }
 
+void Material::SetTexture2D(std::string name, Texture2D* texture)
+{
+	uint location = glGetUniformLocation(program, name.c_str());
+	texture->Bind(location);
+	std::cout << location << std::endl;
+}
+
 NS_END

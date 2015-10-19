@@ -3,6 +3,7 @@
 
 #include "..\Config.hpp"
 #include <fstream>
+#include "../Graphics/Texture2D.hpp"
 
 struct Image;
 
@@ -25,6 +26,8 @@ public:
 	/// 
 	/// </summary>
 	static char* LoadTextFile(const char* filepath);
+
+	static Image LoadImageFile(const char* filepath);
 private:
 	FileSystem();
 	static FileSystem instance;

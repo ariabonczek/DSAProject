@@ -15,10 +15,12 @@ uniform vec3 viewPos;
 
 out vec4 _color;
 out vec3 _normal;
+out vec2 _uv;
 
 void main()
 {
 	_color = color;
 	_normal = normal * mat3(modelInverseTranspose);
+	_uv = texcoord;
 	gl_Position = projection * view * model * vec4(position, 1.0);
 }
