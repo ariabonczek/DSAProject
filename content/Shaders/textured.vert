@@ -10,16 +10,12 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec3 _worldpos;
-out vec4 _color;
-out vec2 _uv;
 out vec3 _normal;
+out vec2 _uv;
 
 void main()
 {
-	_normal = normal;
-	_color = color;
 	_uv = texcoord;
-	_worldpos = (model * vec4(position, 1.0)).xyz;
+	_normal = normal;
 	gl_Position = projection * view * model * vec4(position, 1.0);
 }

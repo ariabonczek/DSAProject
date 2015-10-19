@@ -12,6 +12,7 @@ class MeshBuilder
 public:
 	~MeshBuilder();
 
+	static MeshData CreatePlane(float width, float depth, uint n, uint m, Color color = Color::Gray);
 	static MeshData CreateSphere(float radius = 1.0f, uint numSubdivisions = 3, Color color = Color::Gray);
 	static MeshData CreateCube(float size = 1.0f, Color color = Color::Gray);
 	static MeshData CreateCylinder(float radius = 0.5f, float height = 1.0, uint axisDivisions = 20, uint heightDivisions = 3, Color color = Color::Gray);

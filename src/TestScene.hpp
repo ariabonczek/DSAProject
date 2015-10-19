@@ -2,7 +2,6 @@
 #define TESTSCENE_HPP
 
 #include "LuminaGL.hpp"
-#include "Graphics\CameraSingletonDSA.hpp"
 
 using namespace LuminaGL;
 
@@ -19,6 +18,8 @@ public:
 private:
 	void MoveCamera(float dt);
 
+	void CopyLightData();
+
 	Camera* camera;
 
 	bool polygonFlag;
@@ -27,6 +28,8 @@ private:
 	std::vector<GameObject*> objects;
 	std::vector<Mesh*> meshes;
 	std::vector<Material*> mats;
+	std::vector<Texture2D*> textures;
+	std::vector<Light*> lights;
 
 	Vector2 mousePosition;
 	Vector2 pMousePosition;

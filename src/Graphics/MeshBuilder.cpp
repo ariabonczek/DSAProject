@@ -7,6 +7,64 @@ MeshBuilder::~MeshBuilder()
 
 }
 
+MeshData MeshBuilder::CreatePlane(float width, float depth, uint n, uint m, Color color)
+{
+	MeshData data;
+	n = std::max(2, (int)n);
+	m = std::max(2, (int)m);
+
+	uint vertexCount = n * m;
+	uint faceCount = (n - 1)*(m - 1) * 2;
+
+	float halfWidth = width * 0.5f;
+	float halfDepth = depth * 0.5f;
+
+	float dx = width / (n - 1);
+	float dz = depth / (m - 1);
+
+	float du = 1.0f / (n - 1);
+	float dv = 1.0f / (m - 1);
+
+	data.vertices.resize(n * m);
+	data.indices.resize((n - 1)*(m - 1) * 2 * 3);
+
+	uint v = 0, t = 0;
+
+	for (uint i = 0; i < m; ++i)
+	{
+		float z = halfDepth - i * dz;
+		for (uint j = 0; j < n; ++j)
+		{
+			float x = halfWidth - j * dx;
+			MeshVertex cVert;
+			cVert.position = Vector3(x, 0.0f, z);
+			cVert.normal = Vector3(0.0f, 1.0f, 0.0f);
+			cVert.tangent = Vector3(1.0f, 0.0f, 0.0f);
+			cVert.texcoord.x = 1.0f - j * du;
+			cVert.texcoord.y = i * dv;
+			cVert.color = color;
+			data.vertices[v++] = cVert;
+		}
+	}
+
+	uint k = 0;
+	for (uint i = 0; i < m - 1; ++i)
+	{
+		for (uint j = 0; j < n - 1; ++j)
+		{
+			data.indices[t++] = (i + 1) * n + j + 1;
+			data.indices[t++] = i * n + j + 1;
+			data.indices[t++] = (i + 1) * n + j;
+			data.indices[t++] = (i + 1) * n + j;
+			data.indices[t++] = i * n + j + 1;
+			data.indices[t++] = i * n + j;
+			k += 6;
+		}
+	}
+
+	return data;
+}
+
 // Followed this tutorial: http://www.binpress.com/tutorial/creating-an-octahedron-sphere/162
 MeshData MeshBuilder::CreateSphere(float radius, uint numSubdivisions, Color color)
 {
