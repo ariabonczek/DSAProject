@@ -90,12 +90,15 @@
     <ClCompile Include="Graphics\Transform.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Graphics\RenderTexture.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Texture2D.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+=======
+>>>>>>> e7d90fc108f923c66549330108ad8b5fea7daa75
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -161,6 +164,7 @@
     <ClInclude Include="Graphics\Transform.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Graphics\RenderTexture.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -173,6 +177,8 @@
     <ClInclude Include="Utility\stb_image.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+=======
+>>>>>>> e7d90fc108f923c66549330108ad8b5fea7daa75
   </ItemGroup>
   <ItemGroup>
     <None Include="..\content\Shaders\default.frag">
