@@ -26,6 +26,7 @@ void TestScene::LoadAssets()
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[0]->LoadShader("Shaders/default.frag", ShaderType::Fragment);
+	mats[0]->SetTexture2D("diffuse", textures[1]);
 
 	mats.push_back(new Material());
 	mats[1]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);

@@ -182,6 +182,12 @@
     <ClInclude Include="Graphics\PostProcess.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\FileSystem.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\stb_image.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\content\Shaders\default.frag">
