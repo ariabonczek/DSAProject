@@ -43,7 +43,9 @@ void GameObject::Draw()
 	material->Bind();
 
 	material->SetFloat4x4("model", transform->GetWorldMatrix());
-	material->SetFloat4x4("modelInverseTranspose", transform->GetWorldInverseTranspose());
+
+	//material->SetData<Matrix>("model", transform->GetWorldMatrix());
+	
 	mesh->Draw();
 }
 

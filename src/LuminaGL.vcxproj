@@ -106,6 +106,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\Data.cpp" />
     <ClCompile Include="Graphics\GameObject.cpp" />
+    <ClCompile Include="Graphics\Light.cpp" />
     <ClCompile Include="Graphics\Material.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\MeshBuilder.cpp" />
@@ -131,6 +132,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Graphics\Data.hpp" />
     <ClInclude Include="Graphics\GameObject.hpp" />
     <ClInclude Include="Graphics\Graphics.hpp" />
+    <ClInclude Include="Graphics\Light.hpp" />
     <ClInclude Include="Graphics\Material.hpp" />
     <ClInclude Include="Graphics\Mesh.hpp" />
     <ClInclude Include="Graphics\MeshBuilder.hpp" />
@@ -155,8 +157,14 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
   <ItemGroup>
     <None Include="..\content\Shaders\default.frag" />
     <None Include="..\content\Shaders\default.vert" />
+    <None Include="..\content\Shaders\directionalLight.frag" />
+    <None Include="..\content\Shaders\directionalLight.vert" />
+    <None Include="..\content\Shaders\pointLight.frag" />
+    <None Include="..\content\Shaders\pointLight.vert" />
     <None Include="..\content\Shaders\PostProcess\DrawToScreen.frag" />
     <None Include="..\content\Shaders\PostProcess\Vertex.vert" />
+    <None Include="..\content\Shaders\spotLight.frag" />
+    <None Include="..\content\Shaders\spotLight.vert" />
     <None Include="..\content\Shaders\textured.frag" />
     <None Include="..\content\Shaders\textured.vert" />
   </ItemGroup>

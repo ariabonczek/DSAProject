@@ -59,6 +59,23 @@ struct MeshData
 	std::vector<uint> indices;
 };
 
+enum class LightType
+{
+	Directional,
+	Point,
+	Spot
+};
+
+struct LightData {
+	Color color;
+	Vector3 direction;
+	float intensity;
+	Vector3 position;
+	float range;
+	float spot;
+	float pad[3];
+};
+
 NS_END
 
 #endif

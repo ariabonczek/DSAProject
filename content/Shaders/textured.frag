@@ -12,5 +12,5 @@ uniform sampler2D diffuse;
 
 void main()
 {
-	finalColor = texture(diffuse, _uv);// * tint;
+	finalColor = texture(diffuse, _uv);
 }

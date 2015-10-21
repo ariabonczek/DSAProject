@@ -24,7 +24,6 @@ private:
 	uint depthBuffer;
 	uint texture;
 	uint depth;
-private:
 };
 
 NS_END

@@ -10,5 +10,6 @@
 #include "Texture2D.hpp"
 #include "RenderTexture.hpp"
 #include "PostProcess.hpp"
+#include "Light.hpp"
 
 #endif

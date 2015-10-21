@@ -8,9 +8,7 @@ in vec2 _uv;
 
 out vec4 finalColor;
 
-uniform sampler2D diffuse;
-
 void main()
 {
-	finalColor = _color; //* tint;
+	finalColor = _color;
 }

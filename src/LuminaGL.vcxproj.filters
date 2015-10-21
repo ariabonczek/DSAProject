@@ -102,6 +102,9 @@
     <ClCompile Include="Graphics\PostProcess.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Light.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -182,11 +185,8 @@
     <ClInclude Include="Graphics\PostProcess.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\FileSystem.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\stb_image.h">
-      <Filter>Header Files\Utility</Filter>
+    <ClInclude Include="Graphics\Light.hpp">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +206,24 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\content\Shaders\textured.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\directionalLight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\directionalLight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\pointLight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\pointLight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\spotLight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\spotLight.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
