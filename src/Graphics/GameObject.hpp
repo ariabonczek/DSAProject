@@ -45,7 +45,7 @@ public:
 	Transform* GetTransform()const;
 	Mesh* GetMesh()const;
 	Material* GetMaterial()const;
-private:
+protected:
 	std::string name;
 	Transform* transform;
 	Mesh* mesh;
