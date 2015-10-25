@@ -211,19 +211,10 @@
     <None Include="..\content\Shaders\directionalLight.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\content\Shaders\directionalLight.vert">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\content\Shaders\pointLight.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\content\Shaders\pointLight.vert">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\content\Shaders\spotLight.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\spotLight.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

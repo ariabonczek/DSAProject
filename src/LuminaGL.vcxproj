@@ -158,13 +158,10 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <None Include="..\content\Shaders\default.frag" />
     <None Include="..\content\Shaders\default.vert" />
     <None Include="..\content\Shaders\directionalLight.frag" />
-    <None Include="..\content\Shaders\directionalLight.vert" />
     <None Include="..\content\Shaders\pointLight.frag" />
-    <None Include="..\content\Shaders\pointLight.vert" />
     <None Include="..\content\Shaders\PostProcess\DrawToScreen.frag" />
     <None Include="..\content\Shaders\PostProcess\Vertex.vert" />
     <None Include="..\content\Shaders\spotLight.frag" />
-    <None Include="..\content\Shaders\spotLight.vert" />
     <None Include="..\content\Shaders\textured.frag" />
     <None Include="..\content\Shaders\textured.vert" />
   </ItemGroup>

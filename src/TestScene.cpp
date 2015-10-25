@@ -29,7 +29,7 @@ void TestScene::LoadAssets()
 	// Making some materials
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
-	mats[0]->LoadShader("Shaders/default.frag", ShaderType::Fragment);
+	mats[0]->LoadShader("Shaders/spotLight.frag", ShaderType::Fragment);
 
 	mats.push_back(new Material());
 	mats[1]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
@@ -48,7 +48,7 @@ void TestScene::LoadAssets()
 	cylinder->GetTransform()->SetLocalPosition(Vector3(-5.0f, 1.0f, 3.0f));
 
 	GameObject* cube = new GameObject("Cube");
-	cube->SetMaterial(mats[1]);
+	cube->SetMaterial(mats[0]);
 	cube->SetMesh(meshes[2]);
 	cube->GetTransform()->SetLocalPosition(Vector3(10.0f, 0.0f, 0.0f));
 
@@ -75,7 +75,7 @@ void TestScene::LoadAssets()
 	objects.push_back(plane);
 
 	// Making some lights
-	Light* dLight = new Light(LightType::Spot, Color::White, 1.0f);
+	Light* dLight = new Light(LightType::Point, Color::White, 2.0f);
 	dLight->lightData.direction = Vector3(0.0f, -1.0f, 0.0f);
 	dLight->lightData.range = 25.0f;
 	dLight->lightData.position = Vector3(0.0f, 10.0f, 0.0f);
@@ -105,7 +105,13 @@ void TestScene::Draw()
 		// TODO: This is slow, update view/projection information once per frame
 		o->GetMaterial()->SetFloat4x4("view", camera->GetView());
 		o->GetMaterial()->SetFloat4x4("projection", camera->GetProjection());
-		
+		o->GetMaterial()->SetColor("lightColor", lights[0]->lightData.color);
+		o->GetMaterial()->SetFloat("lightIntensity", lights[0]->lightData.intensity);
+		o->GetMaterial()->SetFloat("lightRange", lights[0]->lightData.range);
+		o->GetMaterial()->SetFloat3("lightPosition", lights[0]->lightData.position);
+		o->GetMaterial()->SetFloat("lightSpot", lights[0]->lightData.spot);
+		o->GetMaterial()->SetFloat3("lightDirection", lights[0]->lightData.direction);
+
 		o->Draw();
 	}
 }
