@@ -48,6 +48,8 @@ void Car::Update(float dt)
 	transform->Translate(velocity);
 
 	acceleration = Vector3(0,0,0);
+
+
 }
 
 void Car::CalcForce()
@@ -63,11 +65,21 @@ void Car::CalcForce()
 
 void Car::ApplyForce(Vector3 force)
 {
-	acceleration.Add(acceleration, force);
+	acceleration.Add(acceleration, force.Divide(force, mass));
+
 }
 
 float Car::CalcMagnitude(Vector3 force)
 {
 	return sqrt(force.x * force.x + force.y * force.y + force.z * force.z);
 }
+
+void Car::Rotate(Quaternion rotation)
+{
+	this->transform->Rotate(rotation);
+}
+
+
+
+
 NS_END

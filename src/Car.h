@@ -21,6 +21,8 @@ public:
 	void CalcForce();
 	float CalcMagnitude(Vector3 Force);
 	void ApplyForce(Vector3 force);
+	void Rotate(Quaternion rotation);
+
 private:
 	Vector3 velocity;
 	Vector3 acceleration;
