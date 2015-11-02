@@ -10,5 +10,5 @@ out vec4 finalColor;
 
 void main()
 {
-	finalColor = _color;
+	finalColor = vec4(_normal, 1.0);
 }

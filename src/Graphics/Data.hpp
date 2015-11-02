@@ -57,6 +57,8 @@ struct MeshData
 	
 	std::vector<MeshVertex> vertices;
 	std::vector<uint> indices;
+
+	void Append(MeshData& data);
 };
 
 enum class LightType

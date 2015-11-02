@@ -15,12 +15,7 @@ void TestScene::LoadAssets()
 	camera->Initialize();
 
 	// Making some meshes
-	meshes.push_back(new Mesh(MeshBuilder::CreateCone(1.0f, 2.0f, 20, 5, Color::Red)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateCylinder(2.0f, 4.0f, 20, 5, Color::Green)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateCube(2.0f, Color::Blue)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateSphere(1.5f, 4, Color::RebeccaPurple)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateTorus(1.2f, 0.6f, 20, Color::PapayaWhip)));
-	meshes.push_back(new Mesh(MeshBuilder::CreatePlane(20.0f, 20.0f, 20, 20, Color::White)));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.fbx")));
 
 	// Making some textures
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
@@ -29,53 +24,21 @@ void TestScene::LoadAssets()
 	// Making some materials
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
-	mats[0]->LoadShader("Shaders/spotLight.frag", ShaderType::Fragment);
+	mats[0]->LoadShader("Shaders/directionalLight.frag", ShaderType::Fragment);
 
 	mats.push_back(new Material());
 	mats[1]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
 	mats[1]->SetTexture2D("diffuse", textures[1]);
+	
+	GameObject* car = new GameObject("Car");
+	car->SetMaterial(mats[0]);
+	car->SetMesh(meshes[0]);
 
-	// Making some GameObjects
-	GameObject* cone = new GameObject("Cone");
-	cone->SetMesh(meshes[0]);
-	cone->SetMaterial(mats[0]);
-	cone->GetTransform()->SetLocalPosition(Vector3(5.0f, 0.0f, -10.0f));
-
-	GameObject* cylinder = new GameObject("Cylinder");
-	cylinder->SetMaterial(mats[0]);
-	cylinder->SetMesh(meshes[1]);
-	cylinder->GetTransform()->SetLocalPosition(Vector3(-5.0f, 1.0f, 3.0f));
-
-	GameObject* cube = new GameObject("Cube");
-	cube->SetMaterial(mats[0]);
-	cube->SetMesh(meshes[2]);
-	cube->GetTransform()->SetLocalPosition(Vector3(10.0f, 0.0f, 0.0f));
-
-	GameObject* sphere = new GameObject("Sphere");
-	sphere->SetMaterial(mats[0]);
-	sphere->SetMesh(meshes[3]);
-	sphere->GetTransform()->SetLocalPosition(Vector3(0.0f, -5.0f, 0.0f));
-
-	GameObject* torus = new GameObject("Torus");
-	torus->SetMaterial(mats[0]);
-	torus->SetMesh(meshes[4]);
-	torus->GetTransform()->SetLocalPosition(Vector3(0.0f, 3.0f, 20.0f));
-
-	GameObject* plane = new GameObject("Plane");
-	plane->SetMaterial(mats[0]);
-	plane->SetMesh(meshes[5]);
-	plane->GetTransform()->SetLocalPosition(Vector3(0.0f, -10.0f, 0.0f));
-
-	objects.push_back(cone);
-	objects.push_back(cylinder);
-	objects.push_back(cube);
-	objects.push_back(sphere);
-	objects.push_back(torus);
-	objects.push_back(plane);
+	objects.push_back(car);
 
 	// Making some lights
-	Light* dLight = new Light(LightType::Point, Color::White, 2.0f);
+	Light* dLight = new Light(LightType::Directional, Color::White, 2.0f);
 	dLight->lightData.direction = Vector3(0.0f, -1.0f, 0.0f);
 	dLight->lightData.range = 25.0f;
 	dLight->lightData.position = Vector3(0.0f, 10.0f, 0.0f);
@@ -107,9 +70,9 @@ void TestScene::Draw()
 		o->GetMaterial()->SetFloat4x4("projection", camera->GetProjection());
 		o->GetMaterial()->SetColor("lightColor", lights[0]->lightData.color);
 		o->GetMaterial()->SetFloat("lightIntensity", lights[0]->lightData.intensity);
-		o->GetMaterial()->SetFloat("lightRange", lights[0]->lightData.range);
-		o->GetMaterial()->SetFloat3("lightPosition", lights[0]->lightData.position);
-		o->GetMaterial()->SetFloat("lightSpot", lights[0]->lightData.spot);
+		//o->GetMaterial()->SetFloat("lightRange", lights[0]->lightData.range);
+		//o->GetMaterial()->SetFloat3("lightPosition", lights[0]->lightData.position);
+		//o->GetMaterial()->SetFloat("lightSpot", lights[0]->lightData.spot);
 		o->GetMaterial()->SetFloat3("lightDirection", lights[0]->lightData.direction);
 
 		o->Draw();
