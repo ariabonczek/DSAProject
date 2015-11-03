@@ -2,11 +2,10 @@
 
 NS_BEGIN
 
-Car :: Car(std::string name, Mesh* mesh, Material* material,Transform* trans)
+Car :: Car(std::string name, Mesh* mesh, Material* material)
 	:GameObject(name, mesh, material)
-{
-
-	this->transform = trans;
+{ 
+	mass = 1.0f;
 }
 
 Car::Car(const Car& object)
@@ -37,49 +36,36 @@ void Car::Update(float dt)
 {
 	CalcForce();
 
-	velocity.Add(velocity, acceleration);
+	velocity = velocity + acceleration;
 
-	
-	if (CalcMagnitude(velocity) > maxSpeed)
+	if (velocity.Length() > MAX_SPEED)
 	{
-		velocity.SetMagnitude(maxSpeed);
+		velocity.SetMagnitude(MAX_SPEED);
 	}
 
 	transform->Translate(velocity);
 
 	acceleration = Vector3(0,0,0);
-
-
 }
 
 void Car::CalcForce()
 {
 	Vector3 force = Vector3(0.0f);
 
-	if (CalcMagnitude(force) > maxForce)
+	if (force.Length() > MAX_FORCE)
 	{
-		force.SetMagnitude(maxForce);
+		force.SetMagnitude(MAX_FORCE);
 	}
-	
 }
 
 void Car::ApplyForce(Vector3 force)
 {
-	acceleration.Add(acceleration, force.Divide(force, mass));
-
-}
-
-float Car::CalcMagnitude(Vector3 force)
-{
-	return sqrt(force.x * force.x + force.y * force.y + force.z * force.z);
+	acceleration = acceleration + force;
 }
 
 void Car::Rotate(Quaternion rotation)
 {
 	this->transform->Rotate(rotation);
 }
-
-
-
 
 NS_END

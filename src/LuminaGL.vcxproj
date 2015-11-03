@@ -157,6 +157,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\content\Shaders\boundingBox.frag" />
     <None Include="..\content\Shaders\default.frag" />
     <None Include="..\content\Shaders\default.vert" />
     <None Include="..\content\Shaders\directionalLight.frag" />

@@ -3,6 +3,8 @@
 
 #include "LuminaGL.hpp"
 
+#include "Car.h"
+
 using namespace LuminaGL;
 
 class TestScene : public Scene
@@ -17,14 +19,19 @@ public:
 	void UnloadAssets();
 private:
 	void MoveCamera(float dt);
+	void MovePlayer(float dt);
+	void CameraSmoothFollow(float dt, Transform* target);
 
 	void CopyLightData();
 
 	Camera* camera;
 
 	bool polygonFlag;
+	bool freeCamera;
 
-	//Camera camera;
+	Car* playerCar;
+	const float ARENA_SIZE = 25.0f;
+
 	std::vector<GameObject*> objects;
 	std::vector<Mesh*> meshes;
 	std::vector<Material*> mats;
