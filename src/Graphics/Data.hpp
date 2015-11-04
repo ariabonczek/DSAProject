@@ -5,6 +5,9 @@
 
 NS_BEGIN
 
+/// <summary>
+/// Represents color information
+/// </summary>
 struct Color
 {
 	float r, g, b, a;
@@ -25,19 +28,9 @@ struct Color
 	static Color PapayaWhip;
 };
 
-struct BaseVertex 
-{
-	Vector3 position;
-	Vector2 texcoord;
-};
-
-struct ColoredVertex
-{
-	Vector3 position;
-	Vector2 texcoord;
-	Color color;
-};
-
+/// <summary>
+/// Represents all of the information for a mesh vertex
+/// </summary>
 struct MeshVertex
 {
 	Vector3 position;
@@ -47,6 +40,9 @@ struct MeshVertex
 	Vector3 tangent;
 };
 
+/// <summary>
+/// Holds vertex and index information for mesh creation
+/// </summary>
 struct MeshData
 {
 	MeshData() {}
@@ -61,6 +57,25 @@ struct MeshData
 	
 	std::vector<MeshVertex> vertices;
 	std::vector<uint> indices;
+
+	void Append(MeshData& data);
+};
+
+enum class LightType
+{
+	Directional,
+	Point,
+	Spot
+};
+
+struct LightData {
+	Color color;
+	Vector3 direction;
+	float intensity;
+	Vector3 position;
+	float range;
+	float spot;
+	float pad[3];
 };
 
 NS_END

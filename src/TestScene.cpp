@@ -1,6 +1,8 @@
 #include "TestScene.hpp"
 #include "Utility\Timer.hpp"
-#include "Graphics\CameraSingletonDSA.hpp"
+#include "Utility\FileSystem.hpp"
+#include "Physics\BoxCollider.hpp"
+#include "Physics\PhysicsManager.hpp"
 
 TestScene::TestScene()
 {}
@@ -14,87 +16,143 @@ void TestScene::LoadAssets()
 
 	camera->Initialize();
 
-	meshes.push_back(new Mesh(MeshBuilder::CreateCone(1.0f, 2.0f, 20, 5, Color::Red)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateCylinder(2.0f, 4.0f, 20, 5, Color::Green)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateCube(2.0f, Color::Blue)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateSphere(1.5f, 4, Color::RebeccaPurple)));
-	meshes.push_back(new Mesh(MeshBuilder::CreateTorus(1.2f, 0.6f, 20, Color::PapayaWhip)));
+	// Making some meshes
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.fbx")));
+	meshes.push_back(new Mesh(MeshBuilder::CreateCube(1.0f, Color(0.2f, 0.2f, 0.2f, 1.0f))));
 
+	// Making some textures
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
+
+	// Making some materials
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
-	mats[0]->LoadShader("Shaders/default.frag", ShaderType::Fragment);
+	mats[0]->LoadShader("Shaders/directionalLight.frag", ShaderType::Fragment);
 
-	GameObject* cone = new GameObject("Cone");
-	cone->SetMesh(meshes[0]);
-	cone->SetMaterial(mats[0]);
-	cone->GetTransform()->SetLocalPosition(Vector3(5.0f, 0.0f, -10.0f));
+	mats.push_back(new Material());
+	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
+	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
+	
+	playerCar = new Car("Car", meshes[0], mats[0]);
+	playerCar->SetMaterial(mats[0]);
+	playerCar->SetMesh(meshes[0]);
+	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
+	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
 
-	GameObject* cylinder = new GameObject("Cylinder");
-	cylinder->SetMaterial(mats[0]);
-	cylinder->SetMesh(meshes[1]);
-	cylinder->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 3.0f));
+	GameObject* wall1;
+	GameObject* wall2;
+	GameObject* wall3;
+	GameObject* wall4;
+	GameObject* floor;
 
-	GameObject* cube = new GameObject("Cube");
-	cube->SetMaterial(mats[0]);
-	cube->SetMesh(meshes[2]);
-	cube->GetTransform()->SetLocalPosition(Vector3(10.0f, 0.0f, 0.0f));
+	GameObject* boundingbox = new GameObject("box", meshes[1], mats[1]);
+	
+	BoxCollider* bc1 = new BoxCollider(Vector3::Zero, Vector3(1.0f, 1.0f, 1.0f), 0);
+	BoxCollider* bc2 = new BoxCollider(Vector3::Zero, Vector3(1.0f, 1.0f, 1.0f), 0);
 
-	GameObject* sphere = new GameObject("Sphere");
-	sphere->SetMaterial(mats[0]);
-	sphere->SetMesh(meshes[3]);
-	sphere->GetTransform()->SetLocalPosition(Vector3(0.0f, -10.0f, 0.0f));
+	g_PhysicsManager.AddCollider(bc1);
+	g_PhysicsManager.AddCollider(bc2);
 
-	GameObject* torus = new GameObject("Torus");
-	torus->SetMaterial(mats[0]);
-	torus->SetMesh(meshes[4]);
-	torus->GetTransform()->SetLocalPosition(Vector3(0.0f, 3.0f, 20.0f));
+	wall1 = new GameObject("Wall1", meshes[1], mats[0]);
+	wall1->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
+	wall1->GetTransform()->SetLocalPosition(0.0f, 0.0f, -ARENA_SIZE);
 
-	objects.push_back(cone);
-	objects.push_back(cylinder);
-	objects.push_back(cube);
-	objects.push_back(sphere);
-	objects.push_back(torus);
+	wall2 = new GameObject("Wall2", meshes[1], mats[0]);
+	wall2->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
+	wall2->GetTransform()->SetLocalPosition(0.0f, 0.0f, ARENA_SIZE);
 
+	wall3 = new GameObject("Wall3", meshes[1], mats[0]);
+	wall3->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
+	wall3->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, 0.0f);
+
+	wall4 = new GameObject("Wall4", meshes[1], mats[0]);
+	wall4->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
+	wall4->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, 0.0f);
+
+	floor = new GameObject("Floor", meshes[1], mats[0]);
+	floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);
+	floor->GetTransform()->SetLocalPosition(0.0f, -1.0f, 0.0f);
+
+	objects.push_back(wall1);
+	objects.push_back(wall2);
+	objects.push_back(wall3);
+	objects.push_back(wall4);
+	objects.push_back(floor);
+	objects.push_back(boundingbox);
+
+	// Making some lights
+	Light* dLight = new Light(LightType::Directional, Color::White, 2.0f);
+	dLight->lightData.direction = Vector3(0.0f, -1.0f, 0.0f);
+	dLight->lightData.range = 25.0f;
+	dLight->lightData.position = Vector3(0.0f, 10.0f, 0.0f);
+	dLight->lightData.spot = 5.0f;
+	lights.push_back(dLight);
+
+	// Setting the camera position
 	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 }
 
 void TestScene::Update(float dt)
 {
-	MoveCamera(dt);
+	MovePlayer(dt);
 
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
+	if (freeCamera)
 	{
-		polygonFlag ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		polygonFlag = !polygonFlag;
+		MoveCamera(dt);
+	}
+	else
+	{
+		CameraSmoothFollow(dt, playerCar->GetTransform());
 	}
 
-	if (camera->IsDirty())
+	// Press space to swap between wireframe and shaded mode
+	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 	{
-		camera->UpdateViewMatrix();
+		//polygonFlag ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//polygonFlag = !polygonFlag;
+
+		freeCamera = !freeCamera;
+	}
+
+	g_PhysicsManager.Simulate(dt);
+
+	playerCar->Update(dt);
+	for (GameObject* o : objects)
+	{
+		o->Update(dt);
 	}
 }
 
 void TestScene::Draw()
 {
+	mats[0]->SetFloat4x4("view", camera->GetView());
+	mats[0]->SetFloat4x4("projection", camera->GetProjection());
+	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
+	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
+	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
+	playerCar->Draw();
+
 	for (GameObject* o : objects)
 	{
-		// TODO: This is slow, update view/projection information once per frame
-		o->GetMaterial()->SetFloat4x4("view", camera->GetView());
-		o->GetMaterial()->SetFloat4x4("projection", camera->GetProjection());
-		o->GetMaterial()->SetFloat3("viewPos", camera->GetPosition());
-
 		o->Draw();
 	}
 }
 
 void TestScene::UnloadAssets()
 {
+	// Deleting memory
+	delete playerCar;
+
 	for (Mesh* m : meshes)
 		delete m;
+	for (Texture2D* t : textures)
+		delete t;
 	for (Material* m : mats)
 		delete m;
 	for (GameObject* g : objects)
 		delete g;
+	for (Light* l : lights)
+		delete l;
 }
 
 void TestScene::MoveCamera(float dt)
@@ -119,6 +177,15 @@ void TestScene::MoveCamera(float dt)
 	else if (Input::GetKey(GLFW_KEY_D))
 	{
 		camera->MoveRight(speed);
+	}
+
+	if (Input::GetKey(GLFW_KEY_Q))
+	{
+		camera->Move(Vector3::Up * speed);
+	}
+	else if (Input::GetKey(GLFW_KEY_E))
+	{
+		camera->Move(Vector3::Up * -speed);
 	}
 
 	speed *= 10.0f;
@@ -148,5 +215,38 @@ void TestScene::MoveCamera(float dt)
 
 		camera->RotateY(diff.x);
 		camera->Pitch(diff.y);
+	}
+}
+
+void TestScene::CameraSmoothFollow(float dt, Transform* target)
+{
+	Vector3 position;
+	position = target->GetWorldPosition() + target->GetRight() * 10.0f;
+	position.y = target->GetWorldPosition().y + 4.0f;
+	camera->SetPosition(position);
+	camera->LookAt(target->GetWorldPosition());
+	camera->UpdateViewMatrix();
+}
+
+void TestScene::MovePlayer(float dt)
+{
+	if (Input::GetKey(GLFW_KEY_W))
+	{
+		playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * -dt);
+	}
+	
+	if (Input::GetKey(GLFW_KEY_S))
+	{
+		playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * dt);
+	}
+
+	if (Input::GetKey(GLFW_KEY_A))
+	{
+		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * - dt);
+	}
+
+	if (Input::GetKey(GLFW_KEY_D))
+	{
+		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * dt);
 	}
 }

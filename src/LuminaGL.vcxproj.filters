@@ -34,6 +34,15 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{1e34761b-bd99-42f0-8826-b566276d2850}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PostProcess">
+      <UniqueIdentifier>{d524be29-3df7-498a-90a5-f0adce1ce3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{66b162f4-da01-407a-8c86-eebb667bc0d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{332a4e11-e0be-4f5e-a796-6944b25f89a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -90,8 +99,26 @@
     <ClCompile Include="Graphics\Transform.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\CameraSingletonDSA.cpp">
+    <ClCompile Include="Graphics\RenderTexture.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Texture2D.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\PostProcess.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Light.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\BoxCollider.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsManager.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +164,6 @@
     <ClInclude Include="Graphics\Graphics.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\FileSystem.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Utility\Timer.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -161,8 +185,32 @@
     <ClInclude Include="Graphics\Transform.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\CameraSingletonDSA.hpp">
+    <ClInclude Include="Graphics\RenderTexture.hpp">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Texture2D.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\FileSystem.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\stb_image.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\PostProcess.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Light.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\BoxCollider.hpp">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsManager.hpp">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +218,39 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\content\Shaders\default.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\PostProcess\DrawToScreen.frag">
+      <Filter>Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\content\Shaders\PostProcess\Vertex.vert">
+      <Filter>Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\content\Shaders\textured.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\textured.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\directionalLight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\directionalLight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\pointLight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\pointLight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\spotLight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\spotLight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\content\Shaders\boundingBox.frag">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

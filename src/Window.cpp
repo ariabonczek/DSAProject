@@ -41,7 +41,7 @@ void Window::Initialize(uint width, uint height, std::string title)
 
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
 	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
+	
 	Input::Initialize(window);
 }
 

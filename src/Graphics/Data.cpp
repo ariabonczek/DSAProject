@@ -22,4 +22,23 @@ Color::Color(float r, float g, float b, float a) :
 	r(r), g(g), b(b), a(a)
 {}
 
+void MeshData::Append(MeshData& data)
+{		  
+	uint32 verticesOffset = vertices.size();
+	uint32 indicesOffset = indices.size();
+
+	vertices.resize(vertices.size() + data.vertices.size());
+	indices.resize(indices.size() + data.indices.size());
+
+	for (uint32 i = 0; i < data.vertices.size(); ++i)
+	{
+		vertices[verticesOffset + i] = data.vertices[i];
+	}
+
+	for (uint32 i = 0; i < data.indices.size(); ++i)
+	{
+		indices[indicesOffset + i] = data.indices[i];
+	}
+}
+
 NS_END
