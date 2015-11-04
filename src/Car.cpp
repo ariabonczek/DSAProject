@@ -1,10 +1,15 @@
 #include "Car.h"
 
+#include "Graphics\Mesh.hpp"
+#include "Physics\PhysicsManager.hpp"
+
 NS_BEGIN
 
 Car :: Car(std::string name, Mesh* mesh, Material* material)
 	:GameObject(name, mesh, material)
 { 
+	collider = new BoxCollider(Vector3::Zero, Vector3(0.7f, 0.5f, 0.8f), 0, transform);
+	g_PhysicsManager.AddCollider(collider);
 	mass = 1.0f;
 }
 
@@ -32,7 +37,7 @@ Car& Car::operator=(const Car& object)
 	return *this;
 }
 
-void Car::Update(float dt)
+void Car::Update(float dt, Matrix view, Matrix projection)
 {
 	CalcForce();
 
@@ -46,6 +51,8 @@ void Car::Update(float dt)
 	transform->Translate(velocity);
 
 	acceleration = Vector3(0,0,0);
+
+	collider->DebugDraw(view, projection);
 }
 
 void Car::CalcForce()

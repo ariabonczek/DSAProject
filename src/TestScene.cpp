@@ -34,24 +34,22 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 	
 	playerCar = new Car("Car", meshes[0], mats[0]);
-	playerCar->SetMaterial(mats[0]);
-	playerCar->SetMesh(meshes[0]);
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+
+	for (uint i = 0; i < NUM_CARS; ++i)
+	{
+		Car* car = new Car("AICar", meshes[0], mats[0]);
+		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
+		car->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+		objects.push_back(car);
+	}
 
 	GameObject* wall1;
 	GameObject* wall2;
 	GameObject* wall3;
 	GameObject* wall4;
 	GameObject* floor;
-
-	GameObject* boundingbox = new GameObject("box", meshes[1], mats[1]);
-	
-	BoxCollider* bc1 = new BoxCollider(Vector3::Zero, Vector3(1.0f, 1.0f, 1.0f), 0);
-	BoxCollider* bc2 = new BoxCollider(Vector3::Zero, Vector3(1.0f, 1.0f, 1.0f), 0);
-
-	g_PhysicsManager.AddCollider(bc1);
-	g_PhysicsManager.AddCollider(bc2);
 
 	wall1 = new GameObject("Wall1", meshes[1], mats[0]);
 	wall1->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
@@ -78,7 +76,6 @@ void TestScene::LoadAssets()
 	objects.push_back(wall3);
 	objects.push_back(wall4);
 	objects.push_back(floor);
-	objects.push_back(boundingbox);
 
 	// Making some lights
 	Light* dLight = new Light(LightType::Directional, Color::White, 2.0f);
@@ -116,9 +113,13 @@ void TestScene::Update(float dt)
 
 	g_PhysicsManager.Simulate(dt);
 
-	playerCar->Update(dt);
+	playerCar->Update(dt, camera->GetView(), camera->GetProjection());
 	for (GameObject* o : objects)
 	{
+		if (dynamic_cast<Car*>(o))
+		{
+			dynamic_cast<Car*>(o)->Update(dt, camera->GetView(), camera->GetProjection());
+		}
 		o->Update(dt);
 	}
 }

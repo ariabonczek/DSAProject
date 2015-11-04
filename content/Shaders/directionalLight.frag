@@ -16,5 +16,5 @@ void main()
 {
 	float diffFactor = dot(-lightDirection, _normal);
 
-	finalColor = _color * (lightColor * diffFactor * lightIntensity);
+	finalColor = vec4((_color * (lightColor * diffFactor * lightIntensity)).rgb, 1.0);
 }

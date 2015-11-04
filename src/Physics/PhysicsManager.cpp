@@ -16,10 +16,11 @@ void PhysicsManager::Simulate(float timeStep)
 {
 	if (p_Colliders.size() <= 1)
 		return;
+
 	for (uint i = 0; i < p_Colliders.size() - 1; ++i)
 	{
 		BoxCollider* c1 = p_Colliders[i];
-		for (uint j = i; j < p_Colliders.size(); ++j)
+		for (uint j = i + 1; j < p_Colliders.size(); ++j)
 		{
 			BoxCollider* c2 = p_Colliders[j];
 

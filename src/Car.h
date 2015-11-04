@@ -2,9 +2,9 @@
 #ifndef CAR_H
 #define CAR_H
 
-
 #include "Graphics/Transform.hpp"
 #include "Graphics/GameObject.hpp"
+#include "Physics\BoxCollider.hpp"
 
 NS_BEGIN
 class Car : public GameObject
@@ -17,12 +17,13 @@ public:
 	
 	Car& operator=(const Car& car);
 	
-	void Update(float dt);
+	void Update(float dt, Matrix view, Matrix projection);
 	void CalcForce();
 	void ApplyForce(Vector3 force);
 	void Rotate(Quaternion rotation);
 
 private:
+	BoxCollider* collider;
 	Vector3 velocity;
 	Vector3 acceleration;
 

@@ -10,5 +10,5 @@ out vec4 finalColor;
 
 void main()
 {
-	finalColor = vec4(0.0f, 1.0f, 0.0f, 0.2f);
+	finalColor = vec4(tint.rgb, 0.5f);
 }

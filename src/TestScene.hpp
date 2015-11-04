@@ -30,6 +30,7 @@ private:
 	bool freeCamera;
 
 	Car* playerCar;
+	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 25.0f;
 
 	std::vector<GameObject*> objects;
