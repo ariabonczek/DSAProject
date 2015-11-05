@@ -48,11 +48,11 @@ uint PhysicsManager::GetNumColliders()const
 
 void PhysicsManager::SetColor(uint index, Color color)
 {
-
+	p_Colliders[index]->SetColor(color);
 }
 void PhysicsManager::SetVisible(uint index, bool value)
 {
-	
+	p_Colliders[index]->SetVisibility(value);
 }
 
 void PhysicsManager::RenderAt(uint index)

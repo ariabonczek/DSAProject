@@ -100,7 +100,26 @@ bool BoxCollider::CheckCollision(BoxCollider* bc)
 {
 	Vector3 p = p_Transform->GetWorldPosition();
 	Vector3 p2 = bc->p_Transform->GetWorldPosition();
+	
+	// Check outer sphere collision
+	float scale = m_HalfWidth.x;
+	if (m_HalfWidth.y > scale)
+		scale = m_HalfWidth.y;
+	if (m_HalfWidth.z > scale)
+		scale = m_HalfWidth.z;
 
+	float scale2 = bc->m_HalfWidth.x;
+	if (bc->m_HalfWidth.y > scale)
+		scale = bc->m_HalfWidth.y;
+	if (bc->m_HalfWidth.z > scale)
+		scale = bc->m_HalfWidth.z;
+
+	if (Vector3::Distance(m_Center, bc->m_Center) > scale + scale2)
+	{
+		return false;
+	}
+
+	// Check inner box collision
 	return (m_Min.x + p.x < bc->m_Max.x + p2.x) && (m_Max.x + p.x> bc->m_Min.x + p2.x) &&
 		(m_Min.y + p.y < bc->m_Max.y + p2.y) && (m_Max.y + p.y > bc->m_Min.y + p2.y) &&
 		(m_Min.z + p.z < bc->m_Max.z + p2.z) && (m_Max.z + p.z > bc->m_Min.z + p2.z);
