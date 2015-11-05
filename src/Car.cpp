@@ -8,7 +8,7 @@ NS_BEGIN
 Car :: Car(std::string name, Mesh* mesh, Material* material)
 	:GameObject(name, mesh, material)
 { 
-	collider = new BoxCollider(Vector3::Zero, Vector3(1.5f, 0.5f, 1.6f), 0, transform);
+	collider = new BoxCollider(Vector3::Zero, Vector3(1.5f, 0.5f, 1.4f), 0, transform);
 	g_PhysicsManager.AddCollider(collider);
 	mass = 1.0f;
 }

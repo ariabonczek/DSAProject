@@ -10,6 +10,7 @@ NS_BEGIN
 BoxCollider::BoxCollider()
 {
 	m_DebugMesh = new Mesh(MeshBuilder::CreateCube(1.0f, Color::Green));
+	m_DebugOuterMesh = new Mesh(MeshBuilder::CreateSphere(1.0f, 3, Color::Green));
 	m_DebugMaterial = new Material();
 	m_DebugMaterial->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	m_DebugMaterial->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
@@ -59,6 +60,8 @@ BoxCollider::BoxCollider(Vector3 min, Vector3 max, Transform* t):
 
 	m_Min = min;
 	m_Max = max;
+
+	m_HalfWidth = (max - min) * 0.5f;
 }
 
 BoxCollider::BoxCollider(Vector3 center, Vector3 halfSize, int dummy, Transform* t):
@@ -68,6 +71,9 @@ BoxCollider::BoxCollider(Vector3 center, Vector3 halfSize, int dummy, Transform*
 
 	m_Min = center - halfSize;
 	m_Max = center + halfSize;
+	m_Center = center;
+
+	m_HalfWidth = halfSize;
 }
 
 BoxCollider::BoxCollider(const BoxCollider& bc)
@@ -107,26 +113,34 @@ void BoxCollider::SetCollisionFlag(bool value)
 
 void BoxCollider::DebugDraw(Matrix view, Matrix projection)
 {
-	m_DebugMaterial->SetFloat4x4("model", Matrix::CreateFromQuaternion(p_Transform->GetWorldRotation()) *
-		Matrix::CreateScale(Vector3((m_Max.x - m_Min.x) * 0.5f, (m_Max.y - m_Min.y) * 0.5f, (m_Max.z - m_Min.z) * 0.5f)) *
-		Matrix::CreateTranslation(p_Transform->GetWorldPosition()));
-
-	//m_DebugMaterial->SetFloat4x4("model", p_Transform->GetWorldMatrix());
-
 	m_DebugMaterial->SetFloat4x4("view", view);
 	m_DebugMaterial->SetFloat4x4("projection", projection);
 
+	SetModelMatrix(p_Transform->GetWorldMatrix());
+
+	float scale = m_HalfWidth.x;
+	if (m_HalfWidth.y > scale)
+		scale = m_HalfWidth.y;
+	if (m_HalfWidth.z > scale)
+		scale = m_HalfWidth.z;
+
+	m_DebugMaterial->SetFloat4x4("model", Matrix::CreateScale(scale * 1.2f) *
+		Matrix::CreateTranslation(m_OCenter));
+
 	m_DebugMaterial->Bind();
+	m_DebugOuterMesh->Draw();
+
+	m_DebugMaterial->SetFloat4x4("model", Matrix::CreateFromQuaternion(p_Transform->GetWorldRotation()) *
+		Matrix::CreateScale(m_HalfWidth) *
+		Matrix::CreateTranslation(p_Transform->GetWorldPosition()));
+
 	m_DebugMesh->Draw();
+
 	m_DebugMaterial->SetColor("tint", Color::Green);
 }
 
-void BoxCollider::SetModelMatrix(Matrix worldMatrix) {
-
-	if (p_Transform->GetWorldMatrix() == worldMatrix) {
-		return;
-	}
-
+void BoxCollider::SetModelMatrix(Matrix worldMatrix) 
+{
 	Vector3 corner[8];
 	corner[0] = Vector3(m_Min.x, m_Min.y, m_Min.z);
 	corner[1] = Vector3(m_Max.x, m_Min.y, m_Min.z);

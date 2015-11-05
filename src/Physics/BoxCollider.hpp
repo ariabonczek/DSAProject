@@ -59,6 +59,7 @@ private:
 	bool isVisible;
 
 	Mesh* m_DebugMesh;
+	Mesh* m_DebugOuterMesh;
 	Material* m_DebugMaterial;
 
 	Vector3 m_Max;
