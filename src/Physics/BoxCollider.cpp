@@ -27,23 +27,28 @@ BoxCollider::BoxCollider(std::vector<Vector3> vertices, Transform* t) :
 
 	m_Max = m_Min = vertices[0];
 
-	for (uint i = 0; i < numVertices; ++i)
-	{
-		if (m_Min.x > vertices[i].x) 
+	for (uint i = 1; i < numVertices; i++) {
+		if (m_Min.x > vertices[i].x) //If min is larger than current
 			m_Min.x = vertices[i].x;
-		else if (m_Max.x < vertices[i].x)
+		else if (m_Max.x < vertices[i].x)//if max is smaller than current
 			m_Max.x = vertices[i].x;
 
-		if (m_Min.y > vertices[i].y) 
+		if (m_Min.y > vertices[i].y) //If min is larger than current
 			m_Min.y = vertices[i].y;
-		else if (m_Max.y < vertices[i].y)
+		else if (m_Max.y < vertices[i].y)//if max is smaller than current
 			m_Max.y = vertices[i].y;
 
-		if (m_Min.z > vertices[i].z) 
+		if (m_Min.z > vertices[i].z) //If min is larger than current
 			m_Min.z = vertices[i].z;
-		else if (m_Max.z < vertices[i].z)
+		else if (m_Max.z < vertices[i].z)//if max is smaller than current
 			m_Max.z = vertices[i].z;
 	}
+
+	m_Center = (m_Min + m_Max) / 2.0f;
+
+	m_HalfWidth.x = Vector3::Distance(Vector3(m_Min.x, 0.0f, 0.0f), Vector3(m_Max.x, 0.0f, 0.0f)) / 2.0f;
+	m_HalfWidth.y = Vector3::Distance(Vector3(0.0f, m_Min.y, 0.0f), Vector3(0.0f, m_Max.y, 0.0f)) / 2.0f;
+	m_HalfWidth.z = Vector3::Distance(Vector3(0.0f, 0.0f, m_Min.z), Vector3(0.0f, 0.0f, m_Max.z)) / 2.0f;
 
 }
 
@@ -95,20 +100,117 @@ bool BoxCollider::CheckCollision(BoxCollider* bc)
 		(m_Min.z + p.z < bc->m_Max.z + p2.z) && (m_Max.z + p.z > bc->m_Min.z + p2.z);
 }
 
-void BoxCollider::SetCollisionFlag()
+void BoxCollider::SetCollisionFlag(bool value)
 {
-	m_DebugMaterial->SetColor("tint", Color::Red);
+	collisionFlag = value;
 }
 
 void BoxCollider::DebugDraw(Matrix view, Matrix projection)
 {
-	m_DebugMaterial->SetFloat4x4("model", Matrix::CreateScale(Vector3(m_Max.x - m_Min.x, m_Max.y - m_Min.y, m_Max.z - m_Min.z)) * Matrix::CreateTranslation(p_Transform->GetWorldPosition()));
+	m_DebugMaterial->SetFloat4x4("model", Matrix::CreateFromQuaternion(p_Transform->GetWorldRotation()) *
+		Matrix::CreateScale(Vector3((m_Max.x - m_Min.x) * 0.5f, (m_Max.y - m_Min.y) * 0.5f, (m_Max.z - m_Min.z) * 0.5f)) *
+		Matrix::CreateTranslation(p_Transform->GetWorldPosition()));
+
+	//m_DebugMaterial->SetFloat4x4("model", p_Transform->GetWorldMatrix());
+
 	m_DebugMaterial->SetFloat4x4("view", view);
 	m_DebugMaterial->SetFloat4x4("projection", projection);
 
 	m_DebugMaterial->Bind();
 	m_DebugMesh->Draw();
 	m_DebugMaterial->SetColor("tint", Color::Green);
+}
+
+void BoxCollider::SetModelMatrix(Matrix worldMatrix) {
+
+	if (p_Transform->GetWorldMatrix() == worldMatrix) {
+		return;
+	}
+
+	Vector3 corner[8];
+	corner[0] = Vector3(m_Min.x, m_Min.y, m_Min.z);
+	corner[1] = Vector3(m_Max.x, m_Min.y, m_Min.z);
+	corner[2] = Vector3(m_Min.x, m_Max.y, m_Min.z);
+	corner[3] = Vector3(m_Max.x, m_Max.y, m_Min.z);
+
+	corner[4] = Vector3(m_Min.x, m_Min.y, m_Max.z);
+	corner[5] = Vector3(m_Max.x, m_Min.y, m_Max.z);
+	corner[6] = Vector3(m_Min.x, m_Max.y, m_Max.z);
+	corner[7] = Vector3(m_Max.x, m_Max.y, m_Max.z);
+
+	for (uint i = 0; i < 8; i++) {
+		Vector4 v = Vector4(corner[i], 1.0f) * p_Transform->GetWorldMatrix();
+		corner[i] = Vector3(v.x, v.y, v.z);
+	}
+
+	m_OMin = m_OMax = corner[0];
+	for (uint i = 1; i < 8; i++)
+	{
+		if (m_OMin.x > corner[i].x) //If min is larger than current
+			m_OMin.x = corner[i].x;
+		else if (m_OMax.x < corner[i].x)//if max is smaller than current
+			m_OMax.x = corner[i].x;
+
+		if (m_OMin.y > corner[i].y) //If min is larger than current
+			m_OMin.y = corner[i].y;
+		else if (m_OMax.y < corner[i].y)//if max is smaller than current
+			m_OMax.y = corner[i].y;
+
+		if (m_OMin.z > corner[i].z) //If min is larger than current
+			m_OMin.z = corner[i].z;
+		else if (m_OMax.z < corner[i].z)//if max is smaller than current
+			m_OMax.z = corner[i].z;
+	}
+
+	m_OCenter = (m_OMin + m_OMax) / 2.0f;
+	m_OHalfWidth.x = Vector3::Distance(Vector3(m_OMin.x, 0.0f, 0.0f), Vector3(m_OMax.x, 0.0f, 0.0f)) / 2.0f;
+	m_OHalfWidth.y = Vector3::Distance(Vector3(0.0f, m_OMin.y, 0.0f), Vector3(0.0f, m_OMax.y, 0.0f)) / 2.0f;
+	m_OHalfWidth.z = Vector3::Distance(Vector3(0.0f, 0.0f, m_OMin.z), Vector3(0.0f, 0.0f, m_OMax.z)) / 2.0f;
+}
+
+Matrix BoxCollider::GetModelMatrix(void) const{
+	return p_Transform->GetWorldMatrix();
+}
+
+bool BoxCollider::GetCollisionFlag()const
+{
+	return collisionFlag;
+}
+Vector3 BoxCollider::GetCenterLocal(void) const{
+	return m_Center;
+}
+
+Vector3 BoxCollider::GetCenterGlobal(void) const{
+	return m_OCenter;
+}
+
+Vector3 BoxCollider::GetHalfWidth(void) const{
+	return m_HalfWidth;
+}
+
+Vector3 BoxCollider::O_GetHalfWidth(void) const{
+	return m_OHalfWidth;
+}
+Vector3 BoxCollider::GetMin() const{
+	return m_Min;
+}
+
+Vector3 BoxCollider::GetMax() const{
+	return m_Max;
+}
+
+void BoxCollider::SetColor(Color color)
+{
+	m_DebugMaterial->SetColor("tint", color);
+}
+
+void BoxCollider::SetVisibility(bool value)
+{
+	isVisible = value;
+}
+
+bool BoxCollider::GetVisibility(void)const {
+	return isVisible;
 }
 
 NS_END

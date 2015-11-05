@@ -17,7 +17,7 @@ void TestScene::LoadAssets()
 	camera->Initialize();
 
 	// Making some meshes
-	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.fbx")));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car2.fbx")));
 	meshes.push_back(new Mesh(MeshBuilder::CreateCube(1.0f, Color(0.2f, 0.2f, 0.2f, 1.0f))));
 
 	// Making some textures
@@ -41,7 +41,7 @@ void TestScene::LoadAssets()
 	{
 		Car* car = new Car("AICar", meshes[0], mats[0]);
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-		car->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+		car->GetTransform()->SetLocalPosition(5.0f, 2.0f, 0.0f);
 		objects.push_back(car);
 	}
 
@@ -113,13 +113,9 @@ void TestScene::Update(float dt)
 
 	g_PhysicsManager.Simulate(dt);
 
-	playerCar->Update(dt, camera->GetView(), camera->GetProjection());
+	playerCar->Update(dt);
 	for (GameObject* o : objects)
 	{
-		if (dynamic_cast<Car*>(o))
-		{
-			dynamic_cast<Car*>(o)->Update(dt, camera->GetView(), camera->GetProjection());
-		}
 		o->Update(dt);
 	}
 }
@@ -137,6 +133,8 @@ void TestScene::Draw()
 	{
 		o->Draw();
 	}
+
+	g_PhysicsManager.RenderAll(camera->GetView(), camera->GetProjection());
 }
 
 void TestScene::UnloadAssets()
@@ -222,7 +220,7 @@ void TestScene::MoveCamera(float dt)
 void TestScene::CameraSmoothFollow(float dt, Transform* target)
 {
 	Vector3 position;
-	position = target->GetWorldPosition() + target->GetRight() * 10.0f;
+	position = target->GetWorldPosition() - target->GetForward() * 10.0f;
 	position.y = target->GetWorldPosition().y + 4.0f;
 	camera->SetPosition(position);
 	camera->LookAt(target->GetWorldPosition());
@@ -231,23 +229,28 @@ void TestScene::CameraSmoothFollow(float dt, Transform* target)
 
 void TestScene::MovePlayer(float dt)
 {
+	if (freeCamera)
+		return;
+
 	if (Input::GetKey(GLFW_KEY_W))
 	{
-		playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * -dt);
+		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * dt);
 	}
 	
 	if (Input::GetKey(GLFW_KEY_S))
 	{
-		playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * dt);
+		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * -dt);
 	}
 
 	if (Input::GetKey(GLFW_KEY_A))
 	{
-		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * - dt);
+		playerCar->Rotate(Quaternion::CreateFromAxisAngle(Vector3::Up, -dt * 40.0f));
+		//playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * -dt);
 	}
 
 	if (Input::GetKey(GLFW_KEY_D))
 	{
-		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * dt);
+		playerCar->Rotate(Quaternion::CreateFromAxisAngle(Vector3::Up, dt * 40.0f));
+		//playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * dt);
 	}
 }

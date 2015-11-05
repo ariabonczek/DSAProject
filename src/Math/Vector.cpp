@@ -230,4 +230,32 @@ Vector3 operator*(const Vector3& l, const Matrix& r)
 		l.x * r.m13 + l.y * r.m23 + l.z * r.m33);
 }
 
+Vector4 operator+(const Vector4& l, const Vector4& r)
+{
+	return Vector4(l.x + r.x, l.y + r.y, l.z + r.z);
+}
+
+Vector4 operator*(const Vector4& l, const Vector4& r)
+{
+	return Vector4(l.x * r.x, l.y * r.y, l.z * r.z);
+}
+
+Vector4 Vector4::operator*(const Matrix& m)
+{
+	return Vector4(
+		x * m.m11 + y * m.m21 + z * m.m31 + w * m.m41,
+		x * m.m12 + y * m.m22 + z * m.m32 + w * m.m42,
+		x * m.m13 + y * m.m23 + z * m.m33 + w * m.m43,
+		x * m.m14 + y * m.m24 + z * m.m34 + w * m.m44);
+}
+
+Vector4 operator*(const Vector4& l, const Matrix& r)
+{
+	return Vector4(
+		l.x * r.m11 + l.y * r.m21 + l.z * r.m31 + l.w * r.m41,
+		l.x * r.m12 + l.y * r.m22 + l.z * r.m32 + l.w * r.m42,
+		l.x * r.m13 + l.y * r.m23 + l.z * r.m33 + l.w * r.m43,
+		l.x * r.m14 + l.y * r.m24 + l.z * r.m34 + l.w * r.m44);
+}
+
 NS_END

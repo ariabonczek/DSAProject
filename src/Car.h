@@ -17,10 +17,11 @@ public:
 	
 	Car& operator=(const Car& car);
 	
-	void Update(float dt, Matrix view, Matrix projection);
+	void Update(float dt);
 	void CalcForce();
 	void ApplyForce(Vector3 force);
 	void Rotate(Quaternion rotation);
+	void HandleCollision();
 
 private:
 	BoxCollider* collider;

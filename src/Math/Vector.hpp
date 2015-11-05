@@ -291,6 +291,7 @@ struct Vector4
 	Vector4 operator-();
 	Vector4 operator+(const Vector4& v);
 	Vector4 operator-(const Vector4& v);
+	Vector4 operator*(const Matrix& m);
 	Vector4 operator/(const float& d);
 	Vector4 operator/(const Vector4& v);
 	bool	operator==(const Vector4& v);
@@ -383,6 +384,10 @@ struct Vector4
 Vector3 operator+(const Vector3& l, const Vector3& r);
 Vector3 operator*(const Vector3& l, const Vector3& r);
 Vector3 operator*(const Vector3& l, const Matrix& r);
+
+Vector4 operator+(const Vector4& l, const Vector4& r);
+Vector4 operator*(const Vector4& l, const Vector4& r);
+Vector4 operator*(const Vector4& l, const Matrix& r);
 
 NS_END
 #endif

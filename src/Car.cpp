@@ -8,7 +8,7 @@ NS_BEGIN
 Car :: Car(std::string name, Mesh* mesh, Material* material)
 	:GameObject(name, mesh, material)
 { 
-	collider = new BoxCollider(Vector3::Zero, Vector3(0.7f, 0.5f, 0.8f), 0, transform);
+	collider = new BoxCollider(Vector3::Zero, Vector3(1.5f, 0.5f, 1.6f), 0, transform);
 	g_PhysicsManager.AddCollider(collider);
 	mass = 1.0f;
 }
@@ -37,11 +37,17 @@ Car& Car::operator=(const Car& object)
 	return *this;
 }
 
-void Car::Update(float dt, Matrix view, Matrix projection)
+void Car::Update(float dt)
 {
 	CalcForce();
 
 	velocity = velocity + acceleration;
+	velocity = velocity * 0.9f;
+	if (collider->GetCollisionFlag())
+	{
+		HandleCollision();
+		collider->SetCollisionFlag(false);
+	}
 
 	if (velocity.Length() > MAX_SPEED)
 	{
@@ -51,8 +57,6 @@ void Car::Update(float dt, Matrix view, Matrix projection)
 	transform->Translate(velocity);
 
 	acceleration = Vector3(0,0,0);
-
-	collider->DebugDraw(view, projection);
 }
 
 void Car::CalcForce()
@@ -73,6 +77,11 @@ void Car::ApplyForce(Vector3 force)
 void Car::Rotate(Quaternion rotation)
 {
 	this->transform->Rotate(rotation);
+}
+
+void Car::HandleCollision()
+{
+	velocity = velocity * 0.4f;
 }
 
 NS_END
