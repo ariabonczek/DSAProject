@@ -212,6 +212,9 @@
     <ClInclude Include="Physics\PhysicsManager.hpp">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Collectible.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\content\Shaders\default.frag">

@@ -37,12 +37,19 @@ Car& Car::operator=(const Car& object)
 	return *this;
 }
 
+void Car::SetMass(int m){
+	this->mass = m;
+}
+int Car::GetMass(){
+	return this->mass;
+}
+
 void Car::Update(float dt)
 {
 	CalcForce();
 
 	velocity = velocity + acceleration;
-	velocity = velocity * 0.9f;
+	velocity = velocity * 0.9f;//mass?
 	if (collider->GetCollisionFlag())
 	{
 		HandleCollision();

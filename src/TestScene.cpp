@@ -17,7 +17,7 @@ void TestScene::LoadAssets()
 	camera->Initialize();
 
 	// Making some meshes
-	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car2.fbx")));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.fbx")));
 	meshes.push_back(new Mesh(MeshBuilder::CreateCube(1.0f, Color(0.2f, 0.2f, 0.2f, 1.0f))));
 
 	// Making some textures
