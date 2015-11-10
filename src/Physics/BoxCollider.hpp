@@ -3,13 +3,13 @@
 
 #include "../Config.hpp"
 #include "../Graphics/Data.hpp"
-#include "../Graphics/Collectible.h"
 
 NS_BEGIN
 
 class Transform;
 class Mesh;
 class Material;
+class Collectible;
 
 /// <summary>
 ///

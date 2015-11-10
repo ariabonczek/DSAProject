@@ -4,6 +4,7 @@
 #include "../Graphics/Mesh.hpp"
 #include "../Graphics/MeshBuilder.hpp"
 #include "../Graphics/Material.hpp"
+#include "../Collectible.h"
 
 NS_BEGIN
 

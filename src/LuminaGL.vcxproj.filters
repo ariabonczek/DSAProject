@@ -121,7 +121,7 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Collectible.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +216,7 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Collectible.h">
-      <Filter>Header Files\Graphics</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
