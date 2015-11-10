@@ -103,6 +103,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Collectible.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\Data.cpp" />

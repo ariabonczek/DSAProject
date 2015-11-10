@@ -4,6 +4,7 @@
 #include "LuminaGL.hpp"
 
 #include "Car.h"
+#include "Collectible.h"
 
 using namespace LuminaGL;
 
@@ -30,6 +31,7 @@ private:
 	bool freeCamera;
 
 	Car* playerCar;
+	Collectible* testCollectible;
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 25.0f;
 

@@ -22,6 +22,8 @@ public:
 	void ApplyForce(Vector3 force);
 	void Rotate(Quaternion rotation);
 	void HandleCollision();
+	void SetMass(float m);
+	float GetMass();
 
 private:
 	BoxCollider* collider;
@@ -31,7 +33,7 @@ private:
 	const float MAX_SPEED = 5.0f;
 	const float MAX_FORCE = 10.0f;
 
-	int mass;
+	float mass;
 
 };
 

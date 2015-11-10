@@ -25,8 +25,19 @@ Collectible::~Collectible(){
 
 }
 
+void Collectible::Update(){
+	if (boxCollider->GetCollisionFlag())
+	{
+		boxCollider->SetCollisionFlag(false);
+		
+	}
+}
+
 void Collectible::Effect(Car* car){
-	car->SetMass(car->GetMass * 0.9f);
+	car->SetMass(car->GetMass() * 0.9f);
+}
+BoxCollider* Collectible::GetBoxCollider(){
+	return boxCollider;
 }
 
 NS_END

@@ -3,6 +3,7 @@
 
 #include "../Config.hpp"
 #include "../Graphics/Data.hpp"
+#include "../Graphics/Collectible.h"
 
 NS_BEGIN
 
@@ -28,7 +29,7 @@ public:
 
 	bool GetCollisionFlag()const;
 	void SetCollisionFlag(bool value);
-
+	
 	/// <summary>
 	///
 	/// </summary>
@@ -58,6 +59,7 @@ private:
 	bool collisionFlag;
 	bool isVisible;
 
+	Collectible* c;
 	Mesh* m_DebugMesh;
 	Mesh* m_DebugOuterMesh;
 	Material* m_DebugMaterial;

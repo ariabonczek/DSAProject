@@ -4,20 +4,23 @@
 #include "Graphics/Transform.hpp"
 #include "Graphics/GameObject.hpp"
 #include "Physics\BoxCollider.hpp"
+#include "Car.h"
 
 NS_BEGIN
 class Collectible : public GameObject{
 public:
-	Collectible();
-	Collectible(const Collectible& collectible);
-	Collectible operator=(Collectible const& collectible);
+	Collectible(std::string name, Mesh* mesh, Material* material);
+	Collectible(const Collectible& object);
+	Collectible operator=(const Collectible& object);
+	BoxCollider* GetBoxCollider();
 
-	Effect();
+	void Effect(Car* car);
 	~Collectible();
 
 private:
 	BoxCollider* boxCollider;
-
+	void Update();
 
 };
+NS_END
 #endif
