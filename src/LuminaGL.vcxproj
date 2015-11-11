@@ -122,7 +122,11 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Physics\BoxCollider.cpp" />
+    <ClCompile Include="Physics\Collider.cpp" />
+    <ClCompile Include="Physics\PhysicsContext.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Physics\Rigidbody.cpp" />
+    <ClCompile Include="Physics\Shape.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Utility\FileSystem.cpp" />
     <ClCompile Include="Utility\Input.cpp" />
@@ -153,7 +157,12 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Math\Quaternion.hpp" />
     <ClInclude Include="Math\Vector.hpp" />
     <ClInclude Include="Physics\BoxCollider.hpp" />
+    <ClInclude Include="Physics\Collider.hpp" />
+    <ClInclude Include="Physics\ContactContainer.hpp" />
+    <ClInclude Include="Physics\PhysicsContext.hpp" />
     <ClInclude Include="Physics\PhysicsManager.hpp" />
+    <ClInclude Include="Physics\Rigidbody.hpp" />
+    <ClInclude Include="Physics\Shape.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="TestScene.hpp" />
     <ClInclude Include="Utility\FileSystem.hpp" />
