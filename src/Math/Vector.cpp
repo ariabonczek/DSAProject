@@ -92,9 +92,9 @@ void Vector3::SetMagnitude(float mag){Normalize();x *= mag;y *= mag;z *= mag;}
 
 Vector3 Vector3::operator-(){ return Vector3(-x, -y, -z); }
 Vector3 Vector3::operator+(const Vector3& v){ return Vector3(x + v.x, y + v.y, z + v.z); }
-Vector3 Vector3::operator+=(const Vector3& v) { x += v.x; y += v.y; z += v.z; }
+Vector3 Vector3::operator+=(const Vector3& v) { x += v.x; y += v.y; z += v.z; return *this; }
 Vector3 Vector3::operator-(const Vector3& v){ return Vector3(x - v.x, y - v.y, z - v.z); }
-Vector3 Vector3::operator-=(const Vector3& v) { x -= v.x; y -= v.y; z -= v.z; }
+Vector3 Vector3::operator-=(const Vector3& v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
 Vector3 Vector3::operator/(const float& d){ return Vector3(x / d, y / d, z / d); }
 Vector3 Vector3::operator/(const Vector3& v) { return Vector3(x / v.x, y / v.y, z / v.z); }
 bool	Vector3::operator==(const Vector3& v){ return (x == v.x) && (y == v.y) && (z == v.z); }

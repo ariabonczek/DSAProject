@@ -1,13 +1,12 @@
 #pragma once
 
 #include "../Config.hpp"
+#include "ContactContainer.hpp"
 
 NS_BEGIN
 
 class Collider;
 class Rigidbody;
-
-struct ContactContainer;
 
 /// <summary>
 ///
