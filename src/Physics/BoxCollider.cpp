@@ -215,7 +215,7 @@ Vector3 BoxCollider::GetCenterLocal(void) const{
 }
 
 Vector3 BoxCollider::GetCenterGlobal(void) const{
-	return m_OCenter;
+	return p_Transform->GetLocalPosition();
 }
 
 Vector3 BoxCollider::GetHalfWidth(void) const{
@@ -231,6 +231,21 @@ Vector3 BoxCollider::GetMin() const{
 
 Vector3 BoxCollider::GetMax() const{
 	return m_Max;
+}
+
+Vector3 BoxCollider::GetXAxis()
+{
+	return p_Transform->GetRight();
+}
+
+Vector3 BoxCollider::GetYAxis()
+{
+	return p_Transform->GetUp();
+}
+
+Vector3 BoxCollider::GetZAxis()
+{
+	return p_Transform->GetForward();
 }
 
 void BoxCollider::SetColor(Color color)

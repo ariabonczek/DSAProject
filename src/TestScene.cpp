@@ -38,9 +38,9 @@ void TestScene::LoadAssets()
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
 	//Collectible
-	testCollectible = new Collectible("Gem", meshes[2], mats[0]);
-	testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
-	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+	//testCollectible = new Collectible("Gem", meshes[2], mats[0]);
+	//testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
+	//testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
@@ -133,7 +133,7 @@ void TestScene::Draw()
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
 	playerCar->Draw();
-	testCollectible->Draw();
+	//testCollectible->Draw();
 	for (GameObject* o : objects)
 	{
 		o->Draw();
@@ -146,7 +146,7 @@ void TestScene::UnloadAssets()
 {
 	// Deleting memory
 	delete playerCar;
-	delete testCollectible;
+	//delete testCollectible;
 	for (Mesh* m : meshes)
 		delete m;
 	for (Texture2D* t : textures)

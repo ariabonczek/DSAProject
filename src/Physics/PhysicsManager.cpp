@@ -24,7 +24,7 @@ void PhysicsManager::Simulate(float timeStep)
 		{
 			BoxCollider* c2 = p_Colliders[j];
 
-			if (c1->CheckCollision(c2))
+			if (SAT(c1, c2))
 			{
 				c1->SetCollisionFlag(true);
 				c2->SetCollisionFlag(true);
@@ -66,6 +66,40 @@ void PhysicsManager::RenderAll(Matrix view, Matrix projection)
 	{
 		p_Colliders[i]->DebugDraw(view, projection);
 	}
+}
+
+bool PhysicsManager::SAT(BoxCollider* a, BoxCollider* b)
+{
+	bool val = CheckAxis(a->GetXAxis(), a, b) && CheckAxis(a->GetYAxis(), a, b) &&
+		CheckAxis(a->GetZAxis(), a, b) && CheckAxis(b->GetXAxis(), a, b) &&
+		CheckAxis(b->GetYAxis(), a, b) && CheckAxis(b->GetZAxis(), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetXAxis()), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetYAxis()), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetZAxis()), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetXAxis()), a, b) &&
+		/*CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetYAxis()), a, b) &&*/
+		CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetZAxis()), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetXAxis()), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetYAxis()), a, b) &&
+		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetZAxis()), a, b);
+
+	return val;
+}
+
+bool PhysicsManager::CheckAxis(Vector3 L, BoxCollider* a, BoxCollider* b)
+{
+	Vector3 T = b->GetCenterGlobal() - a->GetCenterGlobal();
+	float d = abs(Vector3::Dot(T, L));
+
+	float v2 = abs(Vector3::Dot((a->GetXAxis() * a->GetHalfWidth().x), L)) +
+		abs(Vector3::Dot((a->GetYAxis() * a->GetHalfWidth().y), L)) +
+		abs(Vector3::Dot((a->GetZAxis() * a->GetHalfWidth().z), L)) +
+		abs(Vector3::Dot((b->GetXAxis() * b->GetHalfWidth().x), L)) +
+		abs(Vector3::Dot((b->GetYAxis() * b->GetHalfWidth().y), L)) +
+		abs(Vector3::Dot((b->GetZAxis() * b->GetHalfWidth().z), L));
+
+	bool val = d < v2;
+	return val;
 }
 
 NS_END

@@ -15,8 +15,14 @@ class PhysicsContext
 {
 public:
 
+	/// <summary>
+	/// 
+	/// </summary>
 	void Simulate(float timeStep);
 
+	/// <summary>
+	/// 
+	/// </summary>
 	void AddCollidable(Collider* collider);
 
 private:

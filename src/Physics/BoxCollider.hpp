@@ -48,6 +48,10 @@ public:
 	//half width of reoriented object
 	Vector3 O_GetHalfWidth(void)const;
 
+	Vector3 GetXAxis();
+	Vector3 GetYAxis();
+	Vector3 GetZAxis();
+
 	void SetColor(Color color);
 
 	void SetVisibility(bool value);
