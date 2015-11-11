@@ -11,6 +11,18 @@ class Rigidbody
 {
 public:
 
+	void AddForce(Vector3 force);
+	void AddTorque(Vector3 torque);
+
+	void AddRelativeForce(Vector3 force);
+	void AddRelativeTorque(Vector3 torque);
+
+	Vector3 CalculateClosestPointOnBounds();
+
+	///////////////////
+	// Gets and Sets //
+	///////////////////
+
 	Matrix GetInertia()const;
 	void   SetInertia(Matrix inertia);
 
@@ -32,6 +44,17 @@ public:
 	float GetRestitution()const;
 	void  SetRestitution(float restitution);
 
+	float GetFriction()const;
+	void  SetFriction(float friction);
+
+	Vector3 GetCenterOfMass()const;
+	Vector3 GetWorldCenterOfMass();
+
+	Vector3 GetLinearVelocity()const;
+	void    SetLinearVelocity(Vector3 velocity);
+
+	Vector3 GetAngularVelocity()const;
+	void    SetAngularVelocity(Vector3 velocity);
 private:
 	Matrix m_Inertia;
 	Vector3 m_Position;
@@ -40,6 +63,15 @@ private:
 	float m_AngularDamping;
 	float m_Mass;
 	float m_Restitution;
+	float m_Friction;
+
+	Vector3 m_CenterOfMass;
+	Vector3 m_LinearVelocity;
+	Vector3 m_AngularVelocity;
+
+	Vector3 m_TorqueAccumulator;
+	Vector3 m_ForceAccumulator;
+
 };
 
 NS_END

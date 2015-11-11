@@ -164,7 +164,9 @@ struct Vector3
 	///////////////
 	Vector3 operator-();
 	Vector3 operator+(const Vector3& v);
+	Vector3 operator+=(const Vector3& v);
 	Vector3 operator-(const Vector3& v);
+	Vector3 operator-=(const Vector3& v);
 	Vector3 operator*(const Matrix& m);
 	Vector3 operator/(const float& d);
 	Vector3 operator/(const Vector3& v);
