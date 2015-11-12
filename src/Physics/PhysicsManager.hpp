@@ -53,9 +53,9 @@ public:
 	/// </summary>
 	void RenderAll(Matrix view, Matrix projection);
 
-	bool SAT(BoxCollider* a, BoxCollider* b);
+	static bool SAT(BoxCollider* a, BoxCollider* b);
 
-	bool CheckAxis(Vector3 L, BoxCollider* a, BoxCollider* b);
+	static bool CheckAxis(Vector3 L, BoxCollider* a, BoxCollider* b);
 private:
 
 	std::vector<BoxCollider*> p_Colliders;

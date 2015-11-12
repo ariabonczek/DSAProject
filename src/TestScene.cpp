@@ -139,6 +139,7 @@ void TestScene::Draw()
 		o->Draw();
 	}
 
+	
 	//g_PhysicsManager.RenderAll(camera->GetView(), camera->GetProjection());
 }
 

@@ -54,6 +54,7 @@ void Car::Update(float dt)
 	if (collider->GetCollisionFlag())
 	{
 		HandleCollision();
+	//	collider->DebugDraw(Matrix::Identity, collider->GetModelMatrix());
 		collider->SetCollisionFlag(false);
 	}
 
