@@ -1,21 +1,21 @@
-A10 - Bounding Object Manager
+A11 - Seperation Axis Test
 
-Extra Credit: When a collision is detected, the movement velocity is limited on the cars.
+Extra Credit: When a collision is detected, the movement velocity is limited on the cars. If you would like to see the changing color bounding box you can uncomment line 
+g_PhysicsManager.RenderAll(camera->GetView(), camera->GetProjection()); in TestScene.cpp line 143. 
+ 
 
 Jo
 --
-Created the Manager and class in ReEngine.
+Work together with Gwen and Ashley to complete the Seperation Axis Test by pre-checking the AABB collision. 
 
 Ashley
 ------
-Created the Bounding Object class in ReEngine and handled the math for calculating the centroid
-and realigned axis bounds.
+Work together with Jo and Gwen to complete the Seperation Axis Test by pre-checking the AABB collision. 
 
 Gwen
 ----
-Wrote code to render the models in ReEngine.
+Work together with Jo and Ashley to complete the Seperation Axis Test by pre-checking the AABB collision. 
 
 Aria
 ----
-Moved the Manager and Bounding Object code into our engine for our game and set up collision detection
-and resolution between the cars.
+Complete the base for the Seperation Axis Text and   

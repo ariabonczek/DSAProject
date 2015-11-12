@@ -5,7 +5,7 @@
 #include "../Graphics/MeshBuilder.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Collectible.h"
-
+#include "../Physics/PhysicsManager.hpp"
 NS_BEGIN
 
 BoxCollider::BoxCollider()
@@ -120,8 +120,9 @@ bool BoxCollider::CheckCollision(BoxCollider* bc)
 		return false;
 	}
 
+
 	// Check inner box collision
-	return (m_Min.x + p.x < bc->m_Max.x + p2.x) && (m_Max.x + p.x> bc->m_Min.x + p2.x) &&
+	return(m_Min.x + p.x < bc->m_Max.x + p2.x) && (m_Max.x + p.x> bc->m_Min.x + p2.x) &&
 		(m_Min.y + p.y < bc->m_Max.y + p2.y) && (m_Max.y + p.y > bc->m_Min.y + p2.y) &&
 		(m_Min.z + p.z < bc->m_Max.z + p2.z) && (m_Max.z + p.z > bc->m_Min.z + p2.z);
 }

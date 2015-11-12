@@ -23,14 +23,19 @@ void PhysicsManager::Simulate(float timeStep)
 		for (uint j = i + 1; j < p_Colliders.size(); ++j)
 		{
 			BoxCollider* c2 = p_Colliders[j];
-
-			if (SAT(c1, c2))
+			if (c1->CheckCollision(c2))
 			{
-				c1->SetCollisionFlag(true);
-				c2->SetCollisionFlag(true);
+				
+				if (SAT(c1, c2))
+				{
+					c1->SetCollisionFlag(true);
+					c2->SetCollisionFlag(true);
 
-				c1->SetColor(Color::Red);
-				c2->SetColor(Color::Red);
+					c1->SetColor(Color::Red);
+					c2->SetColor(Color::Red);
+					
+					
+				}
 			}
 		}
 	}
