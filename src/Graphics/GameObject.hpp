@@ -3,11 +3,14 @@
 
 #include "../Config.hpp"
 #include "Transform.hpp"
+#include <typeinfo>
+#include <unordered_map>
 
 NS_BEGIN
 
 class Mesh;
 class Material;
+class LuminaBehaviour;
 
 /// <summary>
 /// A basic game object
@@ -41,11 +44,35 @@ public:
 	/// </summary>
 	void SetMaterial(Material* mat);
 
+	template<class T>
+	T* GetComponent()
+	{
+		if (components.find(typeid(T).name()) != components.end())
+			return reinterpret_cast<T*>(components[typeid(T).name()]);
+		return nullptr;
+	}
+
+	template<class T>
+	void AddComponent(LuminaBehaviour* LuminaBehaviour)
+	{
+		if (components.find(typeid(T).name()) != components.end())
+		{
+#if _DEBUG
+			std::cout << "[GameObject] Oh noes" << std::endl;
+#endif
+			return;
+		}
+
+		LuminaBehaviour->OnAddToGameObject(this);
+		components[typeid(T).name()] = LuminaBehaviour;
+	}
+	
 	std::string GetName()const;
 	Transform* GetTransform()const;
 	Mesh* GetMesh()const;
 	Material* GetMaterial()const;
 protected:
+	std::unordered_map<std::string, LuminaBehaviour*> components;
 	std::string name;
 	Transform* transform;
 	Mesh* mesh;

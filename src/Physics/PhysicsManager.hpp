@@ -55,7 +55,7 @@ public:
 
 	bool SAT(BoxCollider* a, BoxCollider* b);
 
-	bool CheckAxis(Vector3 L, BoxCollider* a, BoxCollider* b);
+	inline bool CheckAxis(Vector3 L, Vector3 T, BoxCollider* a, BoxCollider* b);
 private:
 
 	std::vector<BoxCollider*> p_Colliders;

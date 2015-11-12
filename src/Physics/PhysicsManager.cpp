@@ -70,25 +70,26 @@ void PhysicsManager::RenderAll(Matrix view, Matrix projection)
 
 bool PhysicsManager::SAT(BoxCollider* a, BoxCollider* b)
 {
-	bool val = CheckAxis(a->GetXAxis(), a, b) && CheckAxis(a->GetYAxis(), a, b) &&
-		CheckAxis(a->GetZAxis(), a, b) && CheckAxis(b->GetXAxis(), a, b) &&
-		CheckAxis(b->GetYAxis(), a, b) && CheckAxis(b->GetZAxis(), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetXAxis()), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetYAxis()), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetZAxis()), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetXAxis()), a, b) &&
-		/*CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetYAxis()), a, b) &&*/
-		CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetZAxis()), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetXAxis()), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetYAxis()), a, b) &&
-		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetZAxis()), a, b);
+	Vector3 T = b->GetCenterGlobal() - a->GetCenterGlobal();
+
+	bool val = CheckAxis(a->GetXAxis(), T, a, b) && CheckAxis(a->GetYAxis(), T, a, b) &&
+		CheckAxis(a->GetZAxis(), T, a, b) && CheckAxis(b->GetXAxis(), T, a, b) &&
+		CheckAxis(b->GetYAxis(), T, a, b) && CheckAxis(b->GetZAxis(), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetXAxis()), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetYAxis()), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetXAxis(), b->GetZAxis()), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetXAxis()), T, a, b) &&
+		/*CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetYAxis() T,), a, b) &&*/
+		CheckAxis(Vector3::Cross(a->GetYAxis(), b->GetZAxis()), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetXAxis()), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetYAxis()), T, a, b) &&
+		CheckAxis(Vector3::Cross(a->GetZAxis(), b->GetZAxis()), T, a, b);
 
 	return val;
 }
 
-bool PhysicsManager::CheckAxis(Vector3 L, BoxCollider* a, BoxCollider* b)
+bool PhysicsManager::CheckAxis(Vector3 L, Vector3 T, BoxCollider* a, BoxCollider* b)
 {
-	Vector3 T = b->GetCenterGlobal() - a->GetCenterGlobal();
 	float d = abs(Vector3::Dot(T, L));
 
 	float v2 = abs(Vector3::Dot((a->GetXAxis() * a->GetHalfWidth().x), L)) +

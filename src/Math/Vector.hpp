@@ -52,7 +52,7 @@ struct Vector2
 	//////////////////////
 
 	/// <summary>
-	/// Returns a vector using component-wise addition
+	/// Returns a vector using LuminaBehaviour-wise addition
 	/// </summary>
 	static Vector2 Add(Vector2 v1, Vector2 v2);
 
@@ -72,7 +72,7 @@ struct Vector2
 	static float   DistanceSquared(Vector2 v1, Vector2 v2);
 
 	/// <summary>
-	/// Returns a vector using component-wise division
+	/// Returns a vector using LuminaBehaviour-wise division
 	/// </summary>
 	static Vector2 Divide(Vector2 v1, Vector2 v2);
 
@@ -97,7 +97,7 @@ struct Vector2
 	static Vector2 Min(Vector2 v1, Vector2 v2);
 
 	/// <summary>
-	/// Returns a vector using component-wise multiplication
+	/// Returns a vector using LuminaBehaviour-wise multiplication
 	/// </summary>
 	static Vector2 Multiply(Vector2 v1, Vector2 v2);
 
@@ -122,7 +122,7 @@ struct Vector2
 	static Vector2 Reflect(Vector2 v, Vector2 normal);
 
 	/// <summary>
-	/// Returns a vector using component-wise subtraction
+	/// Returns a vector using LuminaBehaviour-wise subtraction
 	/// </summary>
 	static Vector2 Subtract(Vector2 v1, Vector2 v2);
 
@@ -179,7 +179,7 @@ struct Vector3
 	//////////////////////
 
 	/// <summary>
-	/// Returns a vector using component-wise addition
+	/// Returns a vector using LuminaBehaviour-wise addition
 	/// </summary>
 	static Vector3 Add(Vector3 v1, Vector3 v2);
 
@@ -204,7 +204,7 @@ struct Vector3
 	static float   DistanceSquared(Vector3 v1, Vector3 v2);
 
 	/// <summary>
-	/// Returns a vector using component-wise division
+	/// Returns a vector using LuminaBehaviour-wise division
 	/// </summary>
 	static Vector3 Divide(Vector3 v1, Vector3 v2);
 
@@ -231,7 +231,7 @@ struct Vector3
 	static Vector3 Min(Vector3 v1, Vector3 v2);
 
 	/// <summary>
-	/// Returns a vector using component-wise multiplication
+	/// Returns a vector using LuminaBehaviour-wise multiplication
 	/// </summary>
 	static Vector3 Multiply(Vector3 v1, Vector3 v2);
 
@@ -256,7 +256,7 @@ struct Vector3
 	static Vector3 Reflect(Vector3 v, Vector3 normal);
 
 	/// <summary>
-	/// Returns a vector using component-wise subtraction
+	/// Returns a vector using LuminaBehaviour-wise subtraction
 	/// </summary>
 	static Vector3 Subtract(Vector3 v1, Vector3 v2);
 
@@ -305,7 +305,7 @@ struct Vector4
 	//////////////////////
 
 	/// <summary>
-	/// Returns a vector using component-wise addition
+	/// Returns a vector using LuminaBehaviour-wise addition
 	/// </summary>
 	static Vector4 Add(Vector4 v1, Vector4 v2);
 
@@ -325,7 +325,7 @@ struct Vector4
 	static float   DistanceSquared(Vector4 v1, Vector4 v2);
 
 	/// <summary>
-	/// Returns a vector using component-wise division
+	/// Returns a vector using LuminaBehaviour-wise division
 	/// </summary>
 	static Vector4 Divide(Vector4 v1, Vector4 v2);
 
@@ -350,7 +350,7 @@ struct Vector4
 	static Vector4 Min(Vector4 v1, Vector4 v2);
 
 	/// <summary>
-	/// Returns a vector using component-wise multiplication
+	/// Returns a vector using LuminaBehaviour-wise multiplication
 	/// </summary>
 	static Vector4 Multiply(Vector4 v1, Vector4 v2);
 
@@ -375,7 +375,7 @@ struct Vector4
 	static Vector4 Reflect(Vector4 v, Vector4 normal);
 
 	/// <summary>
-	/// Returns a vector using component-wise subtraction
+	/// Returns a vector using LuminaBehaviour-wise subtraction
 	/// </summary>
 	static Vector4 Subtract(Vector4 v1, Vector4 v2);
 
