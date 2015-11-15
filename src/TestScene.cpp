@@ -1,8 +1,6 @@
 #include "TestScene.hpp"
 #include "Utility\Timer.hpp"
 #include "Utility\FileSystem.hpp"
-#include "Physics\BoxCollider.hpp"
-#include "Physics\PhysicsManager.hpp"
 
 TestScene::TestScene()
 {}
@@ -34,6 +32,7 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 	
+<<<<<<< HEAD
 	playerCar = new Car("Car", meshes[0], mats[0]);
 
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
@@ -47,10 +46,24 @@ void TestScene::LoadAssets()
 	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
 
 
+=======
+	playerCar = new GameObject("Car", meshes[0], mats[0]);
+	playerCar->AddComponent<Car>(new Car());
+	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
+	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+	
+	//Collectible
+	testCollectible = new GameObject("Gem", meshes[2], mats[0]);
+	testCollectible->AddComponent<Collectible>(new Collectible);
+	testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
+	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+	objects.push_back(testCollectible);
+>>>>>>> 382f783f0428de9454011b80e306fd544ccd18a5
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
-		Car* car = new Car("AICar", meshes[0], mats[0]);
+		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
+		car->AddComponent<Car>(new Car());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 2.0f, 0.0f);
 		objects.push_back(car);
@@ -116,13 +129,8 @@ void TestScene::Update(float dt)
 	// Press space to swap between wireframe and shaded mode
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 	{
-		//polygonFlag ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		//polygonFlag = !polygonFlag;
-
 		freeCamera = !freeCamera;
 	}
-
-	g_PhysicsManager.Simulate(dt);
 
 	playerCar->Update(dt);
 	for (GameObject* o : objects)
@@ -145,7 +153,6 @@ void TestScene::Draw()
 		o->Draw();
 	}
 
-	
 	//g_PhysicsManager.RenderAll(camera->GetView(), camera->GetProjection());
 }
 
@@ -244,25 +251,27 @@ void TestScene::MovePlayer(float dt)
 	if (freeCamera)
 		return;
 
+	Car* car = playerCar->GetComponent<Car>();
+
 	if (Input::GetKey(GLFW_KEY_W))
 	{
-		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * dt);
+		car->Accelerate(playerCar->GetTransform()->GetForward() * dt);
 	}
 	
 	if (Input::GetKey(GLFW_KEY_S))
 	{
-		playerCar->ApplyForce(playerCar->GetTransform()->GetForward() * -dt);
+		car->Accelerate(playerCar->GetTransform()->GetForward() * -dt);
 	}
 
 	if (Input::GetKey(GLFW_KEY_A))
 	{
-		playerCar->Rotate(Quaternion::CreateFromAxisAngle(Vector3::Up, -dt * 40.0f));
+		car->Turn(Quaternion::CreateFromAxisAngle(Vector3::Up, -dt * 40.0f));
 		//playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * -dt);
 	}
 
 	if (Input::GetKey(GLFW_KEY_D))
 	{
-		playerCar->Rotate(Quaternion::CreateFromAxisAngle(Vector3::Up, dt * 40.0f));
+		car->Turn(Quaternion::CreateFromAxisAngle(Vector3::Up, dt * 40.0f));
 		//playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * dt);
 	}
 }

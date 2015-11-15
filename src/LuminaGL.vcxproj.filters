@@ -111,15 +111,6 @@
     <ClCompile Include="Graphics\Light.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Car.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\BoxCollider.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsManager.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Collectible.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,11 +132,19 @@
     <ClCompile Include="Graphics\LuminaBehaviour.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="CollectibleBehaviour.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\CollectibleBehaviour.cpp">
       <Filter>Header Files\Graphics</Filter>
+=======
+    <ClCompile Include="Car.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\TextRenderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+>>>>>>> 382f783f0428de9454011b80e306fd544ccd18a5
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,15 +229,6 @@
     <ClInclude Include="Graphics\Light.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Car.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\BoxCollider.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsManager.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Collectible.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -263,7 +253,14 @@
     <ClInclude Include="Graphics\LuminaBehaviour.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="CollectibleBehaviour.h">
+=======
+    <ClInclude Include="Car.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\TextRenderer.hpp">
+>>>>>>> 382f783f0428de9454011b80e306fd544ccd18a5
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

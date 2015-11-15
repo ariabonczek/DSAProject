@@ -30,9 +30,14 @@ private:
 	bool polygonFlag;
 	bool freeCamera;
 
+<<<<<<< HEAD
 	Car* playerCar;
 	Collectible* testCollectible;
 	LuminaBehaviour* testBehaviour;
+=======
+	GameObject* playerCar;
+	GameObject* testCollectible;
+>>>>>>> 382f783f0428de9454011b80e306fd544ccd18a5
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 25.0f;
 

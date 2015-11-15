@@ -20,6 +20,14 @@ public:
 	virtual void OnEnable();
 	virtual void OnDisable();
 
+	virtual void OnCollisionEnter();
+	virtual void OnCollisionStay();
+	virtual void OnCollisionExit();
+
+	virtual void OnTriggerEnter();
+	virtual void OnTriggerStay();
+	virtual void OnTriggerExit();
+
 	virtual void OnAddToGameObject(GameObject* gameObject);
 
 	GameObject* GetGameObject()const;

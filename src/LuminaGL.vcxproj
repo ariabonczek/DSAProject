@@ -61,7 +61,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;assimpd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -117,6 +117,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Graphics\MeshBuilder.cpp" />
     <ClCompile Include="Graphics\PostProcess.cpp" />
     <ClCompile Include="Graphics\RenderTexture.cpp" />
+    <ClCompile Include="Graphics\TextRenderer.cpp" />
     <ClCompile Include="Graphics\Texture2D.cpp" />
     <ClCompile Include="Graphics\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -124,10 +125,8 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
-    <ClCompile Include="Physics\BoxCollider.cpp" />
     <ClCompile Include="Physics\Collider.cpp" />
     <ClCompile Include="Physics\PhysicsContext.cpp" />
-    <ClCompile Include="Physics\PhysicsManager.cpp" />
     <ClCompile Include="Physics\Rigidbody.cpp" />
     <ClCompile Include="Physics\Shape.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -154,6 +153,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Graphics\MeshBuilder.hpp" />
     <ClInclude Include="Graphics\PostProcess.hpp" />
     <ClInclude Include="Graphics\RenderTexture.hpp" />
+    <ClInclude Include="Graphics\TextRenderer.hpp" />
     <ClInclude Include="Graphics\Texture2D.hpp" />
     <ClInclude Include="Graphics\Transform.hpp" />
     <ClInclude Include="LuminaGL.hpp" />
@@ -162,11 +162,9 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Math\Matrix.hpp" />
     <ClInclude Include="Math\Quaternion.hpp" />
     <ClInclude Include="Math\Vector.hpp" />
-    <ClInclude Include="Physics\BoxCollider.hpp" />
     <ClInclude Include="Physics\Collider.hpp" />
     <ClInclude Include="Physics\ContactContainer.hpp" />
     <ClInclude Include="Physics\PhysicsContext.hpp" />
-    <ClInclude Include="Physics\PhysicsManager.hpp" />
     <ClInclude Include="Physics\Rigidbody.hpp" />
     <ClInclude Include="Physics\Shape.hpp" />
     <ClInclude Include="Scene.hpp" />
