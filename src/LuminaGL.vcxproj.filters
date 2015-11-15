@@ -1,308 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{dc014542-c7f7-4391-893b-2ee72b216f57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{16c9c784-5e43-4dfe-81a8-9d977bd13634}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics">
-      <UniqueIdentifier>{baee2962-1a32-41a7-8756-a7691742b754}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics">
-      <UniqueIdentifier>{b6b568be-bcc7-4b8a-9a4b-9b546fc62334}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{52d6f825-b3a4-401d-9aa1-c8ff7de97c80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{b385958a-9a2f-4f20-874f-5ac8e3dde8e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{1e34761b-bd99-42f0-8826-b566276d2850}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PostProcess">
-      <UniqueIdentifier>{d524be29-3df7-498a-90a5-f0adce1ce3ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Physics">
-      <UniqueIdentifier>{66b162f4-da01-407a-8c86-eebb667bc0d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physics">
-      <UniqueIdentifier>{332a4e11-e0be-4f5e-a796-6944b25f89a6}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Collectible.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Graphics\Camera.cpp" />
+    <ClCompile Include="Graphics\LuminaBehaviour.cpp" />
+    <ClCompile Include="Graphics\Data.cpp" />
+    <ClCompile Include="Graphics\GameObject.cpp" />
+    <ClCompile Include="Graphics\Light.cpp" />
+    <ClCompile Include="Graphics\Material.cpp" />
+    <ClCompile Include="Graphics\Mesh.cpp" />
+    <ClCompile Include="Graphics\MeshBuilder.cpp" />
+    <ClCompile Include="Graphics\PostProcess.cpp" />
+    <ClCompile Include="Graphics\RenderTexture.cpp" />
+    <ClCompile Include="Graphics\TextRenderer.cpp" />
+    <ClCompile Include="Graphics\Texture2D.cpp" />
+    <ClCompile Include="Graphics\Transform.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math\Math.cpp" />
+    <ClCompile Include="Math\Matrix.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Math\Vector.cpp" />
+    <ClCompile Include="Physics\Collider.cpp" />
+    <ClCompile Include="Physics\PhysicsContext.cpp" />
+    <ClCompile Include="Physics\Rigidbody.cpp" />
+    <ClCompile Include="Physics\Shape.cpp" />
+    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Utility\FileSystem.cpp" />
+    <ClCompile Include="Utility\Input.cpp" />
+    <ClCompile Include="Utility\Murmur3\MurmurHash.cpp" />
+    <ClCompile Include="Utility\Timer.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Matrix.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Quaternion.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Math.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Data.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Mesh.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Material.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\FileSystem.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\Timer.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\MeshBuilder.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Camera.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\Input.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\GameObject.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Transform.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\RenderTexture.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Texture2D.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\PostProcess.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Light.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Collectible.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsContext.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Collider.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Shape.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Rigidbody.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\Murmur3\MurmurHash.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\LuminaBehaviour.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="CollectibleBehaviour.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\CollectibleBehaviour.cpp">
-      <Filter>Header Files\Graphics</Filter>
-=======
-    <ClCompile Include="Car.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\TextRenderer.cpp">
-      <Filter>Source Files\Graphics</Filter>
->>>>>>> 382f783f0428de9454011b80e306fd544ccd18a5
-    </ClCompile>
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="Collectible.h" />
+    <ClInclude Include="Config.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Graphics\Camera.hpp" />
+    <ClInclude Include="Graphics\LuminaBehaviour.hpp" />
+    <ClInclude Include="Graphics\Data.hpp" />
+    <ClInclude Include="Graphics\GameObject.hpp" />
+    <ClInclude Include="Graphics\Graphics.hpp" />
+    <ClInclude Include="Graphics\Light.hpp" />
+    <ClInclude Include="Graphics\Material.hpp" />
+    <ClInclude Include="Graphics\Mesh.hpp" />
+    <ClInclude Include="Graphics\MeshBuilder.hpp" />
+    <ClInclude Include="Graphics\PostProcess.hpp" />
+    <ClInclude Include="Graphics\RenderTexture.hpp" />
+    <ClInclude Include="Graphics\TextRenderer.hpp" />
+    <ClInclude Include="Graphics\Texture2D.hpp" />
+    <ClInclude Include="Graphics\Transform.hpp" />
+    <ClInclude Include="LuminaGL.hpp" />
+    <ClInclude Include="Math\LVector.hpp" />
+    <ClInclude Include="Math\Math.hpp" />
+    <ClInclude Include="Math\Matrix.hpp" />
+    <ClInclude Include="Math\Quaternion.hpp" />
+    <ClInclude Include="Math\Vector.hpp" />
+    <ClInclude Include="Physics\Collider.hpp" />
+    <ClInclude Include="Physics\ContactContainer.hpp" />
+    <ClInclude Include="Physics\PhysicsContext.hpp" />
+    <ClInclude Include="Physics\Rigidbody.hpp" />
+    <ClInclude Include="Physics\Shape.hpp" />
+    <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="TestScene.hpp" />
+    <ClInclude Include="Utility\FileSystem.hpp" />
+    <ClInclude Include="Utility\Input.hpp" />
+    <ClInclude Include="Utility\Murmur3\MurmurHash.h" />
+    <ClInclude Include="Utility\stb_image.h" />
+    <ClInclude Include="Utility\Timer.hpp" />
+    <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Math.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Matrix.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Quaternion.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Data.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Mesh.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Material.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="LuminaGL.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Graphics.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Timer.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\MeshBuilder.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Camera.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Input.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\GameObject.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\LVector.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Transform.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\RenderTexture.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Texture2D.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\FileSystem.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\stb_image.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\PostProcess.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Light.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Collectible.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsContext.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Rigidbody.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Collider.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Shape.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\ContactContainer.hpp">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Murmur3\MurmurHash.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\LuminaBehaviour.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="CollectibleBehaviour.h">
-=======
-    <ClInclude Include="Car.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\TextRenderer.hpp">
->>>>>>> 382f783f0428de9454011b80e306fd544ccd18a5
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\content\Shaders\default.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\default.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\PostProcess\DrawToScreen.frag">
-      <Filter>Shaders\PostProcess</Filter>
-    </None>
-    <None Include="..\content\Shaders\PostProcess\Vertex.vert">
-      <Filter>Shaders\PostProcess</Filter>
-    </None>
-    <None Include="..\content\Shaders\textured.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\textured.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\directionalLight.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\directionalLight.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\pointLight.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\pointLight.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\spotLight.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\spotLight.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\content\Shaders\boundingBox.frag">
-      <Filter>Shaders</Filter>
-    </None>
+    <None Include="..\content\Shaders\boundingBox.frag" />
+    <None Include="..\content\Shaders\default.frag" />
+    <None Include="..\content\Shaders\default.vert" />
+    <None Include="..\content\Shaders\directionalLight.frag" />
+    <None Include="..\content\Shaders\directionalLight.vert" />
+    <None Include="..\content\Shaders\pointLight.frag" />
+    <None Include="..\content\Shaders\pointLight.vert" />
+    <None Include="..\content\Shaders\PostProcess\DrawToScreen.frag" />
+    <None Include="..\content\Shaders\PostProcess\Vertex.vert" />
+    <None Include="..\content\Shaders\spotLight.frag" />
+    <None Include="..\content\Shaders\spotLight.vert" />
+    <None Include="..\content\Shaders\textured.frag" />
+    <None Include="..\content\Shaders\textured.vert" />
   </ItemGroup>
 </Project>
