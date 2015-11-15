@@ -35,12 +35,18 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 	
 	playerCar = new Car("Car", meshes[0], mats[0]);
+
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+	
+
+
 	//Collectible
-	//testCollectible = new Collectible("Gem", meshes[2], mats[0]);
-	//testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
-	//testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+	testCollectible = new Collectible("Gem", meshes[2], mats[0]);
+	testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
+	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+
+
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{

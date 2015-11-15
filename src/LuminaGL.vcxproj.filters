@@ -141,6 +141,12 @@
     <ClCompile Include="Graphics\LuminaBehaviour.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="CollectibleBehaviour.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CollectibleBehaviour.cpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -255,6 +261,9 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\LuminaBehaviour.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectibleBehaviour.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

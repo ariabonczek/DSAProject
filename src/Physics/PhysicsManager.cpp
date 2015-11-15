@@ -33,8 +33,6 @@ void PhysicsManager::Simulate(float timeStep)
 
 					c1->SetColor(Color::Red);
 					c2->SetColor(Color::Red);
-					
-					
 				}
 			}
 		}

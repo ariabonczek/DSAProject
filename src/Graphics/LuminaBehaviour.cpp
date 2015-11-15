@@ -1,5 +1,5 @@
 #include "LuminaBehaviour.hpp"
-
+//
 NS_BEGIN
 
 
@@ -13,7 +13,8 @@ void LuminaBehaviour::Initialize()
 {}
 
 void LuminaBehaviour::Destroy()
-{}
+{
+}
 
 void LuminaBehaviour::Update()
 {}
