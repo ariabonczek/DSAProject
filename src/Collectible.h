@@ -3,24 +3,28 @@
 
 #include "Graphics/Transform.hpp"
 #include "Graphics/GameObject.hpp"
-#include "Physics/BoxCollider.hpp"
+#include "Graphics/LuminaBehaviour.hpp"
 #include "Car.h"
 
 NS_BEGIN
-class Collectible : public GameObject{
-public:
-	Collectible(std::string name, Mesh* mesh, Material* material);
-	Collectible(const Collectible& object);
-	Collectible operator=(const Collectible& object);
-	BoxCollider* GetBoxCollider();
 
-	void Effect(Car* car);
+class Collectible : public LuminaBehaviour
+{
+public:
+	Collectible();
+	Collectible(const Collectible& object);
 	~Collectible();
 
+	Collectible& operator=(const Collectible& object);
+
+	void OnCollisionEnter();
+
+	void Effect(Car* car);
+
 private:
-	BoxCollider* boxCollider;
-	void Update();
 
 };
+
 NS_END
+
 #endif

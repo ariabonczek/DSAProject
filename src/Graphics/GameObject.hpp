@@ -27,7 +27,7 @@ public:
 	/// <summary>
 	/// Updates the object
 	/// </summary>
-	virtual void Update(float dt);
+	void Update(float dt);
 
 	/// <summary>
 	/// Draws the object (if a mesh and material have been set)
@@ -45,7 +45,7 @@ public:
 	void SetMaterial(Material* mat);
 
 	template<class T>
-	T* GetComponent()
+	inline T* GetComponent()
 	{
 		if (components.find(typeid(T).name()) != components.end())
 			return reinterpret_cast<T*>(components[typeid(T).name()]);
@@ -68,13 +68,13 @@ public:
 	}
 	
 	std::string GetName()const;
-	Transform* GetTransform()const;
+	Transform* GetTransform();
 	Mesh* GetMesh()const;
 	Material* GetMaterial()const;
 protected:
 	std::unordered_map<std::string, LuminaBehaviour*> components;
+
 	std::string name;
-	Transform* transform;
 	Mesh* mesh;
 	Material* material;
 };

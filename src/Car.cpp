@@ -1,26 +1,16 @@
 #include "Car.h"
 
 #include "Graphics\Mesh.hpp"
-#include "Physics\PhysicsManager.hpp"
+#include "Physics\Collider.hpp"
+#include "Physics\Rigidbody.hpp"
 
 NS_BEGIN
 
-Car :: Car(std::string name, Mesh* mesh, Material* material)
-	:GameObject(name, mesh, material)
-{ 
-	collider = new BoxCollider(Vector3::Zero, Vector3(1.5f, 0.5f, 1.4f), 0, transform);
-	g_PhysicsManager.AddCollider(collider);
-	mass = 1.0f;
-}
+Car::Car()
+{ }
 
 Car::Car(const Car& object)
-	:GameObject(object)
-{
-	this->name = object.name;
-	this->mesh = object.mesh;
-	this->material = object.material;
-	this->transform = object.transform;
-}
+{}
 
 Car::~Car()
 {
@@ -29,12 +19,14 @@ Car::~Car()
 
 Car& Car::operator=(const Car& object)
 {
-	this->name = object.name;
-	this->mesh = object.mesh;
-	this->material = object.material;
-	this->transform = object.transform;
 
 	return *this;
+}
+
+void Car::OnAddToGameObject(GameObject* object)
+{
+	LuminaBehaviour::OnAddToGameObject(object);
+	p_CachedTransform = object->GetComponent<Transform>();
 }
 
 void Car::SetMass(float m){
@@ -50,22 +42,25 @@ void Car::Update(float dt)
 
 	velocity = velocity + acceleration;
 	velocity = velocity * 0.9f;//mass?
-	
-	if (collider->GetCollisionFlag())
-	{
-		HandleCollision();
-	//	collider->DebugDraw(Matrix::Identity, collider->GetModelMatrix());
-		collider->SetCollisionFlag(false);
-	}
 
 	if (velocity.Length() > MAX_SPEED)
 	{
 		velocity.SetMagnitude(MAX_SPEED);
 	}
 
-	transform->Translate(velocity);
+	p_CachedTransform->Translate(velocity);
 
 	acceleration = Vector3(0,0,0);
+}
+
+void Car::Accelerate(Vector3 acceleration)
+{
+	ApplyForce(acceleration);
+}
+
+void Car::Turn(Quaternion rotation)
+{
+	p_CachedTransform->Rotate(rotation);
 }
 
 void Car::CalcForce()
@@ -85,7 +80,7 @@ void Car::ApplyForce(Vector3 force)
 
 void Car::Rotate(Quaternion rotation)
 {
-	this->transform->Rotate(rotation);
+	p_CachedTransform->Rotate(rotation);
 }
 
 void Car::HandleCollision()

@@ -4,29 +4,35 @@
 
 #include "Graphics/Transform.hpp"
 #include "Graphics/GameObject.hpp"
-#include "Physics/BoxCollider.hpp"
+#include "Graphics/LuminaBehaviour.hpp"
 
 NS_BEGIN
-class Car : public GameObject
+class Car : public LuminaBehaviour
 {
-	
 public:
-	Car(std::string name, Mesh* mesh, Material* material);
+	Car();
 	Car(const Car& car);
 	~Car();
 	
 	Car& operator=(const Car& car);
 	
+	void OnAddToGameObject(GameObject* object);
 	void Update(float dt);
+
+	void Accelerate(Vector3 acceleration);
+	void Turn(Quaternion rotation);
+
 	void CalcForce();
 	void ApplyForce(Vector3 force);
 	void Rotate(Quaternion rotation);
 	void HandleCollision();
+
+
 	void SetMass(float m);
 	float GetMass();
 
 private:
-	BoxCollider* collider;
+	Transform* p_CachedTransform;
 	Vector3 velocity;
 	Vector3 acceleration;
 

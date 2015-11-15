@@ -2,8 +2,7 @@
 
 NS_BEGIN
 
-Transform::Transform(GameObject* obj) :
-object(obj),
+Transform::Transform() :
 localPosition(0.0f, 0.0f, 0.0f),
 localRotation(0.0f, 0.0f, 0.0f, 1.0f),
 localScale(1.0f, 1.0f, 1.0f),
@@ -45,7 +44,6 @@ Transform& Transform::operator=(const Transform& transform)
 	worldCache = transform.worldCache;
 	return *this;
 }
-
 
 void Transform::Translate(Vector3 v)
 {

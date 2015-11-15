@@ -24,6 +24,24 @@ void LuminaBehaviour::OnEnable()
 void LuminaBehaviour::OnDisable()
 {}
 
+void LuminaBehaviour::OnCollisionEnter()
+{}
+
+void LuminaBehaviour::OnCollisionStay()
+{}
+
+void LuminaBehaviour::OnCollisionExit()
+{}
+
+void LuminaBehaviour::OnTriggerEnter()
+{}
+
+void LuminaBehaviour::OnTriggerStay()
+{}
+
+void LuminaBehaviour::OnTriggerExit()
+{}
+
 void LuminaBehaviour::OnAddToGameObject(GameObject* gameObject)
 {
 	if (p_GameObject)

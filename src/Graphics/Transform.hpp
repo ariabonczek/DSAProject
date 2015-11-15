@@ -2,17 +2,19 @@
 #define TRANSFORM_HPP
 
 #include "../Config.hpp"
+#include "LuminaBehaviour.hpp"
 
 NS_BEGIN
+
 class GameObject;
 
 /// <summary>
 /// Encapsulates object position, rotation, and scale information
 /// </summary>
-class Transform
+class Transform : public LuminaBehaviour
 {
 public:
-	Transform(GameObject* obj);
+	Transform();
 	Transform(const Transform& transform);
 	~Transform();
 
@@ -52,7 +54,6 @@ public:
 	std::vector<Transform*> GetChildren();
 
 private:
-	GameObject* object;
 	Transform* parent;
 	std::vector<Transform*> children;
 

@@ -10,7 +10,7 @@ name(name),
 mesh(mesh),
 material(material)
 {
-	transform = new Transform(this);
+	AddComponent<Transform>(new Transform());
 }
 
 GameObject::GameObject(const GameObject& gameObject)
@@ -18,7 +18,6 @@ GameObject::GameObject(const GameObject& gameObject)
 	name = gameObject.name;
 	mesh = gameObject.mesh;
 	material = gameObject.material;
-	transform = gameObject.transform;
 }
 
 GameObject::~GameObject()
@@ -29,7 +28,6 @@ GameObject& GameObject::operator=(const GameObject& gameObject)
 	name = gameObject.name;
 	mesh = gameObject.mesh;
 	material = gameObject.material;
-	transform = gameObject.transform;
 	return *this;
 }
 
@@ -42,7 +40,7 @@ void GameObject::Draw()
 {
 	material->Bind();
 
-	material->SetFloat4x4("model", transform->GetWorldMatrix());
+	material->SetFloat4x4("model", GetComponent<Transform>()->GetWorldMatrix());
 	
 	mesh->Draw();
 }
@@ -62,9 +60,9 @@ std::string GameObject::GetName()const
 	return name;
 }
 
-Transform* GameObject::GetTransform()const
+Transform* GameObject::GetTransform()
 {
-	return transform;
+	return GetComponent<Transform>();
 }
 
 Mesh* GameObject::GetMesh()const

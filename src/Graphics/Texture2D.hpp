@@ -14,8 +14,11 @@ struct Image
 class Texture2D
 {
 public:
+	Texture2D();
 	Texture2D(Image& image);
 	~Texture2D();
+
+	void Generate(GLint filter, GLint address);
 
 	void Bind(uint slot = 0);
 

@@ -30,8 +30,8 @@ private:
 	bool polygonFlag;
 	bool freeCamera;
 
-	Car* playerCar;
-	Collectible* testCollectible;
+	GameObject* playerCar;
+	GameObject* testCollectible;
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 25.0f;
 

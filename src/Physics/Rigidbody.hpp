@@ -1,13 +1,14 @@
 #pragma once
 
 #include "../Config.hpp"
+#include "../Graphics/LuminaBehaviour.hpp"
 
 NS_BEGIN
 
 /// <summary>
 ///
 /// </summary>
-class Rigidbody
+class Rigidbody : LuminaBehaviour
 {
 public:
 
