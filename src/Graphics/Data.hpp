@@ -5,6 +5,10 @@
 
 NS_BEGIN
 
+Vector2 WorldToScreen(Vector2 v);
+Vector2 ScreenToWorld(Vector2 v);
+
+
 /// <summary>
 /// Represents color information
 /// </summary>

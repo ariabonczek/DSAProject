@@ -1,6 +1,7 @@
 #include "TestScene.hpp"
 #include "Utility\Timer.hpp"
 #include "Utility\FileSystem.hpp"
+#include "Graphics\TextRenderer.hpp"
 
 TestScene::TestScene()
 {}
@@ -10,6 +11,10 @@ TestScene::~TestScene()
 
 void TestScene::LoadAssets()
 {
+	g_TextRenderer.Initialize();
+	g_TextRenderer.SetFont("Fonts/arial.ttf");
+	g_TextRenderer.SetFontSize(32);
+
 	camera = new Camera();
 
 	camera->Initialize();
@@ -131,6 +136,9 @@ void TestScene::Draw()
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
 	playerCar->Draw();
+
+	g_TextRenderer.RenderText("Hello", 100, 100);
+	
 	//testCollectible->Draw();
 	for (GameObject* o : objects)
 	{

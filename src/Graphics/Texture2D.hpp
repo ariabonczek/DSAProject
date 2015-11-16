@@ -20,6 +20,9 @@ public:
 
 	void Generate(GLint filter, GLint address);
 
+	void RenderToTexture(GLenum format, GLint type, uint width, uint height, const GLvoid* data);
+
+
 	void Bind(uint slot = 0);
 
 private:

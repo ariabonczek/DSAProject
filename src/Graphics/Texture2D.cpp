@@ -4,6 +4,16 @@
 
 NS_BEGIN
 
+Texture2D::Texture2D()
+{
+	glGenTextures(1, &texture);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
 Texture2D::Texture2D(Image& image)
 {
 	glGenTextures(1, &texture);
@@ -27,6 +37,13 @@ void Texture2D::Generate(GLint filter, GLint address)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, address);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, address);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture2D::RenderToTexture(GLenum format, GLint type, uint width, uint height, const GLvoid* data)
+{
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
