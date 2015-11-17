@@ -43,6 +43,7 @@ private:
 	std::vector<PhysicsObject> m_Objects;
 	uint numCollidables;
 
+	std::vector<CoarseContainer> coarse;
 	std::vector<ContactContainer> contacts;
 };
 

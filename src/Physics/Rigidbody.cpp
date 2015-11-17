@@ -8,7 +8,7 @@ NS_BEGIN
 
 Rigidbody::Rigidbody() :
 	m_Mass(1.0f), m_Inertia(Matrix::Identity),
-	m_LinearDamping(0.9f), m_AngularDamping(0.9f),
+	m_LinearDamping(0.95f), m_AngularDamping(0.95f),
 	m_ForceAccumulator(Vector3::Zero), m_TorqueAccumulator(Vector3::Zero)
 {}
 

@@ -48,7 +48,7 @@ void TestScene::LoadAssets()
 	playerCar->AddComponent<Collider>(c);
 	playerCar->AddComponent<Rigidbody>(new Rigidbody());
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+	playerCar->GetTransform()->SetLocalPosition(0.0f, 1.0f, 0.0f);
 	objects.push_back(playerCar);
 	
 	//Collectible
@@ -71,7 +71,7 @@ void TestScene::LoadAssets()
 		car->AddComponent<Collider>(c);
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-		car->GetTransform()->SetLocalPosition(5.0f, 2.0f, 0.0f);
+		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
 		objects.push_back(car);
 	}
 
@@ -81,21 +81,58 @@ void TestScene::LoadAssets()
 	GameObject* wall4;
 	GameObject* floor;
 
-	wall1 = new GameObject("Wall1", meshes[1], mats[0]);
-	wall1->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
-	wall1->GetTransform()->SetLocalPosition(0.0f, 0.0f, -ARENA_SIZE);
+	{
+		wall1 = new GameObject("Wall1", meshes[1], mats[0]);
+		wall1->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
+		wall1->GetTransform()->SetLocalPosition(0.0f, 0.0f, -ARENA_SIZE);
 
-	wall2 = new GameObject("Wall2", meshes[1], mats[0]);
-	wall2->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
-	wall2->GetTransform()->SetLocalPosition(0.0f, 0.0f, ARENA_SIZE);
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(ARENA_SIZE, 2.0f, 1.0f);
+		c->AddBox(box);
 
-	wall3 = new GameObject("Wall3", meshes[1], mats[0]);
-	wall3->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
-	wall3->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, 0.0f);
+		wall1->AddComponent<Collider>(c);
+	}
 
-	wall4 = new GameObject("Wall4", meshes[1], mats[0]);
-	wall4->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
-	wall4->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, 0.0f);
+	{
+		wall2 = new GameObject("Wall2", meshes[1], mats[0]);
+		wall2->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
+		wall2->GetTransform()->SetLocalPosition(0.0f, 0.0f, ARENA_SIZE);
+
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(ARENA_SIZE, 2.0f, 1.0f);
+		c->AddBox(box);
+
+		wall2->AddComponent<Collider>(c);
+	}
+
+	{
+		wall3 = new GameObject("Wall3", meshes[1], mats[0]);
+		wall3->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
+		wall3->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, 0.0f);
+
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE);
+		c->AddBox(box);
+
+		wall3->AddComponent<Collider>(c);
+	}
+
+	{
+		wall4 = new GameObject("Wall4", meshes[1], mats[0]);
+		wall4->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
+		wall4->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, 0.0f);
+
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE);
+		c->AddBox(box);
+
+		wall4->AddComponent<Collider>(c);
+	}
+
 
 	floor = new GameObject("Floor", meshes[1], mats[0]);
 	floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);

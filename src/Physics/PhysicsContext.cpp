@@ -36,6 +36,7 @@ void PhysicsContext::Simulate(float timeStep)
 		return;
 
 	// Setup Frame
+	coarse.clear();
 	contacts.clear();
 
 	// Apply external forces
@@ -59,10 +60,10 @@ void PhysicsContext::Simulate(float timeStep)
 
 			if (SAT(c1, c2))
 			{
-				ContactContainer cc;
+				CoarseContainer cc;
 				cc.collider1 = c1;
 				cc.collider2 = c2;
-				contacts.push_back(cc);
+				coarse.push_back(cc);
 				g_TextRenderer.SetFontColor(Color::Red);
 				g_TextRenderer.RenderText("Collision Occurred", 100, 100);
 			}
@@ -70,19 +71,16 @@ void PhysicsContext::Simulate(float timeStep)
 	}
 	
 	// Fine Collision Detection
-
-		// TODO: All of this
-
-	// Collision Resolution
-
-	// BAD
-	for (uint i = 0; i < contacts.size(); ++i)
+	for (uint i = 0; i < coarse.size(); ++i)
 	{
-		Rigidbody* r1 = contacts[i].collider1->GetRigidbody();
-		Rigidbody* r2 = contacts[i].collider2->GetRigidbody();
+
 	}
 
-		// TODO: All of this
+	// Collision Resolution
+	for (uint i = 0; i < contacts.size(); ++i)
+	{
+
+	}
 
 	// Integrate results
 	for (uint i = 0; i < numCollidables; ++i)

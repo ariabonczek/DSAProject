@@ -6,10 +6,15 @@ NS_BEGIN
 
 class Collider;
 
-struct ContactContainer
+struct CoarseContainer
 {
 	Collider* collider1;
 	Collider* collider2;
+};
+
+struct ContactContainer
+{
+
 };
 
 NS_END
