@@ -13,32 +13,37 @@ enum class ShapeType
 /// <summary>
 ///
 /// </summary>
-class Shape
+struct Shape
 {
-public:
-
-private:
 	Quaternion m_Orientation;
 	Vector3 m_Offset;
 	ShapeType m_Type;
+
+	Shape(ShapeType type):
+		m_Orientation(Quaternion::Identity),
+		m_Offset(Vector3::Zero),
+		m_Type(type)
+	{}
 };
 
 /// <summary>
 ///
 /// </summary>
-class Box : public Shape
+struct Box : public Shape
 {
-private:
 	Vector3 m_HalfWidth;
+
+	Box(Vector3 halfWidth = Vector3::Zero) : Shape(ShapeType::Box), m_HalfWidth(halfWidth){}
 };
 
 /// <summary>
 ///
 /// </summary>
-class Sphere : public Shape
+struct Sphere : public Shape
 {
-private:
 	float m_Radius;
+
+	Sphere(float radius) : Shape(ShapeType::Sphere), m_Radius(radius) {}
 };
 
 NS_END

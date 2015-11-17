@@ -14,7 +14,7 @@ void TestScene::LoadAssets()
 	g_TextRenderer.Initialize();
 	g_TextRenderer.SetFont("Fonts/arial.ttf");
 	g_TextRenderer.SetFontSize(32);
-
+	
 	camera = new Camera();
 
 	camera->Initialize();
@@ -37,10 +37,18 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 	
+	Collider* c = new Collider();
+	Box b;
+	b.m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	c->AddBox(b);
+
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
 	playerCar->AddComponent<Car>(new Car());
+	playerCar->AddComponent<Collider>(new Collider(ShapeType::Box));
+	playerCar->AddComponent<Rigidbody>(new Rigidbody());
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
+	objects.push_back(playerCar);
 	
 	//Collectible
 	testCollectible = new GameObject("Gem", meshes[2], mats[0]);
@@ -53,6 +61,8 @@ void TestScene::LoadAssets()
 	{
 		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
+		car->AddComponent<Collider>(new Collider(ShapeType::Box));
+		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 2.0f, 0.0f);
 		objects.push_back(car);
@@ -100,10 +110,19 @@ void TestScene::LoadAssets()
 
 	// Setting the camera position
 	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+
+	for (uint i = 0; i < objects.size(); ++i)
+	{
+		objects[i]->Initialize();
+	}
+
+	m_PhysicsContext.Initialize(objects);
 }
 
 void TestScene::Update(float dt)
 {
+	m_PhysicsContext.Simulate(dt);
+
 	MovePlayer(dt);
 
 	if (freeCamera)
@@ -135,24 +154,17 @@ void TestScene::Draw()
 	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
-	playerCar->Draw();
 
 	g_TextRenderer.RenderText("Hello", 100, 100);
 	
-	//testCollectible->Draw();
 	for (GameObject* o : objects)
 	{
 		o->Draw();
 	}
-
-	//g_PhysicsManager.RenderAll(camera->GetView(), camera->GetProjection());
 }
 
 void TestScene::UnloadAssets()
 {
-	// Deleting memory
-	delete playerCar;
-	//delete testCollectible;
 	for (Mesh* m : meshes)
 		delete m;
 	for (Texture2D* t : textures)

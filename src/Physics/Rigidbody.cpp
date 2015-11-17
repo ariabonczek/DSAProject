@@ -1,6 +1,29 @@
 #include "Rigidbody.hpp"
 
+#include "../Graphics/GameObject.hpp"
+#include "../Graphics/Transform.hpp"
+#include "Collider.hpp"
+
 NS_BEGIN
+
+Rigidbody::Rigidbody() :
+	m_Mass(1.0f), m_Inertia(Matrix::Identity),
+	m_LinearDamping(0.9f), m_AngularDamping(0.9f),
+	m_ForceAccumulator(Vector3::Zero), m_TorqueAccumulator(Vector3::Zero)
+{}
+
+Rigidbody::~Rigidbody()
+{}
+
+void Rigidbody::OnAddToGameObject(GameObject* obj)
+{
+	LuminaBehaviour::OnAddToGameObject(obj);
+	Collider* c = p_GameObject->GetComponent<Collider>();
+	if (c)
+	{
+		c->SetRigidbody(this);
+	}
+}
 
 void Rigidbody::AddForce(Vector3 force)
 {
@@ -25,6 +48,29 @@ void Rigidbody::AddRelativeTorque(Vector3 torque)
 Vector3 Rigidbody::CalculateClosestPointOnBounds()
 {
 	throw "Not implemented";
+}
+
+void Rigidbody::Integrate()
+{
+	Transform* t = GetGameObject()->GetTransform();
+	
+	m_Position = t->GetLocalPosition();
+	m_Orientation = t->GetLocalRotation();
+
+	Vector3 linearAcceleration = m_ForceAccumulator * (1.0f / m_Mass);
+	Vector3 angularAcceleration = m_TorqueAccumulator * Matrix::Inverse(m_Inertia);
+
+	m_LinearVelocity = (m_LinearVelocity + linearAcceleration) * m_LinearDamping;
+	m_AngularVelocity = (m_AngularVelocity + angularAcceleration) * m_AngularDamping;
+
+	m_Position += m_LinearVelocity;
+	m_Orientation = (Quaternion::CreateFromEulerAngles(m_AngularVelocity) * m_Orientation).Normalized();
+
+	GetGameObject()->GetTransform()->SetLocalPosition(m_Position);
+	GetGameObject()->GetTransform()->SetLocalRotation(m_Orientation);
+
+	m_TorqueAccumulator = Vector3::Zero;
+	m_ForceAccumulator = Vector3::Zero;
 }
 
 Matrix Rigidbody::GetInertia()const

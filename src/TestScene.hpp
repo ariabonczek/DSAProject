@@ -25,6 +25,8 @@ private:
 
 	void CopyLightData();
 
+	PhysicsContext m_PhysicsContext;
+
 	Camera* camera;
 
 	bool polygonFlag;

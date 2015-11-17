@@ -6,4 +6,9 @@
 #include "Graphics\Graphics.hpp"
 #include "Utility\Input.hpp"
 
+#include "Physics\PhysicsContext.hpp"
+#include "Physics\Rigidbody.hpp"
+#include "Physics\Shape.hpp"
+#include "Physics\Collider.hpp"
+
 #endif

@@ -5,12 +5,18 @@
 
 NS_BEGIN
 
+class Collider;
+
 /// <summary>
 ///
 /// </summary>
-class Rigidbody : LuminaBehaviour
+class Rigidbody : public LuminaBehaviour
 {
 public:
+	Rigidbody();
+	~Rigidbody();
+
+	void OnAddToGameObject(GameObject* obj);
 
 	void AddForce(Vector3 force);
 	void AddTorque(Vector3 torque);
@@ -19,6 +25,8 @@ public:
 	void AddRelativeTorque(Vector3 torque);
 
 	Vector3 CalculateClosestPointOnBounds();
+
+	void Integrate();
 
 	///////////////////
 	// Gets and Sets //

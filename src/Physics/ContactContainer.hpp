@@ -10,8 +10,6 @@ struct ContactContainer
 {
 	Collider* collider1;
 	Collider* collider2;
-
-	ContactContainer(Collider* c1, Collider* c2);
 };
 
 NS_END

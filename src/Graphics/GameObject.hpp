@@ -24,6 +24,8 @@ public:
 
 	GameObject& operator=(const GameObject& gameObject);
 
+	void Initialize();
+
 	/// <summary>
 	/// Updates the object
 	/// </summary>

@@ -55,7 +55,7 @@ Quaternion Quaternion::CreateFromRotationMatrix(Matrix m)
 		q.y = (m.m31 - m.m13) * sqrt;
 		q.z = (m.m12 - m.m21) * sqrt;
 
-		return q.Normalized();
+		return q;
 	}
 	else if ((m.m11 >= m.m22) && (m.m11 <= m.m33))
 	{
@@ -67,7 +67,7 @@ Quaternion Quaternion::CreateFromRotationMatrix(Matrix m)
 		q.z = (m.m13 + m.m31) * half;
 		q.w = (m.m23 - m.m32) * half;
 
-		return q.Normalized();
+		return q;
 	}
 	else if (m.m22 > m.m33)
 	{
@@ -79,7 +79,7 @@ Quaternion Quaternion::CreateFromRotationMatrix(Matrix m)
 		q.z = (m.m32 + m.m23) * half;
 		q.w = (m.m31 - m.m13) * half;
 
-		return q.Normalized();
+		return q;
 	}
 	else
 	{
@@ -91,7 +91,7 @@ Quaternion Quaternion::CreateFromRotationMatrix(Matrix m)
 		q.z = 0.5f * sqrt;
 		q.w = (m.m12 - m.m21) * half;
 
-		return q.Normalized();
+		return q;
 	}
 }
 
@@ -112,7 +112,7 @@ Quaternion Quaternion::CreateFromEulerAngles(Vector3 v)
 		(cosy * sinx * cosz) + (siny * cosx * sinz),
 		(siny * cosx * cosz) - (cosy * sinx * sinz),
 		(cosy * cosx * sinz) - (siny * sinx * cosz),
-		(cosy * cosx * cosz) + (siny * sinx * sinz)).Normalized();
+		(cosy * cosx * cosz) + (siny * sinx * sinz));
 }
 
 Quaternion Quaternion::Lerp(Quaternion q1, Quaternion q2, float t)

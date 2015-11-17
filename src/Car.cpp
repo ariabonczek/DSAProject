@@ -23,6 +23,12 @@ Car& Car::operator=(const Car& object)
 	return *this;
 }
 
+void Car::Initialize()
+{
+	p_Rigidbody = p_GameObject->GetComponent<Rigidbody>();
+	p_Collider = p_GameObject->GetComponent<Collider>();
+}
+
 void Car::OnAddToGameObject(GameObject* object)
 {
 	LuminaBehaviour::OnAddToGameObject(object);
@@ -37,25 +43,11 @@ float Car::GetMass(){
 }
 
 void Car::Update(float dt)
-{
-	CalcForce();
-
-	velocity = velocity + acceleration;
-	velocity = velocity * 0.9f;//mass?
-
-	if (velocity.Length() > MAX_SPEED)
-	{
-		velocity.SetMagnitude(MAX_SPEED);
-	}
-
-	p_CachedTransform->Translate(velocity);
-
-	acceleration = Vector3(0,0,0);
-}
+{}
 
 void Car::Accelerate(Vector3 acceleration)
 {
-	ApplyForce(acceleration);
+	p_Rigidbody->AddForce(acceleration);
 }
 
 void Car::Turn(Quaternion rotation)

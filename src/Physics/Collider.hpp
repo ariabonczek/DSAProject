@@ -6,9 +6,9 @@
 
 NS_BEGIN
 
-class Shape;
-class Box;
-class Sphere;
+struct Shape;
+struct Box;
+struct Sphere;
 class Rigidbody;
 
 /// <summary>
@@ -17,17 +17,20 @@ class Rigidbody;
 class Collider : public LuminaBehaviour
 {
 public:
-
+	Collider(Shape shape, Rigidbody* rigidbody = nullptr);
 	Collider(Rigidbody* rigidbody = nullptr);
 
 	void Initialize();
 
-	void AddBox(Box* box);
-	void AddSphere(Sphere* sphere);
+	void AddBox(Box box);
+	void AddSphere(Sphere sphere);
 
+	Shape GetShape(uint i);
+	Rigidbody* GetRigidbody()const;
+	void SetRigidbody(Rigidbody* rb);
 	uint32 GetNumShapes()const;
 private:
-	std::vector<Shape*> shapes;
+	std::vector<Shape> shapes;
 	Rigidbody* p_Rigidbody;
 };
 

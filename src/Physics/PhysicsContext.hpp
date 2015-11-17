@@ -2,11 +2,20 @@
 
 #include "../Config.hpp"
 #include "ContactContainer.hpp"
+#include <vector>
 
 NS_BEGIN
 
 class Collider;
 class Rigidbody;
+
+class GameObject;
+
+struct PhysicsObject
+{
+	Collider* collider;
+	Rigidbody* rigidbody;
+};
 
 /// <summary>
 ///
@@ -14,6 +23,11 @@ class Rigidbody;
 class PhysicsContext
 {
 public:
+
+	/// <summary>
+	/// NOTE: MUST BE CALLED AFTER THE OBJECTS HAVE BEEN INITIALIZED
+	/// </summary>
+	void Initialize(std::vector<GameObject*> allObjects);
 
 	/// <summary>
 	/// 
@@ -26,7 +40,8 @@ public:
 	void AddCollidable(Collider* collider);
 
 private:
-	std::vector<Collider*> m_Collidables;
+	std::vector<PhysicsObject> m_Objects;
+	uint numCollidables;
 
 	std::vector<ContactContainer> contacts;
 };

@@ -31,6 +31,14 @@ GameObject& GameObject::operator=(const GameObject& gameObject)
 	return *this;
 }
 
+void GameObject::Initialize()
+{
+	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		it->second->Initialize();
+	}
+}
+
 void GameObject::Update(float dt)
 {
 	

@@ -5,6 +5,8 @@
 #include "Graphics/Transform.hpp"
 #include "Graphics/GameObject.hpp"
 #include "Graphics/LuminaBehaviour.hpp"
+#include "Physics\Collider.hpp"
+#include "Physics\Rigidbody.hpp"
 
 NS_BEGIN
 class Car : public LuminaBehaviour
@@ -15,7 +17,8 @@ public:
 	~Car();
 	
 	Car& operator=(const Car& car);
-	
+
+	void Initialize();
 	void OnAddToGameObject(GameObject* object);
 	void Update(float dt);
 
@@ -33,6 +36,9 @@ public:
 
 private:
 	Transform* p_CachedTransform;
+	Collider* p_Collider;
+	Rigidbody* p_Rigidbody;
+
 	Vector3 velocity;
 	Vector3 acceleration;
 
