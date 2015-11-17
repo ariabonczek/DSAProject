@@ -7,8 +7,8 @@ NS_BEGIN
 
 class Collider;
 class Rigidbody;
-struct Shape;
-struct Box;
+class Shape;
+class Box;
 class Transform;
 
 bool SAT(Collider* c1, Collider* c2);

@@ -13,8 +13,9 @@ enum class ShapeType
 /// <summary>
 ///
 /// </summary>
-struct Shape
+class Shape
 {
+public:
 	Quaternion m_Orientation;
 	Vector3 m_Offset;
 	ShapeType m_Type;
@@ -29,8 +30,9 @@ struct Shape
 /// <summary>
 ///
 /// </summary>
-struct Box : public Shape
+class Box : public Shape
 {
+public:
 	Vector3 m_HalfWidth;
 
 	Box(Vector3 halfWidth = Vector3::Zero) : Shape(ShapeType::Box), m_HalfWidth(halfWidth){}
@@ -39,8 +41,9 @@ struct Box : public Shape
 /// <summary>
 ///
 /// </summary>
-struct Sphere : public Shape
+class Sphere : public Shape
 {
+public:
 	float m_Radius;
 
 	Sphere(float radius) : Shape(ShapeType::Sphere), m_Radius(radius) {}

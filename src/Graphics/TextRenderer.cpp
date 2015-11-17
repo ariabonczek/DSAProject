@@ -108,4 +108,9 @@ void TextRenderer::SetFontSize(uint size)
 	fontsize = size;
 }
 
+void TextRenderer::SetFontColor(Color color)
+{
+	fontColor = color;
+}
+
 NS_END

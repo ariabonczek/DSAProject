@@ -17,14 +17,14 @@ bool SAT(Collider* c1, Collider* c2)
 
 	for (uint i = 0; i < c1->GetNumShapes(); ++i)
 	{
-		Shape* s1 = &c1->GetShape(i);
+		Shape* s1 = c1->GetShape(i);
 		for (uint j = 0; j < c2->GetNumShapes(); ++j)
 		{
-			Shape* s2 = &c2->GetShape(j);
+			Shape* s2 = c2->GetShape(j);
 			if (s1->m_Type == ShapeType::Box && 
 				s2->m_Type == ShapeType::Box)
 			{
-				if (!SATBox_Box((Box*)s1, (Box*)s2, t1, t2))
+				if (!SATBox_Box(c1->GetBox(i), c2->GetBox(i), t1, t2))
 					return false;
 			}
 		}

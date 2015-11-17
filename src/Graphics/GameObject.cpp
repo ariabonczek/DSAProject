@@ -21,7 +21,12 @@ GameObject::GameObject(const GameObject& gameObject)
 }
 
 GameObject::~GameObject()
-{}
+{
+	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		delete it->second;
+	}
+}
 
 GameObject& GameObject::operator=(const GameObject& gameObject)
 {

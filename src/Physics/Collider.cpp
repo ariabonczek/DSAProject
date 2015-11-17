@@ -1,11 +1,10 @@
 #include "Collider.hpp"
 
-#include "Shape.hpp"
 #include "../Graphics/GameObject.hpp"
 
 NS_BEGIN
 
-Collider::Collider(Shape shape, Rigidbody* rigidbody)
+Collider::Collider(Shape* shape, Rigidbody* rigidbody)
 {
 	p_Rigidbody = rigidbody;
 	shapes.push_back(shape);
@@ -22,22 +21,27 @@ void Collider::Initialize()
 	p_Rigidbody = p_GameObject->GetComponent<Rigidbody>();
 }
 
-void Collider::AddBox(Box box)
+void Collider::AddBox(Box* box)
 {
 	shapes.push_back(box);
 }
 
-void Collider::AddSphere(Sphere sphere)
+void Collider::AddSphere(Sphere* sphere)
 {
 	shapes.push_back(sphere);
 }
 
-Shape Collider::GetShape(uint i)
+Shape* Collider::GetShape(uint i)
 {
 	if (i < shapes.size())
 	{
 		return shapes[i];
 	}
+}
+
+Box* Collider::GetBox(uint i)
+{
+	return (Box*)shapes[i];
 }
 
 Rigidbody* Collider::GetRigidbody()const

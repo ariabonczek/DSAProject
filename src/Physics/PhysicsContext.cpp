@@ -5,6 +5,7 @@
 #include "PhysicsUtility.hpp"
 
 #include "../Graphics/GameObject.hpp"
+#include "../Graphics/TextRenderer.hpp"
 
 NS_BEGIN
 
@@ -52,7 +53,7 @@ void PhysicsContext::Simulate(float timeStep)
 		Collider* c1 = m_Objects[i].collider;
 		for (uint j = i + 1; j < numCollidables; ++j)
 		{
-			Collider* c2 = m_Objects[i].collider;
+			Collider* c2 = m_Objects[j].collider;
 			
 			// TODO: Octree optimization
 
@@ -62,7 +63,8 @@ void PhysicsContext::Simulate(float timeStep)
 				cc.collider1 = c1;
 				cc.collider2 = c2;
 				contacts.push_back(cc);
-				std::cout << "Collision occurred!" << std::endl;
+				g_TextRenderer.SetFontColor(Color::Red);
+				g_TextRenderer.RenderText("Collision Occurred", 100, 100);
 			}
 		}
 	}
@@ -72,6 +74,13 @@ void PhysicsContext::Simulate(float timeStep)
 		// TODO: All of this
 
 	// Collision Resolution
+
+	// BAD
+	for (uint i = 0; i < contacts.size(); ++i)
+	{
+		Rigidbody* r1 = contacts[i].collider1->GetRigidbody();
+		Rigidbody* r2 = contacts[i].collider2->GetRigidbody();
+	}
 
 		// TODO: All of this
 

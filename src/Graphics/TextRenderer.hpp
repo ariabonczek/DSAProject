@@ -24,6 +24,7 @@ public:
 
 	void SetFont(const char* filepath);
 	void SetFontSize(uint size);
+	void SetFontColor(Color color);
 private:
 	FT_Library m_Library;
 	FT_Face m_Face;

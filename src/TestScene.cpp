@@ -36,15 +36,16 @@ void TestScene::LoadAssets()
 	mats.push_back(new Material());
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
-	
-	Collider* c = new Collider();
-	Box b;
-	b.m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	c->AddBox(b);
 
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
 	playerCar->AddComponent<Car>(new Car());
-	playerCar->AddComponent<Collider>(new Collider(ShapeType::Box));
+
+	Collider* c = new Collider();
+	Box* box = new Box();
+	box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	c->AddBox(box);
+
+	playerCar->AddComponent<Collider>(c);
 	playerCar->AddComponent<Rigidbody>(new Rigidbody());
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 2.0f, 0.0f);
@@ -61,7 +62,13 @@ void TestScene::LoadAssets()
 	{
 		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
-		car->AddComponent<Collider>(new Collider(ShapeType::Box));
+
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+		c->AddBox(box);
+
+		car->AddComponent<Collider>(c);
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 2.0f, 0.0f);
@@ -154,8 +161,6 @@ void TestScene::Draw()
 	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
-
-	g_TextRenderer.RenderText("Hello", 100, 100);
 	
 	for (GameObject* o : objects)
 	{
