@@ -17,7 +17,7 @@ public:
 
 	Collectible& operator=(const Collectible& object);
 
-	void OnCollisionEnter();
+	void OnCollision(Collider*c);
 
 	void Effect(Car* car);
 

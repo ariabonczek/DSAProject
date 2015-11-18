@@ -22,14 +22,14 @@ public:
 	void OnAddToGameObject(GameObject* object);
 	void Update(float dt);
 
+	void OnCollision(Collider* c);
+
 	void Accelerate(Vector3 acceleration);
 	void Turn(Quaternion rotation);
 
 	void CalcForce();
 	void ApplyForce(Vector3 force);
 	void Rotate(Quaternion rotation);
-	void HandleCollision();
-
 
 	void SetMass(float m);
 	float GetMass();

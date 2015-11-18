@@ -5,6 +5,9 @@
 NS_BEGIN
 
 class Collider;
+class Shape;
+class Transform;
+class Rigidbody;
 
 struct CoarseContainer
 {
@@ -14,7 +17,10 @@ struct CoarseContainer
 
 struct ContactContainer
 {
-
+	Vector3 contactPoint;
+	Vector3 contactNormal;
+	float penetrationDepth;
+	Rigidbody* rigidbody[2];
 };
 
 NS_END

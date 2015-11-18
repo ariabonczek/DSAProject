@@ -58,14 +58,18 @@ void PhysicsContext::Simulate(float timeStep)
 			
 			// TODO: Octree optimization
 
+			CoarseContainer cc;
+
+			// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
 			if (SAT(c1, c2))
 			{
-				CoarseContainer cc;
 				cc.collider1 = c1;
 				cc.collider2 = c2;
+				
+				c1->GetGameObject()->OnCollision(c2);
+				c2->GetGameObject()->OnCollision(c1);
+
 				coarse.push_back(cc);
-				g_TextRenderer.SetFontColor(Color::Red);
-				g_TextRenderer.RenderText("Collision Occurred", 100, 100);
 			}
 		}
 	}
@@ -73,13 +77,33 @@ void PhysicsContext::Simulate(float timeStep)
 	// Fine Collision Detection
 	for (uint i = 0; i < coarse.size(); ++i)
 	{
-
+		ContactContainer cc = ContactGeneration(coarse[i].collider1, coarse[i].collider2);
+		contacts.push_back(cc);
 	}
-
+	
 	// Collision Resolution
 	for (uint i = 0; i < contacts.size(); ++i)
 	{
+		Rigidbody* r1 = contacts[i].rigidbody[0];
+		Rigidbody* r2 = contacts[i].rigidbody[1];
 
+		if (r1 && r2)
+		{
+			ResolveCollision(r1, r2);
+			continue;
+		}
+
+		if (r1 && !r2)
+		{
+			ResolveCollision(r1, coarse[i].collider2);
+			continue;
+		}
+
+		if (!r1 && r2)
+		{
+			ResolveCollision(r2, coarse[i].collider1);
+			continue;
+		}
 	}
 
 	// Integrate results

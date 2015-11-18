@@ -11,6 +11,7 @@ NS_BEGIN
 class Mesh;
 class Material;
 class LuminaBehaviour;
+class Collider;
 
 /// <summary>
 /// A basic game object
@@ -30,6 +31,8 @@ public:
 	/// Updates the object
 	/// </summary>
 	void Update(float dt);
+
+	void OnCollision(Collider* c);
 
 	/// <summary>
 	/// Draws the object (if a mesh and material have been set)

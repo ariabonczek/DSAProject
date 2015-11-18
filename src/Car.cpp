@@ -35,6 +35,9 @@ void Car::OnAddToGameObject(GameObject* object)
 	p_CachedTransform = object->GetComponent<Transform>();
 }
 
+void Car::OnCollision(Collider* c)
+{}
+
 void Car::SetMass(float m){
 	mass = m;
 }
@@ -73,11 +76,6 @@ void Car::ApplyForce(Vector3 force)
 void Car::Rotate(Quaternion rotation)
 {
 	p_CachedTransform->Rotate(rotation);
-}
-
-void Car::HandleCollision()
-{
-	velocity = velocity * 0.4f;
 }
 
 NS_END

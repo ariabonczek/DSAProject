@@ -133,10 +133,18 @@ void TestScene::LoadAssets()
 		wall4->AddComponent<Collider>(c);
 	}
 
+	{
+		floor = new GameObject("Floor", meshes[1], mats[0]);
+		floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);
+		floor->GetTransform()->SetLocalPosition(0.0f, -1.0f, 0.0f);
 
-	floor = new GameObject("Floor", meshes[1], mats[0]);
-	floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);
-	floor->GetTransform()->SetLocalPosition(0.0f, -1.0f, 0.0f);
+		//Collider* c = new Collider();
+		//Box* box = new Box();
+		//box->m_HalfWidth = Vector3(ARENA_SIZE, 1.0f, ARENA_SIZE);
+		//c->AddBox(box);
+		//
+		//floor->AddComponent<Collider>(c);
+	}
 
 	objects.push_back(wall1);
 	objects.push_back(wall2);

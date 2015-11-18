@@ -18,8 +18,14 @@ Collectible& Collectible::operator=(const Collectible& c)
 	return *this;
 }
 
-void Collectible::OnCollisionEnter()
-{}
+void Collectible::OnCollision(Collider* c)
+{
+	Car* car;
+	if ((car = c->GetGameObject()->GetComponent<Car>()))
+	{
+		Effect(car);
+	}
+}
 
 void Collectible::Effect(Car* car)
 {

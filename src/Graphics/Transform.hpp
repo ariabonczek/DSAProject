@@ -23,6 +23,8 @@ public:
 	void Translate(Vector3 v);
 	void Rotate(Quaternion q);
 
+	Vector3 InverseTransformPoint(Vector3 p);
+
 	void SetLocalPosition(float x, float y, float z);
 	void SetLocalPosition(Vector3 position);
 

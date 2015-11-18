@@ -46,7 +46,18 @@ void GameObject::Initialize()
 
 void GameObject::Update(float dt)
 {
-	
+	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		it->second->Update();
+	}
+}
+
+void GameObject::OnCollision(Collider* c)
+{
+	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		it->second->OnCollision(c);
+	}
 }
 
 void GameObject::Draw()
