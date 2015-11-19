@@ -130,6 +130,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Physics\PhysicsUtility.cpp" />
     <ClCompile Include="Physics\Rigidbody.cpp" />
     <ClCompile Include="Physics\Shape.cpp" />
+    <ClCompile Include="VectorPlate.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Utility\FileSystem.cpp" />
     <ClCompile Include="Utility\Input.cpp" />
@@ -177,6 +178,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Utility\Murmur3\MurmurHash.h" />
     <ClInclude Include="Utility\stb_image.h" />
     <ClInclude Include="Utility\Timer.hpp" />
+    <ClInclude Include="VectorPlate.h" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
