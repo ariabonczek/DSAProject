@@ -5,7 +5,7 @@
 
 #include "Car.h"
 #include "Collectible.h"
-
+#include "GameObjectManager.h"
 using namespace LuminaGL;
 
 class TestScene : public Scene
@@ -39,7 +39,9 @@ private:
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 25.0f;
 
-	std::vector<GameObject*> objects;
+	//std::vector<GameObject*> objects
+
+	GameObjectManager* manager = GameObjectManager::GetInstance();
 	std::vector<Mesh*> meshes;
 	std::vector<Material*> mats;
 	std::vector<Texture2D*> textures;

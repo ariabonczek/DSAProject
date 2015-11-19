@@ -137,7 +137,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graphics\Car.h" />
+    <ClInclude Include="Car.h" />
     <ClInclude Include="Collectible.h" />
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="Game.hpp" />

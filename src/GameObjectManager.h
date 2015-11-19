@@ -8,14 +8,14 @@
 #include "Collectible.h"
 
 NS_BEGIN
-class GameObjectManager :public LuminaBehaviour
+class GameObjectManager 
 {
 	uint size = 0;
 	static GameObjectManager* instance;
-	std::vector<GameObject* > gameObjectList;
+	std::vector<GameObject*> gameObjectList;
 
-	std::vector<Car*> carList;
-	std::vector<Collectible*> collectibleList;
+	std::vector<GameObject*> carList;
+	std::vector<GameObject*> collectibleList;
 
 public:
 	static GameObjectManager* GetInstance();
@@ -25,22 +25,24 @@ public:
 	int GetSize();
 
 	void AddToList(GameObject* object);
-	void AddCar(Car* object);
-	void AddCollectible(Collectible object);
+	void AddCar(GameObject* object);
+	void AddCollectible(GameObject* object);
 
 	GameObject* GetFromList(int index);
 	GameObject* GetFromList(std::string name);
 
 	int GetIndex(std::string name);
 
-	void Update(void);
+	void Update(float dt);
 	
 	void Draw();
 
 	void SetMesh(int index, Mesh* mesh);
 	void SetMaterial(int index, Material* mat);
-
-
+	
+	float calcDistance(GameObject* a, GameObject* b);
+	
+	std::vector<GameObject*> GetList();
 private:
 	GameObjectManager(void);
 	
@@ -57,3 +59,5 @@ private:
 };
 
 #endif //_MYGAMEOBJECTMANAGER_H_
+
+NS_END

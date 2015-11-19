@@ -49,14 +49,17 @@ void TestScene::LoadAssets()
 	playerCar->AddComponent<Rigidbody>(new Rigidbody());
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 1.0f, 0.0f);
-	objects.push_back(playerCar);
-	
+	//objects.push_back(playerCar);
+	manager->AddToList(playerCar);
+
+
 	//Collectible
 	testCollectible = new GameObject("Gem", meshes[2], mats[0]);
 	testCollectible->AddComponent<Collectible>(new Collectible);
 	testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
 	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
-	objects.push_back(testCollectible);
+	//objects.push_back(testCollectible);
+	manager->AddToList(testCollectible);
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
@@ -72,7 +75,8 @@ void TestScene::LoadAssets()
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
-		objects.push_back(car);
+		//objects.push_back(car);
+		manager->AddCar(car);
 	}
 
 	GameObject* wall1;
@@ -145,12 +149,18 @@ void TestScene::LoadAssets()
 		//
 		//floor->AddComponent<Collider>(c);
 	}
-
+	/*
 	objects.push_back(wall1);
 	objects.push_back(wall2);
 	objects.push_back(wall3);
 	objects.push_back(wall4);
-	objects.push_back(floor);
+	objects.push_back(floor);*/
+
+	manager->AddToList(wall1);
+	manager->AddToList(wall2);
+	manager->AddToList(wall3);
+	manager->AddToList(wall4);
+	manager->AddToList(floor);
 
 	// Making some lights
 	Light* dLight = new Light(LightType::Directional, Color::White, 2.0f);
@@ -162,13 +172,20 @@ void TestScene::LoadAssets()
 
 	// Setting the camera position
 	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-
+	/*
 	for (uint i = 0; i < objects.size(); ++i)
 	{
 		objects[i]->Initialize();
 	}
 
-	m_PhysicsContext.Initialize(objects);
+	m_PhysicsContext.Initialize(objects);*/
+
+	for (uint i = 0; i < manager->GetSize(); i++)
+	{
+		manager->GetFromList(i)->Initialize();
+	}
+
+	m_PhysicsContext.Initialize(manager->GetList());
 }
 
 void TestScene::Update(float dt)
@@ -193,10 +210,14 @@ void TestScene::Update(float dt)
 	}
 
 	playerCar->Update(dt);
+
+	/*
 	for (GameObject* o : objects)
 	{
 		o->Update(dt);
-	}
+	}*/
+
+	manager->Update(dt);
 }
 
 void TestScene::Draw()
@@ -206,11 +227,13 @@ void TestScene::Draw()
 	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
-	
+	/*
 	for (GameObject* o : objects)
 	{
 		o->Draw();
-	}
+	}*/
+
+	manager->Draw();
 }
 
 void TestScene::UnloadAssets()
@@ -221,8 +244,11 @@ void TestScene::UnloadAssets()
 		delete t;
 	for (Material* m : mats)
 		delete m;
+	/*
 	for (GameObject* g : objects)
-		delete g;
+		delete g;*/
+	
+	manager->ReleaseInstance();
 	for (Light* l : lights)
 		delete l;
 }

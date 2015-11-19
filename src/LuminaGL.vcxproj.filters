@@ -260,7 +260,7 @@
     <ClInclude Include="GameObjectManager.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Car.h">
+    <ClInclude Include="Car.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
