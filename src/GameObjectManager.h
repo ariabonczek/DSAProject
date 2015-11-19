@@ -28,6 +28,8 @@ public:
 	void AddCar(GameObject* object);
 	void AddCollectible(GameObject* object);
 
+	void RemoveFromList(std::string name);
+
 	GameObject* GetFromList(int index);
 	GameObject* GetFromList(std::string name);
 
@@ -55,7 +57,6 @@ private:
 	void Release(void);
 
 	void Init(void);
-
 };
 
 #endif //_MYGAMEOBJECTMANAGER_H_

@@ -77,8 +77,6 @@ void GameObjectManager::AddCollectible(GameObject* object)
 {
 	gameObjectList.push_back(object);
 	//collectibleList.push_back(object);
-	
-
 }
 
 GameObject* GameObjectManager::GetFromList(int index)
@@ -140,4 +138,16 @@ std::vector<GameObject*> GameObjectManager::GetList()
 {
 	return gameObjectList;
 }
+
+void GameObjectManager::RemoveFromList(std::string name)
+{
+	for (int i = 0; i < gameObjectList.size(); i++)
+	{
+		if (name == gameObjectList[i]->GetName()) {
+			gameObjectList.erase(gameObjectList.begin()+i);
+			break;
+		}
+	}
+}
+
 NS_END

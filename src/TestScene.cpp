@@ -201,6 +201,8 @@ void TestScene::Update(float dt)
 {
 	m_PhysicsContext.Simulate(dt);
 
+	
+
 	MovePlayer(dt);
 
 	if (freeCamera)

@@ -35,6 +35,8 @@ private:
 
 	float mass;	//weighs rb down
 	float size;  //makes rb bigger
+
+	bool hit;
 };
 
 NS_END

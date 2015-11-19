@@ -29,9 +29,14 @@ public:
 	Rigidbody* GetRigidbody()const;
 	void SetRigidbody(Rigidbody* rb);
 	uint32 GetNumShapes()const;
+	std::vector<Shape*> GetShapeVector();
+	Box* GetS_Shape();
+
+	void RemoveShape(uint i);
 private:
 	std::vector<Shape*> shapes;
 	Rigidbody* p_Rigidbody;
+	Box* s_Shape;
 };
 
 NS_END
