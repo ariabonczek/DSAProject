@@ -48,7 +48,7 @@ void GameObject::Update(float dt)
 {
 	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		it->second->Update();
+		it->second->Update(dt);
 	}
 }
 

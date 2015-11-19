@@ -3,6 +3,8 @@
 #include "Utility\FileSystem.hpp"
 #include "Graphics\TextRenderer.hpp"
 
+#include "Game/CarAI.hpp"
+
 TestScene::TestScene()
 {}
 
@@ -74,6 +76,7 @@ void TestScene::LoadAssets()
 	{
 		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
+		car->AddComponent<CarAI>(new CarAI());
 
 		Collider* c = new Collider();
 		Box* box = new Box();

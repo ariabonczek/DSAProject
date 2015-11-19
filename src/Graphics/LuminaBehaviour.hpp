@@ -16,7 +16,7 @@ public:
 	virtual void Initialize();
 	virtual void Destroy();
 
-	virtual void Update();
+	virtual void Update(float);
 
 	virtual void OnEnable();
 	virtual void OnDisable();
