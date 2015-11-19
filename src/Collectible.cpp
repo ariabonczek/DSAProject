@@ -7,7 +7,7 @@ NS_BEGIN
 Collectible::Collectible(float m, float s){
 	mass = m;
 	size = s;
-	maxSize = 0.4f;
+	maxSize = 0.5f;
 	maxMass = 4.5f;
 }
 
