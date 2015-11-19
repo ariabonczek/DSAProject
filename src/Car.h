@@ -12,6 +12,7 @@ NS_BEGIN
 class Car : public LuminaBehaviour
 {
 public:
+
 	Car();
 	Car(const Car& car);
 	~Car();

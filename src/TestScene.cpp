@@ -51,9 +51,15 @@ void TestScene::LoadAssets()
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 1.0f, 0.0f);
 	objects.push_back(playerCar);
 	
+	Collider* d = new Collider();
+	Box* d_box = new Box();
+	box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	d->AddBox(box);
 	//Collectible
 	testCollectible = new GameObject("Gem", meshes[2], mats[0]);
-	testCollectible->AddComponent<Collectible>(new Collectible);
+	testCollectible->AddComponent<Collectible>(new Collectible(1.005f, 1.002f));
+	
+	testCollectible->AddComponent<Collider>(d);
 	testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
 	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
 	objects.push_back(testCollectible);

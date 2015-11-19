@@ -19,7 +19,6 @@ Car::~Car()
 
 Car& Car::operator=(const Car& object)
 {
-
 	return *this;
 }
 
