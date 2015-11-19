@@ -44,6 +44,10 @@ float Car::GetMass(){
 	return mass;
 }
 
+Vector3 Car::GetVelocity() {
+	return velocity;
+}
+
 void Car::Update(float dt)
 {}
 

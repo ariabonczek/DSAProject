@@ -106,6 +106,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Collectible.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Game\CarAI.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\LuminaBehaviour.cpp" />
     <ClCompile Include="Graphics\Data.cpp" />
@@ -142,6 +143,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="Game\CarAI.hpp" />
     <ClInclude Include="Graphics\Camera.hpp" />
     <ClInclude Include="Graphics\LuminaBehaviour.hpp" />
     <ClInclude Include="Graphics\Data.hpp" />

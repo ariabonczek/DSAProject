@@ -35,6 +35,8 @@ public:
 	void SetMass(float m);
 	float GetMass();
 
+	Vector3 GetVelocity();
+
 private:
 	Transform* p_CachedTransform;
 	Collider* p_Collider;

@@ -16,7 +16,7 @@ void LuminaBehaviour::Destroy()
 {
 }
 
-void LuminaBehaviour::Update()
+void LuminaBehaviour::Update(float dt)
 {}
 
 void LuminaBehaviour::OnEnable()
