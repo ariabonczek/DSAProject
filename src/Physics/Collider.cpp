@@ -47,6 +47,7 @@ Box* Collider::GetBox(uint i)
 
 void Collider::RemoveShape(uint i) {
 	shapes.erase(shapes.begin() + i);
+	shapes.shrink_to_fit();
 }
 
 Rigidbody* Collider::GetRigidbody()const

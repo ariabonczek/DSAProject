@@ -3,6 +3,7 @@
 #include "Utility\FileSystem.hpp"
 #include "Graphics\TextRenderer.hpp"
 
+#include <string>
 #include "Game/CarAI.hpp"
 
 TestScene::TestScene()
@@ -15,7 +16,8 @@ void TestScene::LoadAssets()
 {
 	g_TextRenderer.Initialize();
 	g_TextRenderer.SetFont("Fonts/arial.ttf");
-	g_TextRenderer.SetFontSize(32);
+	g_TextRenderer.SetFontSize(30);
+	g_TextRenderer.SetFontColor(Color::Black);
 	
 	camera = new Camera();
 
@@ -53,24 +55,24 @@ void TestScene::LoadAssets()
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 1.0f, 0.0f);
 
 	//objects.push_back(playerCar);
-	
-	Collider* d = new Collider();
-	Box* d_box = new Box();
-	box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	d->AddBox(box);
-
-	//objects.push_back(playerCar);
 	manager->AddToList(playerCar);
 
+	//MakeCollectibles();
+
+	Collider* d = new Collider();
+	Box* d_box = new Box();
+	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	d->AddBox(d_box);
+
 	//Collectible
-	testCollectible = new GameObject("Gem", meshes[2], mats[0]);
-	testCollectible->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
-	
-	testCollectible->AddComponent<Collider>(d);
-	testCollectible->GetTransform()->SetLocalScale(Vector3(0.4f));
-	testCollectible->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
+	gem1->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem1->AddComponent<Collider>(d);
+	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(testCollectible);
+	manager->AddToList(gem1);
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
@@ -203,9 +205,8 @@ void TestScene::LoadAssets()
 void TestScene::Update(float dt)
 {
 	m_PhysicsContext.Simulate(dt);
-
+	DrawHUD();
 	
-
 	MovePlayer(dt);
 
 	if (freeCamera)
@@ -232,6 +233,16 @@ void TestScene::Update(float dt)
 	}*/
 
 	manager->Update(dt);
+}
+
+void TestScene::DrawHUD() {
+	g_TextRenderer.RenderText("Crystals Collected: ", 150, 50);
+	//g_TextRenderer.RenderText(" - Enemy Team", 950, 50);
+	
+	std::string s = std::to_string(playerCar->GetCrystals());
+	
+	//render how many crystals
+	g_TextRenderer.RenderText(s.c_str(), 450, 50);
 }
 
 void TestScene::Draw()
@@ -265,6 +276,80 @@ void TestScene::UnloadAssets()
 	manager->ReleaseInstance();
 	for (Light* l : lights)
 		delete l;
+}
+
+void TestScene::MakeCollectibles() {
+	///TODO - Optimize this
+	Collider* d = new Collider();
+	Box* d_box = new Box();
+	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	d->AddBox(d_box);
+
+	//Collectible
+	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
+	gem1->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem1->AddComponent<Collider>(d);
+	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
+	//objects.push_back(testCollectible);
+	manager->AddToList(gem1);
+
+	Collider* a = new Collider();
+	Box* a_box = new Box();
+	a_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	a->AddBox(a_box);
+
+	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
+	gem2->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem2->AddComponent<Collider>(a);
+	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem2->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+	//objects.push_back(testCollectible);
+	manager->AddToList(gem2);
+
+	Collider* b = new Collider();
+	Box* b_box = new Box();
+	b_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	b->AddBox(b_box);
+
+	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
+	gem3->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem3->AddComponent<Collider>(b);
+	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem3->GetTransform()->SetLocalPosition(20.0f, 2.0f, 30.0f);
+	//objects.push_back(testCollectible);
+	manager->AddToList(gem3);
+
+	Collider* c = new Collider();
+	Box* c_box = new Box();
+	c_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	c->AddBox(c_box);
+
+	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
+	gem4->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem4->AddComponent<Collider>(c);
+	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem4->GetTransform()->SetLocalPosition(-35.0f, 2.0f, -10.0f);
+	//objects.push_back(testCollectible);
+	manager->AddToList(gem4);
+	
+	Collider* e = new Collider();
+	Box* e_box = new Box();
+	e_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	e->AddBox(e_box);
+
+	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
+	gem5->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem5->AddComponent<Collider>(e);
+	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
+	//objects.push_back(testCollectible);
+	manager->AddToList(gem5);
 }
 
 void TestScene::MoveCamera(float dt)

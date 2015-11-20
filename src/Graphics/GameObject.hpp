@@ -44,6 +44,9 @@ public:
 	/// </summary>
 	void SetMesh(Mesh* mesh);
 
+	void IncrementCrystals();
+	int GetCrystals();
+
 	/// <summary>
 	/// Sets the material of the object
 	/// </summary>
@@ -82,6 +85,7 @@ protected:
 	std::string name;
 	Mesh* mesh;
 	Material* material;
+	int crystals;
 };
 
 NS_END

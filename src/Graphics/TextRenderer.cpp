@@ -31,7 +31,7 @@ void TextRenderer::Initialize()
 
 	m_Texture->Generate(GL_LINEAR, GL_CLAMP_TO_EDGE);
 	fontsize = 16;
-	fontColor = Color::White;
+	fontColor = Color::Red;
 }
 
 void TextRenderer::RenderText(const char* text, uint x, uint y)

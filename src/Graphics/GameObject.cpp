@@ -18,6 +18,8 @@ GameObject::GameObject(const GameObject& gameObject)
 	name = gameObject.name;
 	mesh = gameObject.mesh;
 	material = gameObject.material;
+	crystals = 0;
+	
 }
 
 GameObject::~GameObject()
@@ -97,6 +99,15 @@ Mesh* GameObject::GetMesh()const
 Material* GameObject::GetMaterial()const
 {
 	return material;
+}
+
+//for cars 
+void GameObject::IncrementCrystals() {
+	crystals++;
+}
+
+int GameObject::GetCrystals() {
+	return crystals;
 }
 
 NS_END

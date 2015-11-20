@@ -17,7 +17,9 @@ public:
 	void LoadAssets();
 	void Update(float dt);
 	void Draw();
+	void MakeCollectibles();
 	void UnloadAssets();
+	void DrawHUD();
 private:
 	void MoveCamera(float dt);
 	void MovePlayer(float dt);
@@ -34,10 +36,14 @@ private:
 
 	LuminaBehaviour* testBehaviour;
 	GameObject* playerCar;
-	GameObject* testCollectible;
+	GameObject* gem1;
+	GameObject* gem2;
+	GameObject* gem3;
+	GameObject* gem4;
+	GameObject* gem5;
 
 	const uint NUM_CARS = 1;
-	const float ARENA_SIZE = 25.0f;
+	const float ARENA_SIZE = 50.0f;
 
 	//std::vector<GameObject*> objects
 

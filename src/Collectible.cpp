@@ -24,7 +24,7 @@ void Collectible::Destroy() {
 	
 	for (uint i = 0; i < d.size(); i++) {
 		if (p_Collider->GetS_Shape() == d[i]) {
-			p_Collider->RemoveShape(i);
+			//p_Collider->RemoveShape(i);
 		}
 	}
 }
@@ -49,12 +49,15 @@ Collectible& Collectible::operator=(const Collectible& c)
 void Collectible::OnCollision(Collider* c) {
 	rb_Collector = c->GetRigidbody();
 	go_Collector = c->GetGameObject();
-	OnEnable();
+
 	
+	
+	OnEnable();
 }
 
 void Collectible::OnEnable() {
 	if (hit == false) {
+		go_Collector->IncrementCrystals();
 		//do same for maxSize when that's been figured out
 		if (rb_Collector->GetMass() > maxMass) {
 			rb_Collector->SetMass(maxMass);

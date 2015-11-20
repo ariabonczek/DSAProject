@@ -145,6 +145,7 @@ void GameObjectManager::RemoveFromList(std::string name)
 	{
 		if (name == gameObjectList[i]->GetName()) {
 			gameObjectList.erase(gameObjectList.begin()+i);
+			gameObjectList.shrink_to_fit();
 			break;
 		}
 	}

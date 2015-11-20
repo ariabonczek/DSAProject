@@ -35,6 +35,7 @@ public:
 	void SetMass(float m);
 	float GetMass();
 
+	
 	Vector3 GetVelocity();
 
 private:
@@ -47,7 +48,6 @@ private:
 
 	const float MAX_SPEED = 5.0f;
 	const float MAX_FORCE = 10.0f;
-
 	float mass;
 
 };

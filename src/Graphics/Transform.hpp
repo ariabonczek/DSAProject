@@ -75,6 +75,7 @@ private:
 	Vector3 right;
 
 	Matrix worldCache;
+	
 };
 
 NS_END
