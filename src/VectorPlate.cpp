@@ -53,10 +53,7 @@ void VectorPlate::onCollision(Collider* c)
 		}
 
 		obj->GetComponent<Car>()->ApplyForce(direction * magitude);
-
 	}
-
-
 }
 
 void VectorPlate::setDirection(Vector3 direction)

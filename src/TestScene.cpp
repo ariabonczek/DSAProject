@@ -203,6 +203,7 @@ void TestScene::LoadAssets()
 
 	m_PhysicsContext.Initialize(manager->GetList());
 
+	/*
 	Collider* e = new Collider();
 	Box* e_box = new Box();
 	box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
@@ -210,13 +211,13 @@ void TestScene::LoadAssets()
 
 	//VectorPlate
 	vectorPlate = new GameObject("VectorPlate", meshes[3], mats[0]);
-	vectorPlate->AddComponent<VectorPlate>(new VectorPlate(Vector3(1.0f, 0.0f, 0.0f), 2.0f));
+	vectorPlate->AddComponent<VectorPlate>(new VectorPlate(Vector3(1.0f, 0.0f, 0.0f), 5.0f));
 
 	vectorPlate->AddComponent<Collider>(e);
 	vectorPlate->GetTransform()->SetLocalScale(Vector3(.50f));
 	vectorPlate->GetTransform()->SetLocalPosition(-5.0f, 1.0f, 5.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(vectorPlate);
+	manager->AddToList(vectorPlate);*/
 
 }
 
