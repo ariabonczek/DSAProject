@@ -56,7 +56,7 @@ GameObjectManager::~GameObjectManager(){ Release(); };
 
 int GameObjectManager::GetSize()
 {
-	return size;
+	return gameObjectList.size();
 }
 
 void GameObjectManager::AddToList(GameObject* object)

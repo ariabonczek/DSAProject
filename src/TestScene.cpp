@@ -26,7 +26,9 @@ void TestScene::LoadAssets()
 	// Making some meshes
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.fbx")));
 	meshes.push_back(new Mesh(MeshBuilder::CreateCube(1.0f, Color(0.2f, 0.2f, 0.2f, 1.0f))));
-	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem.fbx")));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem3.fbx")));
+
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/vectorplate.fbx")));
 
 	// Making some textures
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
@@ -57,7 +59,7 @@ void TestScene::LoadAssets()
 	//objects.push_back(playerCar);
 	manager->AddToList(playerCar);
 
-	//MakeCollectibles();
+	MakeCollectibles();
 
 	Collider* d = new Collider();
 	Box* d_box = new Box();
@@ -200,6 +202,22 @@ void TestScene::LoadAssets()
 	}
 
 	m_PhysicsContext.Initialize(manager->GetList());
+
+	Collider* e = new Collider();
+	Box* e_box = new Box();
+	box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	e->AddBox(box);
+
+	//VectorPlate
+	vectorPlate = new GameObject("VectorPlate", meshes[3], mats[0]);
+	vectorPlate->AddComponent<VectorPlate>(new VectorPlate(Vector3(1.0f, 0.0f, 0.0f), 2.0f));
+
+	vectorPlate->AddComponent<Collider>(e);
+	vectorPlate->GetTransform()->SetLocalScale(Vector3(.50f));
+	vectorPlate->GetTransform()->SetLocalPosition(-5.0f, 1.0f, 5.0f);
+	//objects.push_back(testCollectible);
+	manager->AddToList(vectorPlate);
+
 }
 
 void TestScene::Update(float dt)
@@ -236,13 +254,13 @@ void TestScene::Update(float dt)
 }
 
 void TestScene::DrawHUD() {
-	g_TextRenderer.RenderText("Crystals Collected: ", 150, 50);
+	g_TextRenderer.RenderText("Crystals Collected: ", 30, 30);
 	//g_TextRenderer.RenderText(" - Enemy Team", 950, 50);
 	
 	std::string s = std::to_string(playerCar->GetCrystals());
 	
 	//render how many crystals
-	g_TextRenderer.RenderText(s.c_str(), 450, 50);
+	g_TextRenderer.RenderText(s.c_str(), 300, 30);
 }
 
 void TestScene::Draw()

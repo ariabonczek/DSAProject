@@ -7,12 +7,13 @@
 #include "Graphics/LuminaBehaviour.hpp"
 #include "Physics\Collider.hpp"
 #include "Physics\Rigidbody.hpp"
+#include "GameObjectManager.h"
 
 NS_BEGIN
 class VectorPlate : public LuminaBehaviour
 {
 public:
-	VectorPlate();
+	VectorPlate(Vector3 direction, float magnitude);
 	VectorPlate(const VectorPlate& car);
 	~VectorPlate();
 
@@ -24,7 +25,9 @@ public:
 	void onCollision(Collider* c);
 
 	void setDirection(Vector3 direction);
+	void setMagnitude(float value);
 	Vector3 getDirection();
+	float getMagnitude();
 
 private:
 	Transform* p_CachedTransform;
@@ -32,7 +35,8 @@ private:
 
 
 	Vector3 direction;
-
+	float magitude;
+	GameObjectManager *objManager;
 
 
 };

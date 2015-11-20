@@ -6,6 +6,8 @@
 #include "Car.h"
 #include "Collectible.h"
 #include "GameObjectManager.h"
+#include "VectorPlate.h"
+
 using namespace LuminaGL;
 
 class TestScene : public Scene
@@ -41,6 +43,8 @@ private:
 	GameObject* gem3;
 	GameObject* gem4;
 	GameObject* gem5;
+
+	GameObject* vectorPlate;
 
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 50.0f;
