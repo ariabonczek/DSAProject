@@ -76,9 +76,5 @@ void Collectible::OnEnable() {
 		}
 		Destroy();
 	}
-	else {
-		std::cout << "Mass: " << mass << std::endl;
-		std::cout << "Size: " << size << std::endl;
-	}
 }
 NS_END

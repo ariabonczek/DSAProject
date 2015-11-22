@@ -11,8 +11,8 @@ class Rigidbody;
 class Shape;
 class Box;
 class Transform;
-class ContactContainer;
-class CoarseContainer;
+struct ContactContainer;
+struct CoarseContainer;
 
 struct Edge
 {

@@ -188,6 +188,7 @@ void TestScene::LoadAssets()
 
 	// Setting the camera position
 	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+	camera->SetLens(0.25f * 3.1415f, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1f, 200.0f);
 	/*
 	for (uint i = 0; i < objects.size(); ++i)
 	{

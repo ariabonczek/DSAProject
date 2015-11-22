@@ -193,14 +193,14 @@ bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc)
 
 	float minDepth = b->m_HalfWidth.x - abs(v.x);
 	if (minDepth < 0) return 0.0f;
-	normal = t->GetRight() * ((v.x < 0) ? -1 : 1);
+	normal = t->GetRight() * ((v.x < 0.0f) ? -1.0f : 1.0f);
 
 	float depth = b->m_HalfWidth.y - abs(v.y);
 	if (depth < 0) return 0;
 	else if (depth < minDepth)
 	{
 		minDepth = depth;
-		normal = t->GetUp() * ((v.y < 0) ? -1 : 1);
+		normal = t->GetUp() * ((v.y < 0.0f) ? -1.0f : 1.0f);
 	}
 	
 	depth = b->m_HalfWidth.z - abs(v.z);
@@ -208,7 +208,7 @@ bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc)
 	else if (depth < minDepth)
 	{
 		minDepth = depth;
-		normal = t->GetRight() * ((v.z < 0) ? -1 : 1);
+		normal = t->GetRight() * ((v.z < 0.0f) ? -1.0f : 1.0f);
 	}
 
 	cc.contactNormal = normal;
