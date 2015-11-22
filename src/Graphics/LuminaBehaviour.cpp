@@ -28,6 +28,9 @@ void LuminaBehaviour::OnDisable()
 void LuminaBehaviour::OnCollision(Collider* c)
 {}
 
+void LuminaBehaviour::OnTrigger(Collider* c)
+{}
+
 void LuminaBehaviour::OnAddToGameObject(GameObject* gameObject)
 {
 	if (p_GameObject)

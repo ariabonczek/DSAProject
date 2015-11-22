@@ -24,6 +24,9 @@ public:
 	void AddBox(Box* box);
 	void AddSphere(Sphere* sphere);
 
+	void SetTrigger(bool value);
+
+	bool GetIsTrigger()const;
 	Shape* GetShape(uint i);
 	Box* GetBox(uint i);
 	Rigidbody* GetRigidbody()const;
@@ -37,6 +40,7 @@ private:
 	std::vector<Shape*> shapes;
 	Rigidbody* p_Rigidbody;
 	Box* s_Shape;
+	bool isTrigger;
 };
 
 NS_END

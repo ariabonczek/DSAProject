@@ -63,11 +63,19 @@ void PhysicsContext::Simulate(float timeStep)
 			// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
 			if (SAT(c1, c2))
 			{
-				cc.collider1 = c1;
-				cc.collider2 = c2;
-				
+				if (c1->GetIsTrigger() || c2->GetIsTrigger())
+				{
+					c1->GetGameObject()->OnTrigger(c2);
+					c2->GetGameObject()->OnTrigger(c1);
+					continue;
+				}
+
+
 				c1->GetGameObject()->OnCollision(c2);
-				c2->GetGameObject()->OnCollision(c1);
+				c2->GetGameObject()->OnCollision(c1);				
+
+				cc.collider1 = c1;
+				cc.collider2 = c2;			
 
 				coarse.push_back(cc);
 			}

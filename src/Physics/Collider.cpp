@@ -4,7 +4,8 @@
 
 NS_BEGIN
 
-Collider::Collider(Shape* shape, Rigidbody* rigidbody)
+Collider::Collider(Shape* shape, Rigidbody* rigidbody):
+	isTrigger(false)
 {
 	s_Shape = (Box*)shape;
 	p_Rigidbody = rigidbody;
@@ -30,6 +31,16 @@ void Collider::AddBox(Box* box)
 void Collider::AddSphere(Sphere* sphere)
 {
 	shapes.push_back(sphere);
+}
+
+void Collider::SetTrigger(bool value)
+{
+	isTrigger = value;
+}
+
+bool Collider::GetIsTrigger()const
+{
+	return isTrigger;
 }
 
 Shape* Collider::GetShape(uint i)
