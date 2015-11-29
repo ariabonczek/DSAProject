@@ -12,21 +12,45 @@ NS_BEGIN
 
 bool SAT(Collider* c1, Collider* c2)
 {
-	bool ret = true;
 	Transform* t1 = c1->GetGameObject()->GetTransform();
 	Transform* t2 = c2->GetGameObject()->GetTransform();
 
 	for (uint i = 0; i < c1->GetNumShapes(); ++i)
 	{
-		Shape* s1 = c1->GetShape(i);
+		Shape* s1 = c1->GetShape<Shape>(i);
 		for (uint j = 0; j < c2->GetNumShapes(); ++j)
 		{
-			Shape* s2 = c2->GetShape(j);
+			Shape* s2 = c2->GetShape<Shape>(j);
+
+			//
+			// Box-Box
+			//
 			if (s1->m_Type == ShapeType::Box && 
 				s2->m_Type == ShapeType::Box)
 			{
 				if (!SATBox_Box(c1->GetBox(i), c2->GetBox(i), t1, t2))
 					return false;
+				continue;
+			}
+
+			//
+			// Box-Sphere
+			//
+			if ((s1->m_Type == ShapeType::Box && s2->m_Type == ShapeType::Sphere))
+			{
+				if (!SATBox_Sphere(c1->GetBox(i), c2->GetSphere(i), t1, t2))
+					return false;
+				continue;
+			}
+
+			//
+			// Sphere-Box
+			//
+			if ((s1->m_Type == ShapeType::Sphere && s2->m_Type == ShapeType::Box))
+			{
+				if (!SATBox_Sphere(c2->GetBox(i), c1->GetSphere(i), t1, t2))
+					return false;
+				continue;
 			}
 		}
 	}
@@ -63,6 +87,19 @@ bool SATBox_Box(Box* a, Box* b, Transform* t1, Transform* t2)
 	return val;
 }
 
+bool SATBox_Sphere(Box* b, Sphere* s, Transform* t1, Transform* t2)
+{
+	Vector3 relCenter = t1->InverseTransformPoint(t2->GetLocalPosition() + s->m_Offset);
+
+	float width_radiusX = b->m_HalfWidth.x + s->m_Radius;
+	float width_radiusY = b->m_HalfWidth.y + s->m_Radius;
+	float width_radiusZ = b->m_HalfWidth.z + s->m_Radius;
+
+	return abs(relCenter.x) < width_radiusX &&
+		abs(relCenter.y) < width_radiusY &&
+		abs(relCenter.z) < width_radiusZ;
+}
+
 bool CheckAxis(Vector3 L, Vector3 T, Box* a, Box* b,
 	Vector3 ax, Vector3 ay, Vector3 az, Vector3 bx, Vector3 by, Vector3 bz)
 {
@@ -81,13 +118,36 @@ bool CheckAxis(Vector3 L, Vector3 T, Box* a, Box* b,
 }
 
 //---------------------------------------------------------------------------------------------------------
+// Contact Generation
+//---------------------------------------------------------------------------------------------------------
 
 ContactContainer ContactGeneration(Collider* c1, Collider* c2)
 {
-	if (c1->GetShape(0)->m_Type == ShapeType::Box && c2->GetShape(0)->m_Type == ShapeType::Box)
+	Shape* s1 = c1->GetShape<Shape>(0);
+	Shape* s2 = c2->GetShape<Shape>(0);
+
+	if (s1->m_Type == ShapeType::Box && s2->m_Type == ShapeType::Box)
 	{
 		ContactContainer cc;
 		cc = BoxBoxContact(c1->GetBox(0), c2->GetBox(0), c1->GetGameObject()->GetTransform(), c2->GetGameObject()->GetTransform());
+		cc.rigidbody[0] = c1->GetRigidbody();
+		cc.rigidbody[1] = c2->GetRigidbody();
+		return cc;
+	}
+
+	if (s1->m_Type == ShapeType::Box && s2->m_Type == ShapeType::Sphere)
+	{
+		ContactContainer cc;
+		cc = BoxSphereContact(c1->GetBox(0), c2->GetSphere(0), c1->GetGameObject()->GetTransform(), c2->GetGameObject()->GetTransform());
+		cc.rigidbody[0] = c1->GetRigidbody();
+		cc.rigidbody[1] = c2->GetRigidbody();
+		return cc;
+	}
+
+	if (s1->m_Type == ShapeType::Sphere && s2->m_Type == ShapeType::Box)
+	{
+		ContactContainer cc;
+		cc = BoxSphereContact(c2->GetBox(0), c1->GetSphere(0), c1->GetGameObject()->GetTransform(), c2->GetGameObject()->GetTransform());
 		cc.rigidbody[0] = c1->GetRigidbody();
 		cc.rigidbody[1] = c2->GetRigidbody();
 		return cc;
@@ -125,62 +185,62 @@ ContactContainer BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2)
 
 	// TODO: Add in edge-edge
 
-	//Vector3 v2 = t2->GetLocalPosition();
-	//
-	//Vector3 vertices2[8] = {
-	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
-	//
-	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
-	//
-	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
-	//
-	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z)
-	//};
-	//
-	//Edge edges1[12] = {
-	//	// Top
-	//	Edge(vertices1[0], vertices1[1]), Edge(vertices1[1], vertices1[5]),
-	//	Edge(vertices1[5], vertices1[4]), Edge(vertices1[4], vertices1[0]),
-	//
-	//	// Middle
-	//	Edge(vertices1[0], vertices1[2]), Edge(vertices1[1], vertices1[3]),
-	//	Edge(vertices1[5], vertices1[7]), Edge(vertices1[4], vertices1[6]),
-	//
-	//	// Bottom
-	//	Edge(vertices1[2], vertices1[3]), Edge(vertices1[3], vertices1[7]),
-	//	Edge(vertices1[7], vertices1[6]), Edge(vertices1[6], vertices1[2])
-	//};
-	//
-	//Edge edges2[12] = {
-	//	// Top
-	//	Edge(vertices2[0], vertices2[1]), Edge(vertices2[1], vertices2[5]),
-	//	Edge(vertices2[5], vertices2[4]), Edge(vertices2[4], vertices2[0]),
-	//
-	//	// Middle
-	//	Edge(vertices2[0], vertices2[2]), Edge(vertices2[1], vertices2[3]),
-	//	Edge(vertices2[5], vertices2[7]), Edge(vertices2[4], vertices2[6]),
-	//
-	//	// Bottom
-	//	Edge(vertices2[2], vertices2[3]), Edge(vertices2[3], vertices2[7]),
-	//	Edge(vertices2[7], vertices2[6]), Edge(vertices2[6], vertices2[2])
-	//};
-	//
-	//for (uint i = 0; i < 12; ++i)
-	//{
-	//	for (uint j = 0; j < 12; ++j)
-	//	{
-	//		ContactContainer temp;
-	//		if (EdgeEdgeContact(edges1[i], edges2[j], temp))
-	//		{
-	//			if (temp.penetrationDepth > cc.penetrationDepth)
-	//				cc = temp;
-	//		}
-	//	}
-	//}
+	Vector3 v2 = t2->GetLocalPosition();
+	
+	Vector3 vertices2[8] = {
+		Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+		Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
+	
+		Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+		Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
+	
+		Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+		Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
+	
+		Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+		Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z)
+	};
+	
+	Edge edges1[12] = {
+		// Top
+		Edge(vertices1[0], vertices1[1]), Edge(vertices1[1], vertices1[5]),
+		Edge(vertices1[5], vertices1[4]), Edge(vertices1[4], vertices1[0]),
+	
+		// Middle
+		Edge(vertices1[0], vertices1[2]), Edge(vertices1[1], vertices1[3]),
+		Edge(vertices1[5], vertices1[7]), Edge(vertices1[4], vertices1[6]),
+	
+		// Bottom
+		Edge(vertices1[2], vertices1[3]), Edge(vertices1[3], vertices1[7]),
+		Edge(vertices1[7], vertices1[6]), Edge(vertices1[6], vertices1[2])
+	};
+	
+	Edge edges2[12] = {
+		// Top
+		Edge(vertices2[0], vertices2[1]), Edge(vertices2[1], vertices2[5]),
+		Edge(vertices2[5], vertices2[4]), Edge(vertices2[4], vertices2[0]),
+	
+		// Middle
+		Edge(vertices2[0], vertices2[2]), Edge(vertices2[1], vertices2[3]),
+		Edge(vertices2[5], vertices2[7]), Edge(vertices2[4], vertices2[6]),
+	
+		// Bottom
+		Edge(vertices2[2], vertices2[3]), Edge(vertices2[3], vertices2[7]),
+		Edge(vertices2[7], vertices2[6]), Edge(vertices2[6], vertices2[2])
+	};
+	
+	for (uint i = 0; i < 12; ++i)
+	{
+		for (uint j = 0; j < 12; ++j)
+		{
+			ContactContainer temp;
+			if (EdgeEdgeContact(edges1[i], edges2[j], temp))
+			{
+				if (temp.penetrationDepth > cc.penetrationDepth)
+					cc = temp;
+			}
+		}
+	}
 
 	return cc;
 }
@@ -212,7 +272,7 @@ bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc)
 	}
 
 	cc.contactNormal = normal;
-	cc.contactPoint = v;
+	cc.contactPoint = t->TransformPoint(v);
 	cc.penetrationDepth = minDepth;
 	
 	return 1;
@@ -225,6 +285,52 @@ bool EdgeEdgeContact(Edge e1, Edge e2, ContactContainer& cc)
 	float penetration = EdgeEdgeClosestPoints(e1.a, e1.b, e2.a, e2.b, p1, p2);
 	return true;
 }
+
+ContactContainer BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t2)
+{
+	ContactContainer cc;
+
+	Vector3 closestPoint;
+	Vector3 sphereCenter = t2->GetLocalPosition() + s->m_Offset;
+	Vector3 relCenter = t1->InverseTransformPoint(sphereCenter);
+
+	float distance;
+
+	distance = relCenter.x;
+	if (distance > b->m_HalfWidth.x)
+		distance = b->m_HalfWidth.x;
+	if (distance < -b->m_HalfWidth.x)
+		distance = -b->m_HalfWidth.x;
+	closestPoint.x = distance;
+
+	distance = relCenter.y;
+	if (distance > b->m_HalfWidth.y)
+		distance = b->m_HalfWidth.y;
+	if (distance < -b->m_HalfWidth.y)
+		distance = -b->m_HalfWidth.y;
+	closestPoint.y = distance;
+
+	distance = relCenter.z;
+	if (distance > b->m_HalfWidth.z)
+		distance = b->m_HalfWidth.z;
+	if (distance < -b->m_HalfWidth.z)
+		distance = -b->m_HalfWidth.z;
+	closestPoint.z = distance;
+
+	distance = (closestPoint - relCenter).Length();
+	if (distance > s->m_Radius)
+		return cc;
+
+	cc.contactPoint = t1->TransformPoint(closestPoint);
+	cc.contactNormal = (sphereCenter - cc.contactPoint).Normalized();
+	cc.penetrationDepth = s->m_Radius - distance;
+
+	return cc;
+}
+
+//------------------------------------------------------------------------------
+// Closest Points
+//------------------------------------------------------------------------------
 
 float EdgeEdgeClosestPoints(Vector3 a1, Vector3 a2, Vector3 b1, Vector3 b2, Vector3& p1, Vector3& p2)
 {
@@ -277,6 +383,8 @@ float EdgeEdgeClosestPoints(Vector3 a1, Vector3 a2, Vector3 b1, Vector3 b2, Vect
 	return Vector3::Dot(p1 - p2, p1 - p2);
 }
 
+//------------------------------------------------------------------------------------------------------------
+// Collision Resolution
 //------------------------------------------------------------------------------------------------------------
 
 float CalculateSeparatingVelocity(Rigidbody* r1, Rigidbody* r2)

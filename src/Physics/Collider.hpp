@@ -27,10 +27,20 @@ public:
 	void SetTrigger(bool value);
 
 	bool GetIsTrigger()const;
-	Shape* GetShape(uint i);
+
+	template<class T>
+	T* GetShape(uint i)
+	{
+		return (T*)shapes[i];
+	}
+
 	Box* GetBox(uint i);
+
+	Sphere* GetSphere(uint i);
+
 	Rigidbody* GetRigidbody()const;
 	void SetRigidbody(Rigidbody* rb);
+
 	uint32 GetNumShapes()const;
 	std::vector<Shape*> GetShapeVector();
 	Box* GetS_Shape();

@@ -57,9 +57,14 @@ void Transform::Rotate(Quaternion rotation)
 	UpdateWorldMatrix();
 }
 
+Vector3 Transform::TransformPoint(Vector3 p)
+{
+	return p * Matrix::CreateTranslation(localPosition);
+}
+
 Vector3 Transform::InverseTransformPoint(Vector3 p)
 {
-	return p * Matrix::Inverse(Matrix::CreateTranslation(localPosition) * Matrix::CreateFromQuaternion(localRotation));
+	return p * Matrix::Inverse(Matrix::CreateTranslation(localPosition));
 }
 
 void Transform::SetLocalPosition(float x, float y, float z){ localPosition = Vector3(x, y, z); UpdateWorldMatrix();  } 

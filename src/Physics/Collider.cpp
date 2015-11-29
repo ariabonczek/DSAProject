@@ -43,18 +43,16 @@ bool Collider::GetIsTrigger()const
 	return isTrigger;
 }
 
-Shape* Collider::GetShape(uint i)
-{
-	if (i < shapes.size())
-	{
-		return shapes[i];
-	}
-}
-
 Box* Collider::GetBox(uint i)
 {
 	return (Box*)shapes[i];
 }
+
+Sphere* Collider::GetSphere(uint i)
+{
+	return (Sphere*)shapes[i];
+}
+
 
 void Collider::RemoveShape(uint i) {
 	shapes.erase(shapes.begin() + i);

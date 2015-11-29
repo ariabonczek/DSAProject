@@ -19,7 +19,7 @@ public:
 	void Initialize();
 	void Destroy();
 
-	void OnCollision(Collider*c);
+	void OnTrigger(Collider*c);
 	void OnEnable();
 	void OnAddToGameObject(GameObject* object);
 private:

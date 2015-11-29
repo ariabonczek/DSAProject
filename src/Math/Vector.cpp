@@ -260,4 +260,22 @@ Vector4 operator*(const Vector4& l, const Matrix& r)
 		l.x * r.m14 + l.y * r.m24 + l.z * r.m34 + l.w * r.m44);
 }
 
+std::ostream& operator<<(std::ostream& os, const Vector2& v)
+{
+	os << "X: " << v.x << " Y: " << v.y;
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vector3& v)
+{
+	os << "X: " << v.x << " Y: " << v.y << " Z: " << v.z;
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vector4& v)
+{
+	os << "X: " << v.x << " Y: " << v.y << " Z: " << v.z << " W: " << v.w;
+	return os;
+}
+
 NS_END

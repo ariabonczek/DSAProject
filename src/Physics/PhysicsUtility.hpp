@@ -10,6 +10,7 @@ class Collider;
 class Rigidbody;
 class Shape;
 class Box;
+class Sphere;
 class Transform;
 struct ContactContainer;
 struct CoarseContainer;
@@ -37,6 +38,7 @@ T Clamp(T n, T min, T max)
 /////////////////////////
 bool SAT(Collider* c1, Collider* c2);
 bool SATBox_Box(Box* a, Box* b, Transform* t1, Transform* t2);
+bool SATBox_Sphere(Box* b, Sphere* s, Transform* t1, Transform* t2);
 bool CheckAxis(Vector3 L, Vector3 T, Box* a, Box* b,
 	Vector3 ax, Vector3 ay, Vector3 az, Vector3 bx, Vector3 by, Vector3 bz);
 
@@ -48,6 +50,7 @@ ContactContainer ContactGeneration(Collider* c1, Collider* c2);
 ContactContainer BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2);
 bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc);
 bool EdgeEdgeContact(Edge e1, Edge e2, ContactContainer& cc);
+ContactContainer BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t2);
 
 ////////////////////
 // Closest Points //

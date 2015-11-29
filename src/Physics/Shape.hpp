@@ -35,7 +35,7 @@ class Box : public Shape
 public:
 	Vector3 m_HalfWidth;
 
-	Box(Vector3 halfWidth = Vector3::Zero) : Shape(ShapeType::Box), m_HalfWidth(halfWidth){}
+	Box(Vector3 halfWidth = Vector3::One) : Shape(ShapeType::Box), m_HalfWidth(halfWidth){}
 };
 
 /// <summary>
@@ -46,7 +46,7 @@ class Sphere : public Shape
 public:
 	float m_Radius;
 
-	Sphere(float radius) : Shape(ShapeType::Sphere), m_Radius(radius) {}
+	Sphere(float radius = 1.0f) : Shape(ShapeType::Sphere), m_Radius(radius) {}
 };
 
 NS_END

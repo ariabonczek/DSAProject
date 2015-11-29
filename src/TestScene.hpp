@@ -20,6 +20,8 @@ public:
 	void Update(float dt);
 	void Draw();
 	void MakeCollectibles();
+	void MakeCars();
+	void MakeArena();
 	void UnloadAssets();
 	void DrawHUD();
 private:

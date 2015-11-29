@@ -87,6 +87,7 @@ void PhysicsContext::Simulate(float timeStep)
 	{
 		ContactContainer cc = ContactGeneration(coarse[i].collider1, coarse[i].collider2);
 		contacts.push_back(cc);
+		std::cout << "Contact Point: " << cc.contactPoint << std::endl;
 	}
 	
 	// Collision Resolution
@@ -94,19 +95,19 @@ void PhysicsContext::Simulate(float timeStep)
 	{
 		Rigidbody* r1 = contacts[i].rigidbody[0];
 		Rigidbody* r2 = contacts[i].rigidbody[1];
-
+		
 		if (r1 && r2)
 		{
 			ResolveCollision(r1, r2);
 			continue;
 		}
-
+		
 		if (r1 && !r2)
 		{
 			ResolveCollision(r1, coarse[i].collider2);
 			continue;
 		}
-
+		
 		if (!r1 && r2)
 		{
 			ResolveCollision(r2, coarse[i].collider1);

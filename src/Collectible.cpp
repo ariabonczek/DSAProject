@@ -46,12 +46,11 @@ Collectible& Collectible::operator=(const Collectible& c)
 	return *this;
 }
 
-void Collectible::OnCollision(Collider* c) {
+void Collectible::OnTrigger(Collider* c)
+{
 	rb_Collector = c->GetRigidbody();
 	go_Collector = c->GetGameObject();
 
-	
-	
 	OnEnable();
 }
 
