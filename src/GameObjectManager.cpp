@@ -7,6 +7,7 @@ GameObjectManager* GameObjectManager::instance = nullptr;
 void GameObjectManager::Init(void)
 {
 	size = 0;
+	nextID = 0;
 }
 
 void GameObjectManager::Release(void)
@@ -90,6 +91,12 @@ GameObject* GameObjectManager::GetFromList(std::string name)
 {
 	//unsure if needed
 	return nullptr;
+}
+
+uint GameObjectManager::GetNextID() {
+	uint temp = nextID;
+	nextID++;
+	return temp;
 }
 
 int GameObjectManager::GetIndex(std::string name)

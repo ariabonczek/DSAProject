@@ -44,7 +44,7 @@ private:
 	GameObject* gem4;
 	GameObject* gem5;
 
-	GameObject* vectorPlate;
+	GameObject* vectorPlate03;
 
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 50.0f;

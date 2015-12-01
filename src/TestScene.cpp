@@ -306,7 +306,7 @@ void TestScene::MakeCollectibles() {
 
 	//Collectible
 	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
-	gem1->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem1->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem1->AddComponent<Collider>(d);
 	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
@@ -320,7 +320,7 @@ void TestScene::MakeCollectibles() {
 	a->AddBox(a_box);
 
 	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
-	gem2->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem2->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem2->AddComponent<Collider>(a);
 	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
@@ -334,7 +334,7 @@ void TestScene::MakeCollectibles() {
 	b->AddBox(b_box);
 
 	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
-	gem3->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem3->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem3->AddComponent<Collider>(b);
 	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
@@ -348,7 +348,7 @@ void TestScene::MakeCollectibles() {
 	c->AddBox(c_box);
 
 	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
-	gem4->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem4->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem4->AddComponent<Collider>(c);
 	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
@@ -362,7 +362,7 @@ void TestScene::MakeCollectibles() {
 	e->AddBox(e_box);
 
 	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
-	gem5->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem5->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem5->AddComponent<Collider>(e);
 	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));

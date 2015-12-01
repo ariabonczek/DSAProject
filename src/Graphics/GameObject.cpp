@@ -19,7 +19,7 @@ GameObject::GameObject(const GameObject& gameObject)
 	mesh = gameObject.mesh;
 	material = gameObject.material;
 	crystals = 0;
-	
+	id = GameObjectManager::GetInstance()->GetNextID();
 }
 
 GameObject::~GameObject()

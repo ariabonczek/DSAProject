@@ -28,6 +28,7 @@ public:
 	GameObject* GetGameObject()const;
 protected:
 	GameObject* p_GameObject;
+	uint id;
 };
 
 NS_END

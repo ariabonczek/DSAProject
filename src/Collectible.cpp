@@ -7,7 +7,7 @@ NS_BEGIN
 Collectible::Collectible(float m, float s){
 	mass = m;
 	size = s;
-	maxSize = 0.5f;
+	maxSize = 0.7f;
 	maxMass = 4.5f;
 	hit = false;
 }
@@ -49,8 +49,6 @@ Collectible& Collectible::operator=(const Collectible& c)
 void Collectible::OnCollision(Collider* c) {
 	rb_Collector = c->GetRigidbody();
 	go_Collector = c->GetGameObject();
-
-	
 	
 	OnEnable();
 }
@@ -75,10 +73,6 @@ void Collectible::OnEnable() {
 			go_Collector->GetTransform()->SetLocalScale(go_Collector->GetTransform()->GetLocalScale() * size);
 		}
 		Destroy();
-	}
-	else {
-		std::cout << "Mass: " << mass << std::endl;
-		std::cout << "Size: " << size << std::endl;
 	}
 }
 NS_END

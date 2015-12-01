@@ -6,6 +6,7 @@
 #include "Graphics/GameObject.hpp"
 #include "Car.h"
 #include "Collectible.h"
+#include <unordered_map>
 
 NS_BEGIN
 class GameObjectManager 
@@ -13,9 +14,13 @@ class GameObjectManager
 	uint size = 0;
 	static GameObjectManager* instance;
 	std::vector<GameObject*> gameObjectList;
+	
+	std::unordered_map<uint, GameObject*> objects;
 
-	std::vector<GameObject*> carList;
-	std::vector<GameObject*> collectibleList;
+	//std::vector<GameObject*> carList;
+//	std::vector<GameObject*> collectibleList;
+
+	static uint nextID;
 
 public:
 	static GameObjectManager* GetInstance();
@@ -24,16 +29,18 @@ public:
 
 	int GetSize();
 
-	void AddToList(GameObject* object);
-	void AddCar(GameObject* object);
-	void AddCollectible(GameObject* object);
+///void AddToList(GameObject* object);
+	///void AddCar(GameObject* object);
+///	void AddCollectible(GameObject* object);
 
 	void RemoveFromList(std::string name);
 
-	GameObject* GetFromList(int index);
-	GameObject* GetFromList(std::string name);
+	//GameObject* GetFromList(int index);
+	//GameObject* GetFromList(std::string name);
 
-	int GetIndex(std::string name);
+	uint GetNextID();
+
+	///int GetIndex(std::string name);
 
 	void Update(float dt);
 	
