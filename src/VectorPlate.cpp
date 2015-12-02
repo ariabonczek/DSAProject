@@ -44,7 +44,7 @@ void VectorPlate::onCollision(Collider* c)
 	std::cout << "working" << std::endl;
 	GameObject* gO = c->GetGameObject();
 
-	for (int i = 0; i < objManager->GetSize(); i++)
+ /*for (int i = 0; i < objManager->GetSize(); i++)
 	{
 		GameObject* obj = objManager->GetList()[i];
 		if (obj->GetComponent<Car>() == nullptr)
@@ -53,7 +53,12 @@ void VectorPlate::onCollision(Collider* c)
 		}
 
 		obj->GetComponent<Car>()->ApplyForce(direction * magitude);
-	}
+	}*/
+	//Iteration through the map has to be done in GOM
+	GameObject* g = objManager->GetCarComponent();
+		
+	g->GetComponent<Car>()->ApplyForce(direction * magitude);
+
 }
 
 void VectorPlate::setDirection(Vector3 direction)

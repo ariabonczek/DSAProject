@@ -2,6 +2,7 @@
 #define VECTOR_HPP
 
 #include "../Config.hpp"
+#include <iostream>
 
 NS_BEGIN
 
@@ -46,6 +47,7 @@ struct Vector2
 	bool	operator==(const Vector2& v);
 	bool	operator!=(const Vector2& v);
 	float   operator[](const int index);
+	friend std::ostream& operator<<(std::ostream& os, const Vector2& v);
 
 	//////////////////////
 	// Static Functions //
@@ -173,6 +175,7 @@ struct Vector3
 	bool	operator==(const Vector3& v);
 	bool	operator!=(const Vector3& v);
 	float   operator[](const int index);
+	friend std::ostream& operator<<(std::ostream& os, const Vector3& v);
 
 	//////////////////////
 	// Static Functions //
@@ -299,6 +302,7 @@ struct Vector4
 	bool	operator==(const Vector4& v);
 	bool	operator!=(const Vector4& v);
 	float   operator[](const int index);
+	friend std::ostream& operator<<(std::ostream& os, const Vector4& v);
 
 	//////////////////////
 	// Static Functions //

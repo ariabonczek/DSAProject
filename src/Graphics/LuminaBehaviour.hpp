@@ -22,6 +22,7 @@ public:
 	virtual void OnDisable();
 
 	virtual void OnCollision(Collider* c);
+	virtual void OnTrigger(Collider* c);
 
 	virtual void OnAddToGameObject(GameObject* gameObject);
 

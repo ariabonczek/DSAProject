@@ -6,7 +6,7 @@ NS_BEGIN
 
 LuminaBehaviour::LuminaBehaviour()
 {
-	id = GameObjectManager::GetInstance()->GetNextID();
+	//id = GameObjectManager::GetInstance()->GetNextID();
 }
 
 LuminaBehaviour::~LuminaBehaviour()
@@ -29,6 +29,9 @@ void LuminaBehaviour::OnDisable()
 {}
 
 void LuminaBehaviour::OnCollision(Collider* c)
+{}
+
+void LuminaBehaviour::OnTrigger(Collider* c)
 {}
 
 void LuminaBehaviour::OnAddToGameObject(GameObject* gameObject)

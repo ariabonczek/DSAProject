@@ -11,14 +11,14 @@ NS_BEGIN
 
 PhysicsContext g_PhysicsContext;
 
-void PhysicsContext::Initialize(std::vector<GameObject*> allObjects)
+void PhysicsContext::Initialize(std::unordered_map<uint, GameObject*> allObjects)
 {
 	contacts.reserve(100);
 
 	uint size = allObjects.size();
-	for (uint i = 0; i < size; ++i)
+	for (std::unordered_map<uint, GameObject*>::iterator it = allObjects.begin(); it != allObjects.end(); ++it)
 	{
-		Collider* collider = allObjects[i]->GetComponent<Collider>();
+		Collider* collider = it->second->GetComponent<Collider>();
 		if (collider)
 		{
 			PhysicsObject o;
@@ -63,11 +63,19 @@ void PhysicsContext::Simulate(float timeStep)
 			// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
 			if (SAT(c1, c2))
 			{
-				cc.collider1 = c1;
-				cc.collider2 = c2;
-				
+				if (c1->GetIsTrigger() || c2->GetIsTrigger())
+				{
+					c1->GetGameObject()->OnTrigger(c2);
+					c2->GetGameObject()->OnTrigger(c1);
+					continue;
+				}
+
+
 				c1->GetGameObject()->OnCollision(c2);
-				c2->GetGameObject()->OnCollision(c1);
+				c2->GetGameObject()->OnCollision(c1);				
+
+				cc.collider1 = c1;
+				cc.collider2 = c2;			
 
 				coarse.push_back(cc);
 			}
@@ -79,6 +87,7 @@ void PhysicsContext::Simulate(float timeStep)
 	{
 		ContactContainer cc = ContactGeneration(coarse[i].collider1, coarse[i].collider2);
 		contacts.push_back(cc);
+		std::cout << "Contact Point: " << cc.contactPoint << std::endl;
 	}
 	
 	// Collision Resolution
@@ -86,19 +95,19 @@ void PhysicsContext::Simulate(float timeStep)
 	{
 		Rigidbody* r1 = contacts[i].rigidbody[0];
 		Rigidbody* r2 = contacts[i].rigidbody[1];
-
+		
 		if (r1 && r2)
 		{
 			ResolveCollision(r1, r2);
 			continue;
 		}
-
+		
 		if (r1 && !r2)
 		{
 			ResolveCollision(r1, coarse[i].collider2);
 			continue;
 		}
-
+		
 		if (!r1 && r2)
 		{
 			ResolveCollision(r2, coarse[i].collider1);

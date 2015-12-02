@@ -37,6 +37,9 @@ void Car::OnAddToGameObject(GameObject* object)
 void Car::OnCollision(Collider* c)
 {}
 
+void Car::OnTrigger(Collider* c)
+{}
+
 void Car::SetMass(float m){
 	mass = m;
 }

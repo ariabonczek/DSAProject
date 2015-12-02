@@ -24,6 +24,7 @@ public:
 	void Update(float dt);
 
 	void OnCollision(Collider* c);
+	void OnTrigger(Collider* c);
 
 	void Accelerate(Vector3 acceleration);
 	void Turn(Quaternion rotation);

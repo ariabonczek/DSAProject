@@ -1,13 +1,15 @@
+#pragma once
 #ifndef _COLLECTIBLE_H_
 #define _COLLECTIBLE_H_
 
 #include "Graphics/Transform.hpp"
 #include "Graphics/GameObject.hpp"
 #include "Graphics/LuminaBehaviour.hpp"
+#include "Physics\Rigidbody.hpp"
+
 #include "Car.h"
 
 NS_BEGIN
-
 class Collectible : public LuminaBehaviour
 {
 public:
@@ -19,17 +21,17 @@ public:
 	void Initialize();
 	void Destroy();
 
-	void OnCollision(Collider*c);
+	void OnTrigger(Collider*c);
 	void OnEnable();
 	void OnAddToGameObject(GameObject* object);
 private:
 	Transform* p_CachedTransform;
 	Collider* p_Collider;
 
-	//////pointers for car stuff
+	//pointers for car stuff
 	Rigidbody* rb_Collector;
 	GameObject* go_Collector;
-	/////
+	
 	float maxSize;
 	float maxMass;
 

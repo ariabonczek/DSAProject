@@ -2,7 +2,7 @@
 #include "Utility\Timer.hpp"
 #include "Utility\FileSystem.hpp"
 #include "Graphics\TextRenderer.hpp"
-
+#include <unordered_map>
 #include <string>
 #include "Game/CarAI.hpp"
 
@@ -43,6 +43,199 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
+	MakeCars();
+
+	MakeCollectibles();
+	
+	MakeArena();
+
+	Collider* d = new Collider();
+	Box* d_box = new Box();
+	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	d->AddBox(d_box);
+
+	// Making some lights
+	Light* dLight = new Light(LightType::Directional, Color::White, 2.0f);
+	dLight->lightData.direction = Vector3(0.0f, -1.0f, 0.0f);
+	dLight->lightData.range = 25.0f;
+	dLight->lightData.position = Vector3(0.0f, 10.0f, 0.0f);
+	dLight->lightData.spot = 5.0f;
+	lights.push_back(dLight);
+
+	// Setting the camera position
+	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+	camera->SetLens(0.25f * 3.1415f, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1f, 200.0f);
+
+
+	/*
+	// Initialize Scene
+	for (std::unordered_map<uint, GameObject*>::iterator it = manager->GetList().begin(); it !=  manager->GetList().end(); ++it)
+	{
+		//manager->GetObject(is->first)->Initialize();
+		it->second->Initialize();
+	}*/
+	manager->InitializeObjects();
+	m_PhysicsContext.Initialize(manager->GetList());
+}
+
+void TestScene::Update(float dt)
+{
+	m_PhysicsContext.Simulate(dt);
+	DrawHUD();
+	
+	MovePlayer(dt);
+
+	if (freeCamera)
+	{
+		MoveCamera(dt);
+	}
+	else
+	{
+		CameraSmoothFollow(dt, playerCar->GetTransform());
+	}
+
+	// Press space to swap between wireframe and shaded mode
+	if (Input::GetKeyDown(GLFW_KEY_SPACE))
+	{
+		freeCamera = !freeCamera;
+	}
+
+	playerCar->Update(dt);
+
+	/*
+	( (GameObject* o : objects)
+	{
+		o->Update(dt);
+	}*/
+
+	manager->Update(dt);
+}
+
+void TestScene::DrawHUD() {
+	g_TextRenderer.RenderText("Crystals Collected: ", 30, 30);
+	//g_TextRenderer.RenderText(" - Enemy Team", 950, 50);
+	
+	std::string s = std::to_string(playerCar->GetCrystals());
+	
+	//render how many crystals
+	g_TextRenderer.RenderText(s.c_str(), 300, 30);
+}
+
+void TestScene::Draw()
+{
+	mats[0]->SetFloat4x4("view", camera->GetView());
+	mats[0]->SetFloat4x4("projection", camera->GetProjection());
+	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
+	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
+	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
+	/*
+	for (GameObject* o : objects)
+	{
+		o->Draw();
+	}*/
+
+	manager->Draw();
+}
+
+void TestScene::UnloadAssets()
+{
+	for (Mesh* m : meshes)
+		delete m;
+	for (Texture2D* t : textures)
+		delete t;
+	for (Material* m : mats)
+		delete m;
+	/*
+	for (GameObject* g : objects)
+		delete g;*/
+	
+	manager->ReleaseInstance();
+	for (Light* l : lights)
+		delete l;
+}
+
+void TestScene::MakeCollectibles() {
+	///TODO - Optimize this
+	Collider* d = new Collider();
+	d->SetTrigger(true);
+	Box* d_box = new Box();
+	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	d->AddBox(d_box);
+
+	//Collectible
+	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
+	gem1->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+
+	gem1->AddComponent<Collider>(d);
+	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
+	//objects.push_back(testCollectible);
+	manager->AddObject(manager->GetNextID(),gem1);
+
+	Collider* a = new Collider();
+	a->SetTrigger(true);
+	Box* a_box = new Box();
+	a_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	a->AddBox(a_box);
+
+	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
+	gem2->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+
+	gem2->AddComponent<Collider>(a);
+	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem2->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
+	//objects.push_back(testCollectible);
+	manager->AddObject(manager->GetNextID(), gem2);
+
+	Collider* b = new Collider();
+	b->SetTrigger(true);
+	Box* b_box = new Box();
+	b_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	b->AddBox(b_box);
+
+	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
+	gem3->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+
+	gem3->AddComponent<Collider>(b);
+	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem3->GetTransform()->SetLocalPosition(20.0f, 2.0f, 30.0f);
+	//objects.push_back(testCollectible);
+	manager->AddObject(manager->GetNextID(), gem3);
+
+	Collider* c = new Collider();
+	c->SetTrigger(true);
+	Box* c_box = new Box();
+	c_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	c->AddBox(c_box);
+
+	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
+	gem4->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+	gem4->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+
+	gem4->AddComponent<Collider>(c);
+	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem4->GetTransform()->SetLocalPosition(-35.0f, 2.0f, -10.0f);
+	//objects.push_back(testCollectible);
+	manager->AddObject(manager->GetNextID(), gem4);
+	
+	Collider* e = new Collider();
+	e->SetTrigger(true);
+	Box* e_box = new Box();
+	e_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+	e->AddBox(e_box);
+
+	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
+	gem5->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+
+	gem5->AddComponent<Collider>(e);
+	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));
+	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
+	//objects.push_back(testCollectible);
+	manager->AddObject(manager->GetNextID(), gem5);
+}
+
+void TestScene::MakeCars()
+{
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
 	playerCar->AddComponent<Car>(new Car());
 
@@ -56,31 +249,13 @@ void TestScene::LoadAssets()
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 1.0f, 0.0f);
 
-	//objects.push_back(playerCar);
-	manager->AddToList(playerCar);
-
-	MakeCollectibles();
-
-	Collider* d = new Collider();
-	Box* d_box = new Box();
-	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	d->AddBox(d_box);
-
-	//Collectible
-	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
-	gem1->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
-
-	gem1->AddComponent<Collider>(d);
-	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(gem1);
+	manager->AddObject(manager->GetNextID(), playerCar);
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
 		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
-		car->AddComponent<CarAI>(new CarAI());
+		//car->AddComponent<CarAI>(new CarAI());
 
 		Collider* c = new Collider();
 		Box* box = new Box();
@@ -92,9 +267,12 @@ void TestScene::LoadAssets()
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
 		//objects.push_back(car);
-		manager->AddCar(car);
+		//manager->AddCar(car);
 	}
+}
 
+void TestScene::MakeArena()
+{
 	GameObject* wall1;
 	GameObject* wall2;
 	GameObject* wall3;
@@ -165,210 +343,13 @@ void TestScene::LoadAssets()
 		//
 		//floor->AddComponent<Collider>(c);
 	}
-	/*
-	objects.push_back(wall1);
-	objects.push_back(wall2);
-	objects.push_back(wall3);
-	objects.push_back(wall4);
-	objects.push_back(floor);*/
 
-	manager->AddToList(wall1);
-	manager->AddToList(wall2);
-	manager->AddToList(wall3);
-	manager->AddToList(wall4);
-	manager->AddToList(floor);
+	manager->AddObject(manager->GetNextID(), wall1);
+	manager->AddObject(manager->GetNextID(), wall2);
+	manager->AddObject(manager->GetNextID(), wall3);
+	manager->AddObject(manager->GetNextID(), wall4);
+	manager->AddObject(manager->GetNextID(), floor);
 
-	// Making some lights
-	Light* dLight = new Light(LightType::Directional, Color::White, 2.0f);
-	dLight->lightData.direction = Vector3(0.0f, -1.0f, 0.0f);
-	dLight->lightData.range = 25.0f;
-	dLight->lightData.position = Vector3(0.0f, 10.0f, 0.0f);
-	dLight->lightData.spot = 5.0f;
-	lights.push_back(dLight);
-
-	// Setting the camera position
-	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-	/*
-	for (uint i = 0; i < objects.size(); ++i)
-	{
-		objects[i]->Initialize();
-	}
-
-	m_PhysicsContext.Initialize(objects);*/
-
-	for (uint i = 0; i < manager->GetSize(); i++)
-	{
-		manager->GetFromList(i)->Initialize();
-	}
-
-	m_PhysicsContext.Initialize(manager->GetList());
-
-	/*
-	Collider* e = new Collider();
-	Box* e_box = new Box();
-	box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	e->AddBox(box);
-
-	//VectorPlate
-	vectorPlate = new GameObject("VectorPlate", meshes[3], mats[0]);
-	vectorPlate->AddComponent<VectorPlate>(new VectorPlate(Vector3(1.0f, 0.0f, 0.0f), 5.0f));
-
-	vectorPlate->AddComponent<Collider>(e);
-	vectorPlate->GetTransform()->SetLocalScale(Vector3(.50f));
-	vectorPlate->GetTransform()->SetLocalPosition(-5.0f, 1.0f, 5.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(vectorPlate);*/
-
-}
-
-void TestScene::Update(float dt)
-{
-	m_PhysicsContext.Simulate(dt);
-	DrawHUD();
-	
-	MovePlayer(dt);
-
-	if (freeCamera)
-	{
-		MoveCamera(dt);
-	}
-	else
-	{
-		CameraSmoothFollow(dt, playerCar->GetTransform());
-	}
-
-	// Press space to swap between wireframe and shaded mode
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-	{
-		freeCamera = !freeCamera;
-	}
-
-	playerCar->Update(dt);
-
-	/*
-	for (GameObject* o : objects)
-	{
-		o->Update(dt);
-	}*/
-
-	manager->Update(dt);
-}
-
-void TestScene::DrawHUD() {
-	g_TextRenderer.RenderText("Crystals Collected: ", 30, 30);
-	//g_TextRenderer.RenderText(" - Enemy Team", 950, 50);
-	
-	std::string s = std::to_string(playerCar->GetCrystals());
-	
-	//render how many crystals
-	g_TextRenderer.RenderText(s.c_str(), 300, 30);
-}
-
-void TestScene::Draw()
-{
-	mats[0]->SetFloat4x4("view", camera->GetView());
-	mats[0]->SetFloat4x4("projection", camera->GetProjection());
-	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
-	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
-	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
-	/*
-	for (GameObject* o : objects)
-	{
-		o->Draw();
-	}*/
-
-	manager->Draw();
-}
-
-void TestScene::UnloadAssets()
-{
-	for (Mesh* m : meshes)
-		delete m;
-	for (Texture2D* t : textures)
-		delete t;
-	for (Material* m : mats)
-		delete m;
-	/*
-	for (GameObject* g : objects)
-		delete g;*/
-	
-	manager->ReleaseInstance();
-	for (Light* l : lights)
-		delete l;
-}
-
-void TestScene::MakeCollectibles() {
-	///TODO - Optimize this
-	Collider* d = new Collider();
-	Box* d_box = new Box();
-	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	d->AddBox(d_box);
-
-	//Collectible
-	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
-	gem1->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
-
-	gem1->AddComponent<Collider>(d);
-	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(gem1);
-
-	Collider* a = new Collider();
-	Box* a_box = new Box();
-	a_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	a->AddBox(a_box);
-
-	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
-	gem2->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
-
-	gem2->AddComponent<Collider>(a);
-	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem2->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(gem2);
-
-	Collider* b = new Collider();
-	Box* b_box = new Box();
-	b_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	b->AddBox(b_box);
-
-	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
-	gem3->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
-
-	gem3->AddComponent<Collider>(b);
-	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem3->GetTransform()->SetLocalPosition(20.0f, 2.0f, 30.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(gem3);
-
-	Collider* c = new Collider();
-	Box* c_box = new Box();
-	c_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	c->AddBox(c_box);
-
-	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
-	gem4->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
-
-	gem4->AddComponent<Collider>(c);
-	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem4->GetTransform()->SetLocalPosition(-35.0f, 2.0f, -10.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(gem4);
-	
-	Collider* e = new Collider();
-	Box* e_box = new Box();
-	e_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	e->AddBox(e_box);
-
-	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
-	gem5->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
-
-	gem5->AddComponent<Collider>(e);
-	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
-	//objects.push_back(testCollectible);
-	manager->AddToList(gem5);
 }
 
 void TestScene::MoveCamera(float dt)

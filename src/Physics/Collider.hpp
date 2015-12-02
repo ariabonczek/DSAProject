@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef _COLLIDER_H_
+#define _COLLIDER_H_
 #include "../Config.hpp"
 
 #include "../Graphics/LuminaBehaviour.hpp"
@@ -7,7 +8,6 @@
 #include "Shape.hpp"
 
 NS_BEGIN
-
 class Rigidbody;
 
 /// <summary>
@@ -24,10 +24,23 @@ public:
 	void AddBox(Box* box);
 	void AddSphere(Sphere* sphere);
 
-	Shape* GetShape(uint i);
+	void SetTrigger(bool value);
+
+	bool GetIsTrigger()const;
+
+	template<class T>
+	T* GetShape(uint i)
+	{
+		return (T*)shapes[i];
+	}
+
 	Box* GetBox(uint i);
+
+	Sphere* GetSphere(uint i);
+
 	Rigidbody* GetRigidbody()const;
 	void SetRigidbody(Rigidbody* rb);
+
 	uint32 GetNumShapes()const;
 	std::vector<Shape*> GetShapeVector();
 	Box* GetS_Shape();
@@ -37,6 +50,8 @@ private:
 	std::vector<Shape*> shapes;
 	Rigidbody* p_Rigidbody;
 	Box* s_Shape;
+	bool isTrigger;
 };
 
 NS_END
+#endif

@@ -34,6 +34,7 @@ public:
 	void Update(float dt);
 
 	void OnCollision(Collider* c);
+	void OnTrigger(Collider* c);
 
 	/// <summary>
 	/// Draws the object (if a mesh and material have been set)

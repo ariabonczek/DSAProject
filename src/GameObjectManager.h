@@ -7,52 +7,57 @@
 #include "Car.h"
 #include "Collectible.h"
 #include <unordered_map>
+#include "Graphics\Material.hpp"
+#include "Graphics\Mesh.hpp"
 
 NS_BEGIN
 class GameObjectManager 
 {
-	uint size = 0;
 	static GameObjectManager* instance;
 	std::vector<GameObject*> gameObjectList;
 	
 	std::unordered_map<uint, GameObject*> objects;
 
 	//std::vector<GameObject*> carList;
-//	std::vector<GameObject*> collectibleList;
+	//std::vector<GameObject*> collectibleList;
 
-	static uint nextID;
+	uint nextID;
 
 public:
 	static GameObjectManager* GetInstance();
-
 	static void ReleaseInstance(void);
 
 	int GetSize();
-
-///void AddToList(GameObject* object);
+	void InitializeObjects();
+	GameObject* GetCarComponent();
+	///void AddToList(GameObject* object);
 	///void AddCar(GameObject* object);
-///	void AddCollectible(GameObject* object);
-
-	void RemoveFromList(std::string name);
-
+    //void AddCollectible(GameObject* object);
 	//GameObject* GetFromList(int index);
 	//GameObject* GetFromList(std::string name);
-
-	uint GetNextID();
-
 	///int GetIndex(std::string name);
+
+	void RemoveFromList(uint id);
+	void FindCollided(GameObject* hit);
+
+	void AddObject(uint id, GameObject* object);
+	GameObject* GetObject(uint id);
+
+	uint GetID();
+	uint GetNextID();
 
 	void Update(float dt);
 	
 	void Draw();
 
-	void SetMesh(int index, Mesh* mesh);
+	void SetMesh(int id, Mesh* mesh);
 	void SetMaterial(int index, Material* mat);
 	
 	float calcDistance(GameObject* a, GameObject* b);
 	
-	std::vector<GameObject*> GetList();
+	std::unordered_map<uint, GameObject*> GetList();
 private:
+	int size = 0;
 	GameObjectManager(void);
 	
 	GameObjectManager(GameObjectManager const& other);

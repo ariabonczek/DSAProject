@@ -62,6 +62,14 @@ void GameObject::OnCollision(Collider* c)
 	}
 }
 
+void GameObject::OnTrigger(Collider* c)
+{
+	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		it->second->OnTrigger(c);
+	}
+}
+
 void GameObject::Draw()
 {
 	material->Bind();
