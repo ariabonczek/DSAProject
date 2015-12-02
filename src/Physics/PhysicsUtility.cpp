@@ -10,6 +10,36 @@
 
 NS_BEGIN
 
+Matrix CreateBoxInertia(Box* box, float mass)
+{
+	float denom = 1.0f / 12.0f;
+	float mass12 = denom * mass;
+	float x2 = box->m_HalfWidth.x * box->m_HalfWidth.x;
+	float y2 = box->m_HalfWidth.y * box->m_HalfWidth.y;
+	float z2 = box->m_HalfWidth.z * box->m_HalfWidth.z;
+
+	return Matrix::Inverse(Matrix(
+		mass12 * (y2 + z2), 0.0f, 0.0f, 0.0f,
+		0.0f, mass12 * (x2 + z2), 0.0f, 0.0f,
+		0.0f, 0.0f, mass12 * (x2 + y2), 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f));
+}
+
+Matrix CreateSphereInertia(Sphere* sphere, float mass)
+{
+	float num = (2.0f / 5.0f) * mass * sphere->m_Radius * sphere->m_Radius;
+
+	return Matrix::Inverse(Matrix(
+		num, 0.0f, 0.0f, 0.0f,
+		0.0f, num, 0.0f, 0.0f,
+		0.0f, 0.0f, num, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f));
+}
+
+//-------------------------------------------------------------------------------------------
+// Collision Detection
+//-------------------------------------------------------------------------------------------
+
 bool SAT(Collider* c1, Collider* c2)
 {
 	Transform* t1 = c1->GetGameObject()->GetTransform();
@@ -121,41 +151,50 @@ bool CheckAxis(Vector3 L, Vector3 T, Box* a, Box* b,
 // Contact Generation
 //---------------------------------------------------------------------------------------------------------
 
-ContactContainer ContactGeneration(Collider* c1, Collider* c2)
+uint ContactGeneration(Collider* c1, Collider* c2, ContactContainer& cc)
 {
 	Shape* s1 = c1->GetShape<Shape>(0);
 	Shape* s2 = c2->GetShape<Shape>(0);
 
+	Transform* t1 = c1->GetGameObject()->GetTransform();
+	Transform* t2 = c2->GetGameObject()->GetTransform();
+
+	uint ret = 0;
+
 	if (s1->m_Type == ShapeType::Box && s2->m_Type == ShapeType::Box)
 	{
-		ContactContainer cc;
-		cc = BoxBoxContact(c1->GetBox(0), c2->GetBox(0), c1->GetGameObject()->GetTransform(), c2->GetGameObject()->GetTransform());
-		cc.rigidbody[0] = c1->GetRigidbody();
-		cc.rigidbody[1] = c2->GetRigidbody();
-		return cc;
+		ret = BoxBoxContact(c1->GetBox(0), c2->GetBox(0), t1, t2, cc);
 	}
 
 	if (s1->m_Type == ShapeType::Box && s2->m_Type == ShapeType::Sphere)
 	{
-		ContactContainer cc;
-		cc = BoxSphereContact(c1->GetBox(0), c2->GetSphere(0), c1->GetGameObject()->GetTransform(), c2->GetGameObject()->GetTransform());
-		cc.rigidbody[0] = c1->GetRigidbody();
-		cc.rigidbody[1] = c2->GetRigidbody();
-		return cc;
+		ret = BoxSphereContact(c1->GetBox(0), c2->GetSphere(0), t1, t2,cc);
 	}
 
 	if (s1->m_Type == ShapeType::Sphere && s2->m_Type == ShapeType::Box)
 	{
-		ContactContainer cc;
-		cc = BoxSphereContact(c2->GetBox(0), c1->GetSphere(0), c1->GetGameObject()->GetTransform(), c2->GetGameObject()->GetTransform());
-		cc.rigidbody[0] = c1->GetRigidbody();
-		cc.rigidbody[1] = c2->GetRigidbody();
-		return cc;
+		ret = BoxSphereContact(c2->GetBox(0), c1->GetSphere(0), t1, t2,cc);
 	}
+
+	cc.rigidbody[0] = c1->GetRigidbody();
+	cc.rigidbody[1] = c2->GetRigidbody();
+	cc.objectOrigin[0] = t1->GetLocalPosition();
+	cc.objectOrigin[1] = t2->GetLocalPosition();
+
+	if (!cc.rigidbody[0])
+	{
+		if (cc.rigidbody[1])
+		{
+			std::swap(cc.rigidbody[0], cc.rigidbody[1]);
+		}
+	}
+
+	return ret;
 }
 
-ContactContainer BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2)
+uint BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2, ContactContainer& cc)
 {
+	uint ret = 0;
 	Vector3 v1 = t1->GetLocalPosition();
 	
 	Vector3 vertices1[8] = {
@@ -172,14 +211,15 @@ ContactContainer BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2)
 		Vector3(v1.x - b1->m_HalfWidth.x, v1.y - b1->m_HalfWidth.y, v1.z - b1->m_HalfWidth.z)
 	};
 
-	ContactContainer cc;
 	for (uint i = 0; i < 8; ++i)
 	{
 		ContactContainer temp;
-		if (BoxVertexContact(b2, t2, vertices1[i], temp))
+		BoxVertexContact(b2, t2, vertices1[i], temp);
+		
+		if (temp.penetrationDepth > cc.penetrationDepth)
 		{
-			if (temp.penetrationDepth > cc.penetrationDepth)
-				cc = temp;
+			ret = 1;
+			cc = temp;
 		}
 	}
 
@@ -237,12 +277,15 @@ ContactContainer BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2)
 			if (EdgeEdgeContact(edges1[i], edges2[j], temp))
 			{
 				if (temp.penetrationDepth > cc.penetrationDepth)
+				{
+					ret = 1;
 					cc = temp;
+				}
 			}
 		}
 	}
 
-	return cc;
+	return ret;
 }
 
 bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc)
@@ -286,10 +329,8 @@ bool EdgeEdgeContact(Edge e1, Edge e2, ContactContainer& cc)
 	return true;
 }
 
-ContactContainer BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t2)
+uint BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t2, ContactContainer& cc)
 {
-	ContactContainer cc;
-
 	Vector3 closestPoint;
 	Vector3 sphereCenter = t2->GetLocalPosition() + s->m_Offset;
 	Vector3 relCenter = t1->InverseTransformPoint(sphereCenter);
@@ -319,13 +360,13 @@ ContactContainer BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t
 
 	distance = (closestPoint - relCenter).Length();
 	if (distance > s->m_Radius)
-		return cc;
+		return 0;
 
 	cc.contactPoint = t1->TransformPoint(closestPoint);
 	cc.contactNormal = (sphereCenter - cc.contactPoint).Normalized();
 	cc.penetrationDepth = s->m_Radius - distance;
 
-	return cc;
+	return 1;
 }
 
 //------------------------------------------------------------------------------
@@ -396,6 +437,206 @@ float CalculateSeparatingVelocity(Rigidbody* r1, Rigidbody* r2)
 	Vector3 n = (t1->GetLocalPosition() - t2->GetLocalPosition()).Normalized();
 
 	return Vector3::Dot(v, n);
+}
+
+void CreateBasisAxes(Vector3 x, Vector3& y, Vector3& z)
+{
+	if (abs(x.x) > abs(x.y))
+	{
+		float s = 1.0f / sqrtf(x.z * x.z + x.x * x.x);
+
+		y.x = x.z*s;
+		y.y = 0.0f;
+		y.z = -x.x*s;
+
+		z.x = x.y * y.x;
+		z.y = z.z * y.x - z.x * y.z;
+		z.z = -x.y * y.x;
+	}
+	else
+	{
+		float s = 1.0f / sqrtf(x.z*x.z + x.y*x.y);
+
+		y.x = 0.0f;
+		y.y = -x.z*s;
+		y.z = x.y*s;
+
+		z.x = x.y*y.z - x.z*y.y;
+		z.y = -x.x*y.z;
+		z.z = x.x*y.y;
+	}
+}
+
+void ResolveCollision(ContactContainer cc)
+{
+	// 1. Create basis matrix
+	
+	Vector3 y, z;
+
+	CreateBasisAxes(cc.contactNormal, y, z);
+	Matrix basisMatrix(cc.contactNormal, y, z);
+
+	// 2. Calculate change in velocity by unit impulse
+
+		float deltaVelocity = 0.0f;
+		
+		Vector3 relativeQ1 = cc.contactPoint - cc.objectOrigin[0];
+		Vector3 relativeQ2 = cc.contactPoint - cc.objectOrigin[1];
+
+		std::cout << "Object1 Position: " << cc.objectOrigin[0] << std::endl;
+		std::cout << "Object2 Position: " << cc.objectOrigin[1] << std::endl;
+		std::cout << "Qrel1: " << relativeQ1 << std::endl;
+		std::cout << "Qrel2: " << relativeQ2 << std::endl;
+
+		// First Object
+		if(cc.rigidbody[0])
+		{
+			// Linear
+			deltaVelocity += 1.0f / cc.rigidbody[0]->GetMass();
+
+			// Angular
+			Vector3 torquePerUnitImpulse = Vector3::Cross(relativeQ1, cc.contactNormal);
+			Vector3 rotationPerUnitImpulse = torquePerUnitImpulse * cc.rigidbody[0]->GetInertia();
+			Vector3 velocityPerUnitImpulse = Vector3::Cross(rotationPerUnitImpulse, relativeQ1);
+
+			float angularComponent = Vector3::Dot(velocityPerUnitImpulse, cc.contactNormal);
+
+			deltaVelocity += angularComponent;
+		}
+
+		// Second Object
+		if (cc.rigidbody[1])
+		{
+			// Linear
+			deltaVelocity += 1.0f / cc.rigidbody[0]->GetMass();
+
+			// Angular
+			Vector3 torquePerUnitImpulse = Vector3::Cross(relativeQ2, cc.contactNormal);
+			Vector3 rotationPerUnitImpulse = torquePerUnitImpulse * cc.rigidbody[1]->GetInertia();
+			Vector3 velocityPerUnitImpulse = Vector3::Cross(rotationPerUnitImpulse, relativeQ2);
+
+			float angularComponent = Vector3::Dot(velocityPerUnitImpulse, cc.contactNormal);
+
+			deltaVelocity += angularComponent;
+		}
+
+		std::cout << "Delta Velocity: " << deltaVelocity << std::endl;
+
+	// 3. Impulse change by velocity
+
+		// g = v / d
+
+	// 4. Calculate desired change in velocity
+
+		// First Object
+		float desiredDeltaVelocity = 0.0f;
+		if(cc.rigidbody[0])
+		{
+			// Calculate Closing Velocity
+			Vector3 velocity = Vector3::Cross(cc.rigidbody[0]->GetAngularVelocity(), relativeQ1);
+			velocity += cc.rigidbody[0]->GetLinearVelocity();
+
+			Vector3 contactVelocity = velocity * basisMatrix;
+
+			// Calculate Desired Change in Velocity
+			desiredDeltaVelocity += -contactVelocity.x * (1 + cc.rigidbody[0]->GetRestitution());
+		}
+
+		// Second Object
+		if(cc.rigidbody[1])
+		{
+			// Calculate Closing Velocity
+			Vector3 velocity = Vector3::Cross(cc.rigidbody[1]->GetAngularVelocity(), relativeQ2);
+			velocity += cc.rigidbody[1]->GetLinearVelocity();
+
+			Vector3 contactVelocity = velocity * basisMatrix;
+
+			// Calculate Desired Change in Velocity
+			desiredDeltaVelocity += -contactVelocity.x * (1 + cc.rigidbody[1]->GetRestitution());
+		}
+
+		if (isnan(desiredDeltaVelocity))
+		{
+			std::cout << "How could this happen" << std::endl;
+		}
+		std::cout << "DesiredDeltaVelocity: " << desiredDeltaVelocity << std::endl;
+
+	// 5. Calculate the impulse
+
+		Vector3 impulseContact;
+		
+		impulseContact.x = desiredDeltaVelocity / deltaVelocity;
+		impulseContact.y = 0.0f;
+		impulseContact.z = 0.0f;
+
+		Vector3 impulse = impulseContact * Matrix::Inverse(basisMatrix);
+
+		std::cout << "Impulse: " << impulse << std::endl << std::endl;
+
+	// 6. Apply the impulse
+
+		// First Object
+		if (cc.rigidbody[0])
+		{
+			Vector3 impulsiveTorque = Vector3::Cross(impulse, relativeQ1);
+
+			impulse.y = 0.0f;
+			impulsiveTorque.x = 0.0f;
+			impulsiveTorque.z = 0.0f;
+
+			cc.rigidbody[0]->AddForce(impulse);
+			cc.rigidbody[0]->AddTorque(impulsiveTorque);
+		}
+
+		impulse = impulse * -1.0f;
+
+		if (cc.rigidbody[1])
+		{
+			Vector3 impulsiveTorque = Vector3::Cross(impulse, relativeQ2);
+
+			impulse.y = 0.0f;
+			impulsiveTorque.x = 0.0f;
+			impulsiveTorque.z = 0.0f;
+
+			cc.rigidbody[1]->AddForce(impulse);
+			cc.rigidbody[1]->AddTorque(impulsiveTorque);
+		}
+}
+
+void ResolveCollisionSimple(ContactContainer cc)
+{
+	Vector3 v;
+	Vector3 n;
+
+	if (cc.rigidbody[0])
+	{
+		v += cc.rigidbody[0]->GetLinearVelocity();
+	}
+
+	if (cc.rigidbody[1])
+	{
+		v -= cc.rigidbody[2]->GetLinearVelocity();
+	}
+
+	float separatingVelocity = Vector3::Dot(v, n);
+
+	if (separatingVelocity > 0)
+		return;
+	
+	float newSeparatingVelocity = -separatingVelocity;
+
+	float delta = newSeparatingVelocity - separatingVelocity;
+
+	if (cc.rigidbody[0])
+	{
+		cc.rigidbody[0]->AddForce(delta * n);
+	}
+	
+	if (cc.rigidbody[1])
+	{
+		cc.rigidbody[1]->AddForce(delta * -n);
+	}
+
 }
 
 void ResolveCollision(Rigidbody* r1, Rigidbody* r2)

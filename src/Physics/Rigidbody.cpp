@@ -4,13 +4,17 @@
 #include "../Graphics/Transform.hpp"
 #include "Collider.hpp"
 
+#include "PhysicsUtility.hpp"
+
 NS_BEGIN
 
 Rigidbody::Rigidbody() :
 	m_Mass(1.0f), m_Inertia(Matrix::Identity),
-	m_LinearDamping(0.95f), m_AngularDamping(0.95f),
+	m_LinearDamping(0.95f), m_AngularDamping(0.9f),
 	m_ForceAccumulator(Vector3::Zero), m_TorqueAccumulator(Vector3::Zero)
-{}
+{
+	m_Orientation = Quaternion::Identity;
+}
 
 Rigidbody::~Rigidbody()
 {}
@@ -22,6 +26,20 @@ void Rigidbody::OnAddToGameObject(GameObject* obj)
 	if (c)
 	{
 		c->SetRigidbody(this);
+		for (uint i = 0; i < c->GetNumShapes(); ++i)
+		{
+			Shape* s = c->GetShape<Shape>(i);
+
+			switch (s->m_Type)
+			{
+			case ShapeType::Box:
+				m_Inertia = m_Inertia * CreateBoxInertia(c->GetBox(i), m_Mass);
+				break;
+			case ShapeType::Sphere:
+				m_Inertia = m_Inertia * CreateSphereInertia(c->GetSphere(i), m_Mass);
+				break;
+			}
+		}
 	}
 }
 
@@ -58,7 +76,7 @@ void Rigidbody::Integrate()
 	m_Orientation = t->GetLocalRotation();
 
 	Vector3 linearAcceleration = m_ForceAccumulator * (1.0f / m_Mass);
-	Vector3 angularAcceleration = m_TorqueAccumulator * Matrix::Inverse(m_Inertia);
+	Vector3 angularAcceleration = m_TorqueAccumulator * m_Inertia;
 
 	m_LinearVelocity = (m_LinearVelocity + linearAcceleration) * m_LinearDamping;
 	m_AngularVelocity = (m_AngularVelocity + angularAcceleration) * m_AngularDamping;

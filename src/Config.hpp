@@ -26,6 +26,8 @@
 #include <crtdbg.h>
 #endif
 
+#define FOR(x) for(uint i = 0; i < x; ++i)
+
 typedef unsigned char uint8;
 typedef char int8;
 typedef unsigned short uint16;

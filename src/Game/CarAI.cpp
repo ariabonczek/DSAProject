@@ -51,8 +51,8 @@ void CarAI::Update(float dt) {
 
 	// turning
 	float sidewaysDot = Vector3::Dot(delta, thisObj->GetTransform()->GetRight());
-	if (sidewaysDot >= turnThreshold) thisCar->Turn(Quaternion::CreateFromAxisAngle(Vector3::Up, dt * 80.0f));
-	else if (sidewaysDot <= -turnThreshold) thisCar->Turn(Quaternion::CreateFromAxisAngle(Vector3::Up, -dt * 80.0f));
+	if (sidewaysDot >= turnThreshold) thisCar->TurnRight(dt * 80.0f);
+	else if (sidewaysDot <= -turnThreshold) thisCar->TurnLeft(-dt * 80.0f);
 }
 
 NS_END

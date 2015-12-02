@@ -8,6 +8,7 @@
 #include "GameObjectManager.h"
 #include "VectorPlate.h"
 
+#include <vector>
 using namespace LuminaGL;
 
 class TestScene : public Scene
@@ -22,6 +23,7 @@ public:
 	void MakeCollectibles();
 	void MakeCars();
 	void MakeArena();
+	void MakeVectorPlate();
 	void UnloadAssets();
 	void DrawHUD();
 private:
@@ -47,6 +49,9 @@ private:
 	GameObject* gem5;
 
 	GameObject* vectorPlate03;
+
+	std::vector<GameObject*> vectorPlate;
+
 
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 50.0f;

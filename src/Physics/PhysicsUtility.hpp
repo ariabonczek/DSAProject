@@ -33,6 +33,12 @@ T Clamp(T n, T min, T max)
 	return std::min(std::max(n, min), max);
 }
 
+/////////////////////
+// Inertia Tensors //
+/////////////////////
+Matrix CreateBoxInertia(Box* box, float mass);
+Matrix CreateSphereInertia(Sphere* sphere, float mass);
+
 /////////////////////////
 // Collision Detection //
 /////////////////////////
@@ -46,11 +52,11 @@ bool CheckAxis(Vector3 L, Vector3 T, Box* a, Box* b,
 // Fine Collision Detection //
 //////////////////////////////
 
-ContactContainer ContactGeneration(Collider* c1, Collider* c2);
-ContactContainer BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2);
+uint ContactGeneration(Collider* c1, Collider* c2, ContactContainer& cc);
+uint BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2, ContactContainer& cc);
 bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc);
 bool EdgeEdgeContact(Edge e1, Edge e2, ContactContainer& cc);
-ContactContainer BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t2);
+uint BoxSphereContact(Box* b, Sphere* s, Transform* t1, Transform* t2, ContactContainer& cc);
 
 ////////////////////
 // Closest Points //
@@ -61,6 +67,12 @@ float EdgeEdgeClosestPoints(Vector3 a1, Vector3 a2, Vector3 b1, Vector3 b2, Vect
 // Collision Resolution //
 //////////////////////////
 float CalculateSeparatingVelocity(Rigidbody* r1, Rigidbody* r2);
+/// <summary>
+/// Assumes X is the contact normal and outputs y and z
+/// </summary>
+void CreateBasisAxes(Vector3 x, Vector3& y, Vector3& z);
+void ResolveCollision(ContactContainer cc);
+void ResolveCollisionSimple(ContactContainer cc);
 void ResolveCollision(Rigidbody* r1, Rigidbody* r2);
 void ResolveCollision(Rigidbody* r, Collider* c);
 

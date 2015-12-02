@@ -85,14 +85,21 @@ void PhysicsContext::Simulate(float timeStep)
 	// Fine Collision Detection
 	for (uint i = 0; i < coarse.size(); ++i)
 	{
-		ContactContainer cc = ContactGeneration(coarse[i].collider1, coarse[i].collider2);
-		contacts.push_back(cc);
-		std::cout << "Contact Point: " << cc.contactPoint << std::endl;
+		ContactContainer cc;
+		if (ContactGeneration(coarse[i].collider1, coarse[i].collider2, cc))
+		{
+			contacts.push_back(cc);
+			//std::cout << "Contact Point: " << cc.contactPoint << std::endl;
+		//	std::cout << "Contact Normal: " << cc.contactNormal << std::endl;
+		}
 	}
 	
 	// Collision Resolution
 	for (uint i = 0; i < contacts.size(); ++i)
-	{
+	{	
+		//ResolveCollision(contacts[i]);
+		//continue;
+
 		Rigidbody* r1 = contacts[i].rigidbody[0];
 		Rigidbody* r2 = contacts[i].rigidbody[1];
 		
