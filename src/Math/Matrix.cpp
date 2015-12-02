@@ -20,6 +20,20 @@ m31(m31), m32(m32), m33(m33), m34(m34),
 m41(m41), m42(m42), m43(m43), m44(m44)
 {}
 
+Matrix::Matrix(Vector3 x, Vector3 y, Vector3 z):
+	m11(x.x), m12(x.y), m13(x.z), m14(0.0f),
+	m21(y.x), m22(y.y), m23(y.z), m24(0.0f),
+	m31(z.x), m32(z.y), m33(z.z), m34(0.0f),
+	m41(0.0f), m42(0.0f), m43(0.0f), m44(1.0f)
+{}
+
+Matrix::Matrix(Vector4 x, Vector4 y, Vector4 z, Vector4 w):
+	m11(x.x), m12(x.y), m13(x.z), m14(x.w),
+	m21(y.x), m22(y.y), m23(y.z), m24(y.w),
+	m31(z.x), m32(z.y), m33(z.z), m34(z.w),
+	m41(w.x), m42(w.y), m43(w.z), m44(w.w)
+{}
+
 float Matrix::Determinant()
 {
 	return m11 * DeterminantHelper(m22, m23, m24, m32, m33, m34, m42, m43, m44) -

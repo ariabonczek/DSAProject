@@ -27,7 +27,8 @@ public:
 	void OnTrigger(Collider* c);
 
 	void Accelerate(Vector3 acceleration);
-	void Turn(Quaternion rotation);
+	void TurnLeft(float amount);
+	void TurnRight(float amount);
 
 	void CalcForce();
 	void ApplyForce(Vector3 force);

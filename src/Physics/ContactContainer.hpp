@@ -20,6 +20,7 @@ struct ContactContainer
 	Vector3 contactPoint;
 	Vector3 contactNormal;
 	float penetrationDepth;
+	Vector3 objectOrigin[2];
 	Rigidbody* rigidbody[2];
 };
 

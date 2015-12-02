@@ -126,6 +126,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Physics\Collider.cpp" />
+    <ClCompile Include="Physics\Grid.cpp" />
     <ClCompile Include="Physics\PhysicsContext.cpp" />
     <ClCompile Include="Physics\PhysicsUtility.cpp" />
     <ClCompile Include="Physics\Rigidbody.cpp" />
@@ -167,6 +168,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClInclude Include="Math\Vector.hpp" />
     <ClInclude Include="Physics\Collider.hpp" />
     <ClInclude Include="Physics\ContactContainer.hpp" />
+    <ClInclude Include="Physics\Grid.hpp" />
     <ClInclude Include="Physics\PhysicsContext.hpp" />
     <ClInclude Include="Physics\PhysicsUtility.hpp" />
     <ClInclude Include="Physics\Rigidbody.hpp" />

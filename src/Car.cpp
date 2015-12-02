@@ -59,9 +59,16 @@ void Car::Accelerate(Vector3 acceleration)
 	p_Rigidbody->AddForce(acceleration);
 }
 
-void Car::Turn(Quaternion rotation)
+void Car::TurnLeft(float amount)
 {
-	p_CachedTransform->Rotate(rotation);
+	p_Rigidbody->AddTorque(Vector3::Up * -amount);
+	//p_CachedTransform->Rotate(rotation);
+}
+
+void Car::TurnRight(float amount)
+{
+	p_Rigidbody->AddTorque(Vector3::Up * amount);
+	//p_CachedTransform->Rotate(rotation);
 }
 
 void Car::CalcForce()

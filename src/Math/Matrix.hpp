@@ -24,6 +24,8 @@ struct Matrix
 	//////////////////
 	Matrix();
 	Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
+	Matrix(Vector3 x, Vector3 y, Vector3 z);
+	Matrix(Vector4 x, Vector4 y, Vector4 z, Vector4 w);
 
 	//////////////////////
 	// Static Instances //

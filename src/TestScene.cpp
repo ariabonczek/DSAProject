@@ -441,13 +441,13 @@ void TestScene::MovePlayer(float dt)
 
 	if (Input::GetKey(GLFW_KEY_A))
 	{
-		car->Turn(Quaternion::CreateFromAxisAngle(Vector3::Up, -dt * 40.0f));
+		car->TurnLeft(dt * 20.0f);
 		//playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * -dt);
 	}
 
 	if (Input::GetKey(GLFW_KEY_D))
 	{
-		car->Turn(Quaternion::CreateFromAxisAngle(Vector3::Up, dt * 40.0f));
+		car->TurnRight(dt * 20.0f);
 		//playerCar->ApplyForce(playerCar->GetTransform()->GetRight() * dt);
 	}
 }
