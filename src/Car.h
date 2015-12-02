@@ -40,6 +40,9 @@ public:
 	
 	Vector3 GetVelocity();
 
+	void SetEnemey(bool);
+	bool IsEnemy();
+
 private:
 	Transform* p_CachedTransform;
 	Collider* p_Collider;
@@ -52,6 +55,7 @@ private:
 	const float MAX_FORCE = 10.0f;
 	float mass;
 
+	bool enemyTeam = false;
 };
 
 NS_END

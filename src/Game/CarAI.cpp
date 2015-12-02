@@ -10,7 +10,7 @@ CarAI::CarAI() {}
 
 
 void CarAI::Initialize() {
-	turnThreshold = 0.075f;
+	turnThreshold = 0.5f;
 	minSpeed = 1;
 }
 
@@ -29,7 +29,8 @@ void CarAI::Update(float dt) {
 
 	for (int i = 0; i < objManager->GetSize(); i++) {
 		GameObject *obj = objManager->GetList()[i];
-		if (obj->GetComponent<Car>() == nullptr) continue;
+		if (obj->GetComponent<Car>() == nullptr) continue; // this is not a car
+		if (obj->GetComponent<Car>()->IsEnemy() == thisCar->IsEnemy()) continue; // this car is on the same team
 
 		if (obj != thisObj) {
 			float dist = objManager->calcDistance(obj, thisObj);
@@ -51,8 +52,8 @@ void CarAI::Update(float dt) {
 
 	// turning
 	float sidewaysDot = Vector3::Dot(delta, thisObj->GetTransform()->GetRight());
-	if (sidewaysDot >= turnThreshold) thisCar->TurnRight(dt * 80.0f);
-	else if (sidewaysDot <= -turnThreshold) thisCar->TurnLeft(-dt * 80.0f);
+	if (sidewaysDot >= turnThreshold) thisCar->TurnRight(-dt * 10.0f);
+	else if (sidewaysDot <= -turnThreshold) thisCar->TurnLeft(dt * 10.0f);
 }
 
 NS_END

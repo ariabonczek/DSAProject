@@ -91,4 +91,13 @@ void Car::Rotate(Quaternion rotation)
 	p_CachedTransform->Rotate(rotation);
 }
 
+
+void Car::SetEnemey(bool val) {
+	enemyTeam = val;
+}
+
+bool Car::IsEnemy() {
+	return enemyTeam;
+}
+
 NS_END

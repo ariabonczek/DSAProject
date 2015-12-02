@@ -254,6 +254,7 @@ void TestScene::MakeCars()
 		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
 		//car->AddComponent<CarAI>(new CarAI());
+		car->GetComponent<Car>()->SetEnemey(true);
 
 		Collider* c = new Collider();
 		Box* box = new Box();
