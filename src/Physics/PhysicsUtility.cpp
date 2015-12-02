@@ -441,10 +441,30 @@ float CalculateSeparatingVelocity(Rigidbody* r1, Rigidbody* r2)
 
 void CreateBasisAxes(Vector3 x, Vector3& y, Vector3& z)
 {
-	(x == Vector3::Up) ? y = Vector3::Forward : y = Vector3::Up;
+	if (abs(x.x) > abs(x.y))
+	{
+		float s = 1.0f / sqrtf(x.z * x.z + x.x * x.x);
 
-	z = Vector3::Cross(x, y).Normalized();
-	y = Vector3::Cross(z, x);
+		y.x = x.z*s;
+		y.y = 0.0f;
+		y.z = -x.x*s;
+
+		z.x = x.y * y.x;
+		z.y = z.z * y.x - z.x * y.z;
+		z.z = -x.y * y.x;
+	}
+	else
+	{
+		float s = 1.0f / sqrtf(x.z*x.z + x.y*x.y);
+
+		y.x = 0.0f;
+		y.y = -x.z*s;
+		y.z = x.y*s;
+
+		z.x = x.y*y.z - x.z*y.y;
+		z.y = -x.x*y.z;
+		z.z = x.x*y.y;
+	}
 }
 
 void ResolveCollision(ContactContainer cc)
@@ -452,6 +472,7 @@ void ResolveCollision(ContactContainer cc)
 	// 1. Create basis matrix
 	
 	Vector3 y, z;
+
 	CreateBasisAxes(cc.contactNormal, y, z);
 	Matrix basisMatrix(cc.contactNormal, y, z);
 
@@ -461,6 +482,11 @@ void ResolveCollision(ContactContainer cc)
 		
 		Vector3 relativeQ1 = cc.contactPoint - cc.objectOrigin[0];
 		Vector3 relativeQ2 = cc.contactPoint - cc.objectOrigin[1];
+
+		std::cout << "Object1 Position: " << cc.objectOrigin[0] << std::endl;
+		std::cout << "Object2 Position: " << cc.objectOrigin[1] << std::endl;
+		std::cout << "Qrel1: " << relativeQ1 << std::endl;
+		std::cout << "Qrel2: " << relativeQ2 << std::endl;
 
 		// First Object
 		if(cc.rigidbody[0])
@@ -493,6 +519,8 @@ void ResolveCollision(ContactContainer cc)
 
 			deltaVelocity += angularComponent;
 		}
+
+		std::cout << "Delta Velocity: " << deltaVelocity << std::endl;
 
 	// 3. Impulse change by velocity
 
@@ -527,6 +555,12 @@ void ResolveCollision(ContactContainer cc)
 			desiredDeltaVelocity += -contactVelocity.x * (1 + cc.rigidbody[1]->GetRestitution());
 		}
 
+		if (isnan(desiredDeltaVelocity))
+		{
+			std::cout << "How could this happen" << std::endl;
+		}
+		std::cout << "DesiredDeltaVelocity: " << desiredDeltaVelocity << std::endl;
+
 	// 5. Calculate the impulse
 
 		Vector3 impulseContact;
@@ -537,6 +571,8 @@ void ResolveCollision(ContactContainer cc)
 
 		Vector3 impulse = impulseContact * Matrix::Inverse(basisMatrix);
 
+		std::cout << "Impulse: " << impulse << std::endl << std::endl;
+
 	// 6. Apply the impulse
 
 		// First Object
@@ -546,7 +582,7 @@ void ResolveCollision(ContactContainer cc)
 
 			impulse.y = 0.0f;
 			impulsiveTorque.x = 0.0f;
-			impulsiveTorque.y = 0.0f;
+			impulsiveTorque.z = 0.0f;
 
 			cc.rigidbody[0]->AddForce(impulse);
 			cc.rigidbody[0]->AddTorque(impulsiveTorque);
@@ -560,11 +596,47 @@ void ResolveCollision(ContactContainer cc)
 
 			impulse.y = 0.0f;
 			impulsiveTorque.x = 0.0f;
-			impulsiveTorque.y = 0.0f;
+			impulsiveTorque.z = 0.0f;
 
 			cc.rigidbody[1]->AddForce(impulse);
 			cc.rigidbody[1]->AddTorque(impulsiveTorque);
 		}
+}
+
+void ResolveCollisionSimple(ContactContainer cc)
+{
+	Vector3 v;
+	Vector3 n;
+
+	if (cc.rigidbody[0])
+	{
+		v += cc.rigidbody[0]->GetLinearVelocity();
+	}
+
+	if (cc.rigidbody[1])
+	{
+		v -= cc.rigidbody[2]->GetLinearVelocity();
+	}
+
+	float separatingVelocity = Vector3::Dot(v, n);
+
+	if (separatingVelocity > 0)
+		return;
+	
+	float newSeparatingVelocity = -separatingVelocity;
+
+	float delta = newSeparatingVelocity - separatingVelocity;
+
+	if (cc.rigidbody[0])
+	{
+		cc.rigidbody[0]->AddForce(delta * n);
+	}
+	
+	if (cc.rigidbody[1])
+	{
+		cc.rigidbody[1]->AddForce(delta * -n);
+	}
+
 }
 
 void ResolveCollision(Rigidbody* r1, Rigidbody* r2)

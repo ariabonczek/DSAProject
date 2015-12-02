@@ -72,6 +72,7 @@ float CalculateSeparatingVelocity(Rigidbody* r1, Rigidbody* r2);
 /// </summary>
 void CreateBasisAxes(Vector3 x, Vector3& y, Vector3& z);
 void ResolveCollision(ContactContainer cc);
+void ResolveCollisionSimple(ContactContainer cc);
 void ResolveCollision(Rigidbody* r1, Rigidbody* r2);
 void ResolveCollision(Rigidbody* r, Collider* c);
 
