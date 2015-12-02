@@ -39,7 +39,7 @@ private:
 	/*
 	Vector3 direction;
 	float magnitude;*/
-	GameObjectManager *objManager;
+	GameObjectManager* objManager;
 	Rigidbody *rb;
 	GameObject* go;
 

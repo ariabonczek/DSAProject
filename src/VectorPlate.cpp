@@ -1,5 +1,4 @@
 #include "VectorPlate.h"
-
 #include "Graphics\Mesh.hpp"
 #include "Physics\Collider.hpp"
 #include "Physics\Rigidbody.hpp"
@@ -9,8 +8,6 @@ NS_BEGIN
 
 VectorPlate::VectorPlate()
 {
-	
-
 }
 
 VectorPlate::VectorPlate(const VectorPlate& object)
@@ -31,28 +28,6 @@ void VectorPlate::Initialize()
 	p_Collider = p_GameObject->GetComponent<Collider>();
 }
 
-
-/*
-void VectorPlate::setDirection(Vector3 direction)
-{
-	this->direction = direction;
-}
-
-Vector3 VectorPlate::getDirection()
-{
-	return direction;
-}
-
-void VectorPlate::setMagnitude(float value)
-{
-	this->magnitude = value;
-}
-
-float VectorPlate::getMagnitude()
-{
-	return magnitude;
-}*/
-
 void VectorPlate::Update(float dt)
 {
 	
@@ -62,7 +37,6 @@ void VectorPlate::OnAddToGameObject(GameObject* object)
 {
 	LuminaBehaviour::OnAddToGameObject(object);
 	p_CachedTransform = object->GetComponent<Transform>();
-	objManager = GameObjectManager::GetInstance();
 }
 
 void VectorPlate::OnTrigger(Collider* c)

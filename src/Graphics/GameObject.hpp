@@ -5,6 +5,7 @@
 #include "Transform.hpp"
 #include <typeinfo>
 #include <unordered_map>
+#include "../GameObjectManager.h"
 
 NS_BEGIN
 
@@ -87,6 +88,7 @@ protected:
 	Mesh* mesh;
 	Material* material;
 	int crystals;
+	uint id;
 };
 
 NS_END

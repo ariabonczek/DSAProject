@@ -1,13 +1,14 @@
 #include "Collectible.h"
-#include "GameObjectManager.h"
+//#include "GameObjectManager.h"
 #include "Graphics\Mesh.hpp"
 
+class GameObjectManager;
 NS_BEGIN
 
 Collectible::Collectible(float m, float s){
 	mass = m;
 	size = s;
-	maxSize = 0.5f;
+	maxSize = 0.7f;
 	maxMass = 4.5f;
 	hit = false;
 }
@@ -18,13 +19,17 @@ void Collectible::Initialize() {
 
 void Collectible::Destroy() {
 	hit = true;
-	GameObjectManager::GetInstance()->RemoveFromList(this->GetGameObject()->GetName());
+	//hit GameObject*
+
+	GameObjectManager::GetInstance()->FindCollided(this->GetGameObject());
+
+
 	
 	std::vector<Shape*> d = p_Collider->GetShapeVector();
 	
 	for (uint i = 0; i < d.size(); i++) {
 		if (p_Collider->GetS_Shape() == d[i]) {
-			//p_Collider->RemoveShape(i);
+			p_Collider->RemoveShape(i);
 		}
 	}
 }

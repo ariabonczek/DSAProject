@@ -2,7 +2,7 @@
 #include "Utility\Timer.hpp"
 #include "Utility\FileSystem.hpp"
 #include "Graphics\TextRenderer.hpp"
-
+#include <unordered_map>
 #include <string>
 #include "Game/CarAI.hpp"
 
@@ -68,12 +68,14 @@ void TestScene::LoadAssets()
 	camera->SetLens(0.25f * 3.1415f, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1f, 200.0f);
 
 
+	/*
 	// Initialize Scene
-	for (uint i = 0; i < manager->GetSize(); i++)
+	for (std::unordered_map<uint, GameObject*>::iterator it = manager->GetList().begin(); it !=  manager->GetList().end(); ++it)
 	{
-		manager->GetFromList(i)->Initialize();
-	}
-
+		//manager->GetObject(is->first)->Initialize();
+		it->second->Initialize();
+	}*/
+	manager->InitializeObjects();
 	m_PhysicsContext.Initialize(manager->GetList());
 }
 
@@ -102,7 +104,7 @@ void TestScene::Update(float dt)
 	playerCar->Update(dt);
 
 	/*
-	for (GameObject* o : objects)
+	( (GameObject* o : objects)
 	{
 		o->Update(dt);
 	}*/
@@ -163,13 +165,13 @@ void TestScene::MakeCollectibles() {
 
 	//Collectible
 	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
-	gem1->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem1->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem1->AddComponent<Collider>(d);
 	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(gem1);
+	manager->AddObject(manager->GetNextID(),gem1);
 
 	Collider* a = new Collider();
 	a->SetTrigger(true);
@@ -178,13 +180,13 @@ void TestScene::MakeCollectibles() {
 	a->AddBox(a_box);
 
 	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
-	gem2->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem2->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem2->AddComponent<Collider>(a);
 	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem2->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(gem2);
+	manager->AddObject(manager->GetNextID(), gem2);
 
 	Collider* b = new Collider();
 	b->SetTrigger(true);
@@ -193,13 +195,13 @@ void TestScene::MakeCollectibles() {
 	b->AddBox(b_box);
 
 	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
-	gem3->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem3->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem3->AddComponent<Collider>(b);
 	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem3->GetTransform()->SetLocalPosition(20.0f, 2.0f, 30.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(gem3);
+	manager->AddObject(manager->GetNextID(), gem3);
 
 	Collider* c = new Collider();
 	c->SetTrigger(true);
@@ -208,13 +210,14 @@ void TestScene::MakeCollectibles() {
 	c->AddBox(c_box);
 
 	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
+	gem4->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 	gem4->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
-	
+
 	gem4->AddComponent<Collider>(c);
 	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem4->GetTransform()->SetLocalPosition(-35.0f, 2.0f, -10.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(gem4);
+	manager->AddObject(manager->GetNextID(), gem4);
 	
 	Collider* e = new Collider();
 	e->SetTrigger(true);
@@ -223,13 +226,13 @@ void TestScene::MakeCollectibles() {
 	e->AddBox(e_box);
 
 	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
-	gem5->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem5->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
 
 	gem5->AddComponent<Collider>(e);
 	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
 	//objects.push_back(testCollectible);
-	manager->AddToList(gem5);
+	manager->AddObject(manager->GetNextID(), gem5);
 }
 
 void TestScene::MakeCars()
@@ -247,7 +250,7 @@ void TestScene::MakeCars()
 	playerCar->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 	playerCar->GetTransform()->SetLocalPosition(0.0f, 1.0f, 0.0f);
 
-	manager->AddToList(playerCar);
+	manager->AddObject(manager->GetNextID(), playerCar);
 
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
@@ -266,7 +269,7 @@ void TestScene::MakeCars()
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
 		//objects.push_back(car);
-		manager->AddCar(car);
+		//manager->AddCar(car);
 	}
 }
 
@@ -295,7 +298,7 @@ void TestScene::MakeVectorPlate()
 		tmp->GetTransform()->SetLocalScale(Vector3(r / 10));
 
 
-		manager->AddToList(tmp);
+		manager->AddObject(manager->GetNextID(), tmp);
 
 	}
 }
@@ -372,11 +375,11 @@ void TestScene::MakeArena()
 		//floor->AddComponent<Collider>(c);
 	}
 
-	manager->AddToList(wall1);
-	manager->AddToList(wall2);
-	manager->AddToList(wall3);
-	manager->AddToList(wall4);
-	manager->AddToList(floor);
+	manager->AddObject(manager->GetNextID(), wall1);
+	manager->AddObject(manager->GetNextID(), wall2);
+	manager->AddObject(manager->GetNextID(), wall3);
+	manager->AddObject(manager->GetNextID(), wall4);
+	manager->AddObject(manager->GetNextID(), floor);
 
 }
 

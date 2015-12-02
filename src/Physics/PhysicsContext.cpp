@@ -11,14 +11,14 @@ NS_BEGIN
 
 PhysicsContext g_PhysicsContext;
 
-void PhysicsContext::Initialize(std::vector<GameObject*> allObjects)
+void PhysicsContext::Initialize(std::unordered_map<uint, GameObject*> allObjects)
 {
 	contacts.reserve(100);
 
 	uint size = allObjects.size();
-	for (uint i = 0; i < size; ++i)
+	for (std::unordered_map<uint, GameObject*>::iterator it = allObjects.begin(); it != allObjects.end(); ++it)
 	{
-		Collider* collider = allObjects[i]->GetComponent<Collider>();
+		Collider* collider = it->second->GetComponent<Collider>();
 		if (collider)
 		{
 			PhysicsObject o;

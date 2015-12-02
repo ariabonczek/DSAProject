@@ -7,11 +7,12 @@ GameObjectManager* GameObjectManager::instance = nullptr;
 void GameObjectManager::Init(void)
 {
 	size = 0;
+	nextID = 0;
 }
 
 void GameObjectManager::Release(void)
 {
-	gameObjectList.clear();
+	objects.clear();
 	//carList.clear();
 	//collectibleList.clear();
 }
@@ -36,7 +37,6 @@ void GameObjectManager::ReleaseInstance()
 		delete instance;
 		instance = nullptr;
 	}
-	
 }
 
 GameObjectManager::GameObjectManager()
@@ -56,9 +56,29 @@ GameObjectManager::~GameObjectManager(){ Release(); };
 
 int GameObjectManager::GetSize()
 {
-	return gameObjectList.size();
+	return objects.size();
 }
 
+void GameObjectManager::InitializeObjects(){
+
+	for (std::unordered_map<uint, GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		it->second->Initialize();
+	}
+}
+
+GameObject* GameObjectManager::GetCarComponent(){
+	for (std::unordered_map<uint, GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		if (it->second->GetComponent<Car>() == nullptr)
+		{
+			continue;
+		}
+		return it->second;
+	}
+}
+
+/*
 void GameObjectManager::AddToList(GameObject* object)
 {
 	gameObjectList.push_back(object);
@@ -67,10 +87,8 @@ void GameObjectManager::AddToList(GameObject* object)
 
 void GameObjectManager::AddCar(GameObject* object)
 {
-	
 	gameObjectList.push_back(object);
-	//carList.push_back(object);
-	
+	//carList.push_back(object);	
 }
 
 void GameObjectManager::AddCollectible(GameObject* object)
@@ -94,34 +112,50 @@ GameObject* GameObjectManager::GetFromList(std::string name)
 
 int GameObjectManager::GetIndex(std::string name)
 {
-	//unsure if needed
-	return -1;
+//unsure if needed
+return -1;
+}
+*/
+
+uint GameObjectManager::GetNextID() {
+	uint temp = nextID;
+	nextID++;
+	return temp;
+}
+
+uint GameObjectManager::GetID(){
+	return 0;
+}
+
+GameObject* GameObjectManager::GetObject(uint id){
+	return objects.at(id);
 }
 
 void GameObjectManager::Update(float dt)
 {
-	for (int i = 0; i < gameObjectList.size(); i++)
+	for (std::unordered_map<uint, GameObject*>::iterator is = objects.begin(); is != objects.end(); ++is)
 	{
-		gameObjectList[i]->Update(dt);
+		objects.at(is->first)->Update(dt);
 	}
 }
 
 void GameObjectManager::Draw()
 {
-	for (int i = 0; i < gameObjectList.size(); i++)
+	for (std::unordered_map<uint, GameObject*>::iterator is = objects.begin(); is != objects.end(); ++is)
 	{
-		gameObjectList[i]->Draw();
+		GetObject(is->first)->Draw();
 	}
 }
 
-void GameObjectManager::SetMesh(int index, Mesh* mesh)
+
+void GameObjectManager::SetMesh(int id, Mesh* mesh)
 {
-	gameObjectList[index]->SetMesh(mesh);
+	objects.at(id)->SetMesh(mesh);
 }
 
 void GameObjectManager::SetMaterial(int index, Material* material)
 {
-	gameObjectList[index]->SetMaterial(material);
+	objects.at(index)->SetMaterial(material);
 }
 
 float GameObjectManager::calcDistance(GameObject* a, GameObject* b)
@@ -134,21 +168,41 @@ float GameObjectManager::calcDistance(GameObject* a, GameObject* b)
 		pow(aTrans->GetWorldPosition().z - bTrans->GetWorldPosition().z, 2.0f));
 }
 
-std::vector<GameObject*> GameObjectManager::GetList()
+
+
+std::unordered_map<uint, GameObject*> GameObjectManager::GetList()
 {
-	return gameObjectList;
+	return objects;
 }
 
-void GameObjectManager::RemoveFromList(std::string name)
+void GameObjectManager::AddObject(uint id, GameObject* object){
+	std::pair<uint, GameObject*> newPair(id, object);
+	objects.insert(newPair);
+}
+
+void GameObjectManager::RemoveFromList(uint id)
 {
-	for (int i = 0; i < gameObjectList.size(); i++)
+	for (std::unordered_map<uint, GameObject*>::iterator is = objects.begin(); is != objects.end(); ++is)
 	{
-		if (name == gameObjectList[i]->GetName()) {
-			gameObjectList.erase(gameObjectList.begin()+i);
-			gameObjectList.shrink_to_fit();
+		if (GetObject(is->first) == objects.at(id) ){
+			std::unordered_map<uint, GameObject*>::iterator it = objects.find(id);
+			if (it->second)
+				objects.erase(it);
+
 			break;
 		}
 	}
+}
+
+void GameObjectManager::FindCollided(GameObject* hit){
+	for (std::unordered_map<uint, GameObject*>::iterator is = objects.begin(); is != objects.end(); ++is)
+	{
+		if (hit == is->second){
+			RemoveFromList(is->first);
+			break;
+		}
+	}
+
 }
 
 NS_END

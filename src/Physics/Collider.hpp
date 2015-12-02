@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef _COLLIDER_H_
+#define _COLLIDER_H_
 #include "../Config.hpp"
 
 #include "../Graphics/LuminaBehaviour.hpp"
@@ -7,7 +8,6 @@
 #include "Shape.hpp"
 
 NS_BEGIN
-
 class Rigidbody;
 
 /// <summary>
@@ -54,3 +54,4 @@ private:
 };
 
 NS_END
+#endif

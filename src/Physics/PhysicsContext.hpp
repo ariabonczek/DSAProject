@@ -2,6 +2,7 @@
 
 #include "../Config.hpp"
 #include "ContactContainer.hpp"
+#include <unordered_map>
 #include <vector>
 
 NS_BEGIN
@@ -27,7 +28,7 @@ public:
 	/// <summary>
 	/// NOTE: MUST BE CALLED AFTER THE OBJECTS HAVE BEEN INITIALIZED
 	/// </summary>
-	void Initialize(std::vector<GameObject*> allObjects);
+	void Initialize(std::unordered_map<uint, GameObject*> allObjects);
 
 	/// <summary>
 	/// 

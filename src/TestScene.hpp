@@ -48,7 +48,10 @@ private:
 	GameObject* gem4;
 	GameObject* gem5;
 
+	GameObject* vectorPlate03;
+
 	std::vector<GameObject*> vectorPlate;
+
 
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 50.0f;

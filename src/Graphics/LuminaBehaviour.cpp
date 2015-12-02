@@ -1,10 +1,13 @@
 #include "LuminaBehaviour.hpp"
+#include "../GameObjectManager.h"
 //
 NS_BEGIN
 
 
 LuminaBehaviour::LuminaBehaviour()
-{}
+{
+	//id = GameObjectManager::GetInstance()->GetNextID();
+}
 
 LuminaBehaviour::~LuminaBehaviour()
 {}
