@@ -225,65 +225,65 @@ uint BoxBoxContact(Box* b1, Box* b2, Transform* t1, Transform* t2, ContactContai
 
 	// TODO: Add in edge-edge
 
-	Vector3 v2 = t2->GetLocalPosition();
-	
-	Vector3 vertices2[8] = {
-		Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-		Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
-	
-		Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-		Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
-	
-		Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-		Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
-	
-		Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
-		Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z)
-	};
-	
-	Edge edges1[12] = {
-		// Top
-		Edge(vertices1[0], vertices1[1]), Edge(vertices1[1], vertices1[5]),
-		Edge(vertices1[5], vertices1[4]), Edge(vertices1[4], vertices1[0]),
-	
-		// Middle
-		Edge(vertices1[0], vertices1[2]), Edge(vertices1[1], vertices1[3]),
-		Edge(vertices1[5], vertices1[7]), Edge(vertices1[4], vertices1[6]),
-	
-		// Bottom
-		Edge(vertices1[2], vertices1[3]), Edge(vertices1[3], vertices1[7]),
-		Edge(vertices1[7], vertices1[6]), Edge(vertices1[6], vertices1[2])
-	};
-	
-	Edge edges2[12] = {
-		// Top
-		Edge(vertices2[0], vertices2[1]), Edge(vertices2[1], vertices2[5]),
-		Edge(vertices2[5], vertices2[4]), Edge(vertices2[4], vertices2[0]),
-	
-		// Middle
-		Edge(vertices2[0], vertices2[2]), Edge(vertices2[1], vertices2[3]),
-		Edge(vertices2[5], vertices2[7]), Edge(vertices2[4], vertices2[6]),
-	
-		// Bottom
-		Edge(vertices2[2], vertices2[3]), Edge(vertices2[3], vertices2[7]),
-		Edge(vertices2[7], vertices2[6]), Edge(vertices2[6], vertices2[2])
-	};
-	
-	for (uint i = 0; i < 12; ++i)
-	{
-		for (uint j = 0; j < 12; ++j)
-		{
-			ContactContainer temp;
-			if (EdgeEdgeContact(edges1[i], edges2[j], temp))
-			{
-				if (temp.penetrationDepth > cc.penetrationDepth)
-				{
-					ret = 1;
-					cc = temp;
-				}
-			}
-		}
-	}
+	//Vector3 v2 = t2->GetLocalPosition();
+	//
+	//Vector3 vertices2[8] = {
+	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
+	//
+	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+	//	Vector3(v2.x + b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
+	//
+	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y + b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z),
+	//
+	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z + b2->m_HalfWidth.z),
+	//	Vector3(v2.x - b2->m_HalfWidth.x, v2.y - b2->m_HalfWidth.y, v2.z - b2->m_HalfWidth.z)
+	//};
+	//
+	//Edge edges1[12] = {
+	//	// Top
+	//	Edge(vertices1[0], vertices1[1]), Edge(vertices1[1], vertices1[5]),
+	//	Edge(vertices1[5], vertices1[4]), Edge(vertices1[4], vertices1[0]),
+	//
+	//	// Middle
+	//	Edge(vertices1[0], vertices1[2]), Edge(vertices1[1], vertices1[3]),
+	//	Edge(vertices1[5], vertices1[7]), Edge(vertices1[4], vertices1[6]),
+	//
+	//	// Bottom
+	//	Edge(vertices1[2], vertices1[3]), Edge(vertices1[3], vertices1[7]),
+	//	Edge(vertices1[7], vertices1[6]), Edge(vertices1[6], vertices1[2])
+	//};
+	//
+	//Edge edges2[12] = {
+	//	// Top
+	//	Edge(vertices2[0], vertices2[1]), Edge(vertices2[1], vertices2[5]),
+	//	Edge(vertices2[5], vertices2[4]), Edge(vertices2[4], vertices2[0]),
+	//
+	//	// Middle
+	//	Edge(vertices2[0], vertices2[2]), Edge(vertices2[1], vertices2[3]),
+	//	Edge(vertices2[5], vertices2[7]), Edge(vertices2[4], vertices2[6]),
+	//
+	//	// Bottom
+	//	Edge(vertices2[2], vertices2[3]), Edge(vertices2[3], vertices2[7]),
+	//	Edge(vertices2[7], vertices2[6]), Edge(vertices2[6], vertices2[2])
+	//};
+	//
+	//for (uint i = 0; i < 12; ++i)
+	//{
+	//	for (uint j = 0; j < 12; ++j)
+	//	{
+	//		ContactContainer temp;
+	//		if (EdgeEdgeContact(edges1[i], edges2[j], temp))
+	//		{
+	//			if (temp.penetrationDepth > cc.penetrationDepth)
+	//			{
+	//				ret = 1;
+	//				cc = temp;
+	//			}
+	//		}
+	//	}
+	//}
 
 	return ret;
 }
@@ -299,12 +299,12 @@ bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc)
 	normal = t->GetRight() * ((v.x < 0.0f) ? -1.0f : 1.0f);
 
 	float depth = b->m_HalfWidth.y - abs(v.y);
-	if (depth < 0) return 0;
-	else if (depth < minDepth)
-	{
-		minDepth = depth;
-		normal = t->GetUp() * ((v.y < 0.0f) ? -1.0f : 1.0f);
-	}
+	//if (depth < 0) return 0;
+	//else if (depth < minDepth)
+	//{
+	//	minDepth = depth;
+	//	normal = t->GetUp() * ((v.y < 0.0f) ? -1.0f : 1.0f);
+	//}
 	
 	depth = b->m_HalfWidth.z - abs(v.z);
 	if (depth < 0) return 0;
@@ -608,7 +608,7 @@ void ResolveCollisionSimple(ContactContainer cc)
 	Vector3 v;
 	Vector3 n = cc.contactNormal;
 
-	std::cout << "Contact Normal: " << cc.contactNormal << std::endl;
+	std::cout << "Contact Normal: " << n << std::endl;
 
 	if (cc.rigidbody[0])
 	{
@@ -617,12 +617,10 @@ void ResolveCollisionSimple(ContactContainer cc)
 
 	if (cc.rigidbody[1])
 	{
-		v -= cc.rigidbody[2]->GetLinearVelocity();
+		v -= cc.rigidbody[1]->GetLinearVelocity();
 	}
 
 	float separatingVelocity = Vector3::Dot(v, n);
-
-	std::cout << "Separating Velocity: " << separatingVelocity << std::endl << std::endl;
 
 	if (separatingVelocity > 0)
 		return;
