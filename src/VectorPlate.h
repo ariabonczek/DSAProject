@@ -13,7 +13,7 @@ NS_BEGIN
 class VectorPlate : public LuminaBehaviour
 {
 public:
-	VectorPlate(float magnitude);
+	VectorPlate();
 	VectorPlate(const VectorPlate& car);
 	~VectorPlate();
 
@@ -22,7 +22,7 @@ public:
 	void Initialize();
 	
 	void Update(float dt);
-	void onCollision(Collider* c);
+	
 
 	void setDirection(Vector3 direction);
 	void setMagnitude(float value);
@@ -36,11 +36,12 @@ private:
 	Transform* p_CachedTransform;
 	Collider* p_Collider;
 
-
+	/*
 	Vector3 direction;
-	float magnitude;
+	float magnitude;*/
 	GameObjectManager *objManager;
-
+	Rigidbody *rb;
+	GameObject* go;
 
 };
 NS_END

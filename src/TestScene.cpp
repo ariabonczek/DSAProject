@@ -271,29 +271,32 @@ void TestScene::MakeCars()
 
 void TestScene::MakeVectorPlate()
 {
+	for (int i = 0; i < 20; i++)
+	{
+		GameObject* tmp;
+		tmp = new GameObject("VectorPlate", meshes[3], mats[0]);
 
-	vectorPlate = new GameObject("VectorPlate", meshes[3], mats[0]);
+		tmp->AddComponent<VectorPlate>(new VectorPlate());
 
-	vectorPlate->AddComponent<VectorPlate>(new VectorPlate(.5f));
+		Collider* c = new Collider;
+		c->SetTrigger(true);
 
-	Collider* c = new Collider;
-	c->SetTrigger(true);
-	
-	Box* box = new Box();
-	box->m_HalfWidth = Vector3(1.0f);
-	c->AddBox(box);
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(1.0f);
+		c->AddBox(box);
 
-	vectorPlate->AddComponent<Collider>(c);
-	vectorPlate->AddComponent<Rigidbody>(new Rigidbody());
-	vectorPlate->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-	vectorPlate->GetTransform()->SetLocalPosition(5.0f, 1.0f, 5.0f);
-	vectorPlate->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() * 360));
-
-
-
-	manager->AddToList(vectorPlate);
+		tmp->AddComponent<Collider>(c);
+		tmp->AddComponent<Rigidbody>(new Rigidbody());
+		float r = rand() % 10 + 3;
+		
+		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f , 0.0f, rand() % 100 - 50.0f);
+		tmp->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() % 360));
+		tmp->GetTransform()->SetLocalScale(Vector3(r / 10));
 
 
+		manager->AddToList(tmp);
+
+	}
 }
 void TestScene::MakeArena()
 {
