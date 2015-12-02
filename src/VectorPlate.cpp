@@ -7,10 +7,9 @@
 
 NS_BEGIN
 
-VectorPlate::VectorPlate(Vector3 direction, float magnitude)
+VectorPlate::VectorPlate( float magnitude)
 {
-	this->direction = direction;
-	this->magitude = magnitude;
+	this->magnitude = magnitude;
 
 }
 
@@ -32,12 +31,6 @@ void VectorPlate::Initialize()
 	p_Collider = p_GameObject->GetComponent<Collider>();
 }
 
-void VectorPlate::OnAddToGameObject(GameObject* object)
-{
-	LuminaBehaviour::OnAddToGameObject(object);
-	p_CachedTransform = object->GetComponent<Transform>();
-	objManager = GameObjectManager::GetInstance();
-}
 
 void VectorPlate::onCollision(Collider* c)
 {
@@ -52,7 +45,7 @@ void VectorPlate::onCollision(Collider* c)
 			continue;
 		}
 
-		obj->GetComponent<Car>()->ApplyForce(direction * magitude);
+		obj->GetComponent<Car>()->ApplyForce(direction * magnitude);
 	}
 }
 
@@ -68,12 +61,12 @@ Vector3 VectorPlate::getDirection()
 
 void VectorPlate::setMagnitude(float value)
 {
-	this->magitude = value;
+	this->magnitude = value;
 }
 
 float VectorPlate::getMagnitude()
 {
-	return magitude;
+	return magnitude;
 }
 
 void VectorPlate::Update(float dt)
@@ -81,4 +74,23 @@ void VectorPlate::Update(float dt)
 
 }
 
+void VectorPlate::OnAddToGameObject(GameObject* object)
+{
+	LuminaBehaviour::OnAddToGameObject(object);
+	p_CachedTransform = object->GetComponent<Transform>();
+	objManager = GameObjectManager::GetInstance();
+}
+
+void VectorPlate::OnTrigger(Collider* c)
+{
+	if (c->GetGameObject()->GetComponent<Car>())
+	{
+		Rigidbody* rb = c->GetRigidbody();
+		GameObject* go = c->GetGameObject();
+
+		rb->AddForce(p_CachedTransform->GetForward() * getMagnitude());
+		std::cout << p_CachedTransform->GetForward() << std::endl;
+		std::cout << "mag " << magnitude << std::endl;
+	}
+}
 NS_END

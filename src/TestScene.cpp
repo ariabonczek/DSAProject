@@ -48,6 +48,7 @@ void TestScene::LoadAssets()
 	MakeCollectibles();
 	
 	MakeArena();
+	MakeVectorPlate();
 
 	Collider* d = new Collider();
 	Box* d_box = new Box();
@@ -268,6 +269,32 @@ void TestScene::MakeCars()
 	}
 }
 
+void TestScene::MakeVectorPlate()
+{
+
+	vectorPlate = new GameObject("VectorPlate", meshes[3], mats[0]);
+
+	vectorPlate->AddComponent<VectorPlate>(new VectorPlate(.5f));
+
+	Collider* c = new Collider;
+	c->SetTrigger(true);
+	
+	Box* box = new Box();
+	box->m_HalfWidth = Vector3(1.0f);
+	c->AddBox(box);
+
+	vectorPlate->AddComponent<Collider>(c);
+	vectorPlate->AddComponent<Rigidbody>(new Rigidbody());
+	vectorPlate->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
+	vectorPlate->GetTransform()->SetLocalPosition(5.0f, 1.0f, 5.0f);
+	vectorPlate->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() * 360));
+
+
+
+	manager->AddToList(vectorPlate);
+
+
+}
 void TestScene::MakeArena()
 {
 	GameObject* wall1;

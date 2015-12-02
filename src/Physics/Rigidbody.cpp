@@ -81,7 +81,7 @@ void Rigidbody::Integrate()
 	m_LinearVelocity = (m_LinearVelocity + linearAcceleration) * m_LinearDamping;
 	m_AngularVelocity = (m_AngularVelocity + angularAcceleration) * m_AngularDamping;
 
-	std::cout << "Angular Velocity: " << m_AngularVelocity << std::endl;
+	//std::cout << "Angular Velocity: " << m_AngularVelocity << std::endl;
 
 	m_Position += m_LinearVelocity;
 	m_Orientation = (Quaternion::CreateFromEulerAngles(m_AngularVelocity) * m_Orientation).Normalized();

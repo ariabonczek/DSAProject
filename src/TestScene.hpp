@@ -8,6 +8,7 @@
 #include "GameObjectManager.h"
 #include "VectorPlate.h"
 
+
 using namespace LuminaGL;
 
 class TestScene : public Scene
@@ -22,6 +23,7 @@ public:
 	void MakeCollectibles();
 	void MakeCars();
 	void MakeArena();
+	void MakeVectorPlate();
 	void UnloadAssets();
 	void DrawHUD();
 private:
