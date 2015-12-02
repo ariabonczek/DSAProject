@@ -311,7 +311,7 @@ bool BoxVertexContact(Box* b, Transform* t, Vector3 v, ContactContainer& cc)
 	else if (depth < minDepth)
 	{
 		minDepth = depth;
-		normal = t->GetRight() * ((v.z < 0.0f) ? -1.0f : 1.0f);
+		normal = t->GetForward() * ((v.z < 0.0f) ? -1.0f : 1.0f);
 	}
 
 	cc.contactNormal = normal;
@@ -606,11 +606,13 @@ void ResolveCollision(ContactContainer cc)
 void ResolveCollisionSimple(ContactContainer cc)
 {
 	Vector3 v;
-	Vector3 n;
+	Vector3 n = cc.contactNormal;
+
+	std::cout << "Contact Normal: " << cc.contactNormal << std::endl;
 
 	if (cc.rigidbody[0])
 	{
-		v += cc.rigidbody[0]->GetLinearVelocity();
+		v = cc.rigidbody[0]->GetLinearVelocity();
 	}
 
 	if (cc.rigidbody[1])
@@ -620,9 +622,11 @@ void ResolveCollisionSimple(ContactContainer cc)
 
 	float separatingVelocity = Vector3::Dot(v, n);
 
+	std::cout << "Separating Velocity: " << separatingVelocity << std::endl << std::endl;
+
 	if (separatingVelocity > 0)
 		return;
-	
+
 	float newSeparatingVelocity = -separatingVelocity;
 
 	float delta = newSeparatingVelocity - separatingVelocity;
