@@ -271,6 +271,8 @@ void TestScene::MakeCars()
 		//objects.push_back(car);
 		//manager->AddCar(car);
 	}
+
+	manager->SortCarsIntoTeams();
 }
 
 void TestScene::MakeVectorPlate()

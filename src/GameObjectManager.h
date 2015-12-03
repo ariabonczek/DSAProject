@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include "Graphics\Material.hpp"
 #include "Graphics\Mesh.hpp"
+#include <vector>
 
 NS_BEGIN
 class GameObjectManager 
@@ -56,6 +57,11 @@ public:
 	float calcDistance(GameObject* a, GameObject* b);
 	
 	std::unordered_map<uint, GameObject*> GetList();
+
+	void SortCarsIntoTeams();
+	std::vector<GameObject*> GetPlayerTeamList();
+	std::vector<GameObject*> GetEnemyTeamList();
+
 private:
 	int size = 0;
 	GameObjectManager(void);
@@ -69,6 +75,9 @@ private:
 	void Release(void);
 
 	void Init(void);
+
+	std::vector<GameObject*> playerTeamList;
+	std::vector<GameObject*> enemyTeamList;
 };
 
 #endif //_MYGAMEOBJECTMANAGER_H_

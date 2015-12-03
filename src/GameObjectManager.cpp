@@ -205,4 +205,28 @@ void GameObjectManager::FindCollided(GameObject* hit){
 
 }
 
+void GameObjectManager::SortCarsIntoTeams() {
+	playerTeamList.clear();
+	enemyTeamList.clear();
+
+	for (std::unordered_map<uint, GameObject*>::iterator it = objects.begin(); it != objects.end(); it++) {
+		if (it->second->GetComponent<Car>() == nullptr) continue; // not a car
+
+		if (it->second->GetComponent<Car>()->IsEnemy()) {
+			enemyTeamList.push_back(it->second);
+		}
+		else {
+			playerTeamList.push_back(it->second);
+		}
+	}
+}
+
+std::vector<GameObject*> GameObjectManager::GetPlayerTeamList() {
+	return playerTeamList;
+}
+
+std::vector<GameObject*> GameObjectManager::GetEnemyTeamList() {
+	return enemyTeamList;
+}
+
 NS_END

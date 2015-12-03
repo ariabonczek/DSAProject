@@ -3,6 +3,7 @@
 #include "../Math/LVector.hpp"
 
 #include <iostream>
+#include <vector>
 
 NS_BEGIN
 
@@ -23,22 +24,22 @@ void CarAI::OnAddToGameObject(GameObject *obj) {
 }
 
 void CarAI::Update(float dt) {
-	// seek nearest other cars
+	// seek nearest other opponent cars
 	float minDist = 10000;
 	Vector3 desiredPoint = thisObj->GetTransform()->GetWorldPosition() + thisObj->GetTransform()->GetForward(); // default is just move forward
 
-	for (int i = 0; i < objManager->GetSize(); i++) {
-		GameObject *obj = objManager->GetList()[i];
-		if (obj->GetComponent<Car>() == nullptr) continue; // this is not a car
-		if (obj->GetComponent<Car>()->IsEnemy() == thisCar->IsEnemy()) continue; // this car is on the same team
+	std::vector<GameObject*> seekCars;
+	if (thisCar->IsEnemy()) seekCars = objManager->GetEnemyTeamList();
+	else { seekCars = objManager->GetPlayerTeamList(); }
 
-		if (obj != thisObj) {
-			float dist = objManager->calcDistance(obj, thisObj);
-			if (dist < minDist) {
-				dist = minDist;
+	for (int i = 0; i < seekCars.size(); i++) {
+		GameObject *obj = seekCars[i];
 
-				desiredPoint = obj->GetTransform()->GetWorldPosition();
-			}
+		float dist = objManager->calcDistance(obj, thisObj);
+		if (dist < minDist) {
+			dist = minDist;
+
+			desiredPoint = obj->GetTransform()->GetWorldPosition();
 		}
 	}
 
