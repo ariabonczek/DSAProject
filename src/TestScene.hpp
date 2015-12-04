@@ -7,6 +7,7 @@
 #include "Collectible.h"
 #include "GameObjectManager.h"
 #include "VectorPlate.h"
+#include "Goal.h"
 
 #include <vector>
 using namespace LuminaGL;
@@ -24,6 +25,7 @@ public:
 	void MakeCars();
 	void MakeArena();
 	void MakeVectorPlate();
+	void MakeGoals();
 	void UnloadAssets();
 	void DrawHUD();
 private:
@@ -51,7 +53,7 @@ private:
 	GameObject* vectorPlate03;
 
 	std::vector<GameObject*> vectorPlate;
-
+	std::vector<GameObject*> goals;
 
 	const uint NUM_CARS = 1;
 	const float ARENA_SIZE = 50.0f;

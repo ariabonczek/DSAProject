@@ -29,6 +29,7 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem3.fbx")));
 
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/vectorplate.fbx")));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem.fbx")));
 
 	// Making some textures
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
@@ -49,6 +50,7 @@ void TestScene::LoadAssets()
 	
 	MakeArena();
 	MakeVectorPlate();
+	MakeGoals();
 
 	Collider* d = new Collider();
 	Box* d_box = new Box();
@@ -302,6 +304,33 @@ void TestScene::MakeVectorPlate()
 
 		manager->AddObject(manager->GetNextID(), tmp);
 
+	}
+}
+void TestScene::MakeGoals()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		GameObject* tmp;
+		tmp = new GameObject("Goals", meshes[4], mats[0]);
+
+		tmp->AddComponent<Goal>(new Goal());
+
+		Collider* c = new Collider;
+		c->SetTrigger(true);
+
+		Sphere* sphere = new Sphere();
+		sphere->m_Radius = 1.0f;
+		c->AddSphere(sphere);
+
+		tmp->AddComponent<Collider>(c);
+		tmp->AddComponent<Rigidbody>(new Rigidbody());
+		
+		
+		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f, 0.0f, rand() % 100 - 50.0f);
+		tmp->GetTransform()->SetLocalScale(Vector3(1.0f));
+		manager->AddObject(manager->GetNextID(), tmp);
+
+	
 	}
 }
 void TestScene::MakeArena()

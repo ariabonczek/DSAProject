@@ -7,7 +7,11 @@
 NS_BEGIN
 
 Car::Car()
-{ }
+{
+	goals = 0;
+	score = 0;
+	inPlay = true;
+}
 
 Car::Car(const Car& object)
 {}
@@ -26,6 +30,7 @@ void Car::Initialize()
 {
 	p_Rigidbody = p_GameObject->GetComponent<Rigidbody>();
 	p_Collider = p_GameObject->GetComponent<Collider>();
+	startLocation = Vector3(0.0f, 1.0f, 0.0f);
 }
 
 void Car::OnAddToGameObject(GameObject* object)
@@ -52,7 +57,9 @@ Vector3 Car::GetVelocity() {
 }
 
 void Car::Update(float dt)
-{}
+{
+	
+}
 
 void Car::Accelerate(Vector3 acceleration)
 {
@@ -100,4 +107,51 @@ bool Car::IsEnemy() {
 	return enemyTeam;
 }
 
+void Car::AddGoal(int value)
+{
+	goals += value;
+}
+
+void Car::AddScores(int value)
+{
+	score += value;
+}
+
+void Car::SetPlay(bool value)
+{
+	inPlay = value;
+}
+
+int Car::GetGoals()
+{
+	return goals;
+}
+
+int Car::GetScore()
+{
+	return score;
+}
+
+bool Car::InPlay()
+{
+	return inPlay;
+}
+
+void Car::ReSpawn()
+{
+	/*
+	Vector3 distance = startLocation - this->GetGameObject()->GetComponent<Rigidbody>()->GetPosition();
+	std::cout << distance << std::endl;
+	distance.y = 0.0f;
+	distance.Normalize();
+	
+	this->GetGameObject()->GetComponent<Rigidbody>()->AddForce(distance);
+sssssssssssssssssssss	*/
+	p_GameObject->GetComponent<Transform>()->SetLocalPosition(startLocation);
+	
+	SetPlay(true);
+	
+	
+	
+}
 NS_END
