@@ -13,7 +13,7 @@ NS_BEGIN
 class Collectible : public LuminaBehaviour
 {
 public:
-	Collectible(float m, float s);
+	Collectible(int e);
 	Collectible(const Collectible& object);
 	~Collectible();
 
@@ -22,8 +22,13 @@ public:
 	void Destroy();
 
 	void OnTrigger(Collider*c);
-	void OnEnable();
 	void OnAddToGameObject(GameObject* object);
+
+	void Fast();
+	void Slow();
+	void Heavy();
+	void Light();
+
 private:
 	Transform* p_CachedTransform;
 	Collider* p_Collider;
@@ -32,11 +37,17 @@ private:
 	Rigidbody* rb_Collector;
 	GameObject* go_Collector;
 	
-	float maxSize;
-	float maxMass;
+	int enumType;
 
-	float mass;	//weighs rb down
-	float size;  //makes rb bigger
+	//using this for 
+	float mass;	//affects SPEED
+	float size;  //affects SIZE of model
+
+	float minMass;
+	float minSize;
+
+	float maxMass;
+	float maxSize;
 
 	bool hit;
 };

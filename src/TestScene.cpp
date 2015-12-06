@@ -165,12 +165,11 @@ void TestScene::MakeCollectibles() {
 
 	//Collectible
 	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
-	gem1->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+	gem1->AddComponent<Collectible>(new Collectible(2));
 
 	gem1->AddComponent<Collider>(d);
 	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
-	//objects.push_back(testCollectible);
 	manager->AddObject(manager->GetNextID(),gem1);
 
 	Collider* a = new Collider();
@@ -180,12 +179,11 @@ void TestScene::MakeCollectibles() {
 	a->AddBox(a_box);
 
 	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
-	gem2->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+	gem2->AddComponent<Collectible>(new Collectible(2));
 
 	gem2->AddComponent<Collider>(a);
 	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem2->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
-	//objects.push_back(testCollectible);
 	manager->AddObject(manager->GetNextID(), gem2);
 
 	Collider* b = new Collider();
@@ -195,12 +193,11 @@ void TestScene::MakeCollectibles() {
 	b->AddBox(b_box);
 
 	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
-	gem3->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+	gem3->AddComponent<Collectible>(new Collectible(2));
 
 	gem3->AddComponent<Collider>(b);
 	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem3->GetTransform()->SetLocalPosition(20.0f, 2.0f, 30.0f);
-	//objects.push_back(testCollectible);
 	manager->AddObject(manager->GetNextID(), gem3);
 
 	Collider* c = new Collider();
@@ -210,13 +207,11 @@ void TestScene::MakeCollectibles() {
 	c->AddBox(c_box);
 
 	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
-	gem4->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
-	gem4->AddComponent<Collectible>(new Collectible(1.01f, 1.002f));
+	gem4->AddComponent<Collectible>(new Collectible(2));
 
 	gem4->AddComponent<Collider>(c);
 	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem4->GetTransform()->SetLocalPosition(-35.0f, 2.0f, -10.0f);
-	//objects.push_back(testCollectible);
 	manager->AddObject(manager->GetNextID(), gem4);
 	
 	Collider* e = new Collider();
@@ -226,12 +221,11 @@ void TestScene::MakeCollectibles() {
 	e->AddBox(e_box);
 
 	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
-	gem5->AddComponent<Collectible>(new Collectible(1.2f, 1.8f));
+	gem5->AddComponent<Collectible>(new Collectible(2));
 
 	gem5->AddComponent<Collider>(e);
 	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));
 	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
-	//objects.push_back(testCollectible);
 	manager->AddObject(manager->GetNextID(), gem5);
 }
 
@@ -267,8 +261,6 @@ void TestScene::MakeCars()
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
-		//objects.push_back(car);
-		//manager->AddCar(car);
 	}
 }
 
