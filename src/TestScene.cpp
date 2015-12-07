@@ -7,10 +7,18 @@
 #include "Game/CarAI.hpp"
 
 TestScene::TestScene()
-{}
+{
+	int time = time();
+
+}
 
 TestScene::~TestScene()
 {}
+
+void TestScene::UpdateTime(){
+
+
+}
 
 void TestScene::LoadAssets()
 {
@@ -69,14 +77,6 @@ void TestScene::LoadAssets()
 	camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 	camera->SetLens(0.25f * 3.1415f, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1f, 200.0f);
 
-
-	/*
-	// Initialize Scene
-	for (std::unordered_map<uint, GameObject*>::iterator it = manager->GetList().begin(); it !=  manager->GetList().end(); ++it)
-	{
-		//manager->GetObject(is->first)->Initialize();
-		it->second->Initialize();
-	}*/
 	manager->InitializeObjects();
 	m_PhysicsContext.Initialize(manager->GetList());
 }
@@ -104,12 +104,6 @@ void TestScene::Update(float dt)
 	}
 
 	playerCar->Update(dt);
-
-	/*
-	( (GameObject* o : objects)
-	{
-		o->Update(dt);
-	}*/
 
 	manager->Update(dt);
 }
@@ -252,7 +246,7 @@ void TestScene::MakeCars()
 	{
 		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
-		//car->AddComponent<CarAI>(new CarAI());
+		car->AddComponent<CarAI>(new CarAI());
 		car->GetComponent<Car>()->SetEnemey(true);
 
 		Collider* c = new Collider();
@@ -264,8 +258,9 @@ void TestScene::MakeCars()
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
 		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
+		manager->AddObject(manager->GetNextID(), car);
 	}
-
+	
 	manager->SortCarsIntoTeams();
 }
 
@@ -472,8 +467,8 @@ void TestScene::MoveCamera(float dt)
 void TestScene::CameraSmoothFollow(float dt, Transform* target)
 {
 	Vector3 position;
-	position = target->GetWorldPosition() - target->GetForward() * 10.0f;
-	position.y = target->GetWorldPosition().y + 4.0f;
+	position = target->GetWorldPosition() - target->GetForward() * 20.0f;
+	position.y = target->GetWorldPosition().y + 10.0f;
 	camera->SetPosition(position);
 	camera->LookAt(target->GetWorldPosition());
 	camera->UpdateViewMatrix();

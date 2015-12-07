@@ -8,6 +8,9 @@
 #include "GameObjectManager.h"
 #include "VectorPlate.h"
 #include "Goal.h"
+//#include <time.h>
+#include <ctime>
+#include <stdio.h>
 
 #include <vector>
 using namespace LuminaGL;
@@ -28,11 +31,15 @@ public:
 	void MakeGoals();
 	void UnloadAssets();
 	void DrawHUD();
+
+	static uint minutesLeft;
+	static uint secondsLeft;
+
 private:
 	void MoveCamera(float dt);
 	void MovePlayer(float dt);
 	void CameraSmoothFollow(float dt, Transform* target);
-
+	void UpdateTime();
 	void CopyLightData();
 
 	PhysicsContext m_PhysicsContext;
@@ -55,7 +62,7 @@ private:
 	std::vector<GameObject*> vectorPlate;
 	std::vector<GameObject*> goals;
 
-	const uint NUM_CARS = 1;
+	const uint NUM_CARS = 5;
 	const float ARENA_SIZE = 50.0f;
 
 	//std::vector<GameObject*> objects

@@ -31,12 +31,6 @@ public:
 	int GetSize();
 	void InitializeObjects();
 	GameObject* GetCarComponent();
-	///void AddToList(GameObject* object);
-	///void AddCar(GameObject* object);
-    //void AddCollectible(GameObject* object);
-	//GameObject* GetFromList(int index);
-	//GameObject* GetFromList(std::string name);
-	///int GetIndex(std::string name);
 
 	void RemoveFromList(uint id);
 	void FindCollided(GameObject* hit);
