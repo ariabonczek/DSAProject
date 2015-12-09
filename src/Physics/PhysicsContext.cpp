@@ -38,6 +38,7 @@ void PhysicsContext::Simulate(float timeStep)
 	// Setup Frame
 	coarse.clear();
 	contacts.clear();
+	grid.FillGrid(m_Objects);
 
 	// Apply external forces
 	for (uint i = 0; i < numCollidables; ++i)
@@ -48,39 +49,54 @@ void PhysicsContext::Simulate(float timeStep)
 		}
 	}
 
-	// Coarse Collision Detection
-	for (uint i = 0; i < numCollidables - 1; ++i)
+	for (uint x = 0; x < 4; ++x)
 	{
-		Collider* c1 = m_Objects[i].collider;
-		for (uint j = i + 1; j < numCollidables; ++j)
+		for (uint z = 0; z < 4; ++z)
 		{
-			Collider* c2 = m_Objects[j].collider;
-			
-			// TODO: Octree optimization
+			std::vector<PhysicsObject*> objs = grid.GetAllAdjacentObjects(x, z);
 
-			CoarseContainer cc;
-
-			// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
-			if (SAT(c1, c2))
+			uint s = objs.size();
+			if (s <= 1)
 			{
-				if (c1->GetIsTrigger() || c2->GetIsTrigger())
-				{
-					c1->GetGameObject()->OnTrigger(c2);
-					c2->GetGameObject()->OnTrigger(c1);
-					continue;
-				}
-
-
-				c1->GetGameObject()->OnCollision(c2);
-				c2->GetGameObject()->OnCollision(c1);				
-
-				cc.collider1 = c1;
-				cc.collider2 = c2;			
-
-				coarse.push_back(cc);
+				continue;
 			}
+
+			for (uint i = 0; i < s - 1; ++i)
+			{
+				Collider* c1 = objs[i]->collider;
+				for (uint j = i + 1; j < s; ++j)
+				{
+					Collider* c2 = objs[j]->collider;
+
+					CoarseContainer cc;
+
+					// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
+					if (SAT(c1, c2))
+					{
+						if (c1->GetIsTrigger() || c2->GetIsTrigger())
+						{
+							c1->GetGameObject()->OnTrigger(c2);
+							c2->GetGameObject()->OnTrigger(c1);
+							continue;
+						}
+
+
+						c1->GetGameObject()->OnCollision(c2);
+						c2->GetGameObject()->OnCollision(c1);
+
+						cc.collider1 = c1;
+						cc.collider2 = c2;
+
+						coarse.push_back(cc);
+					}
+				}
+			}
+
+
 		}
 	}
+
+	// Coarse Collision Detection
 	
 	// Fine Collision Detection
 	for (uint i = 0; i < coarse.size(); ++i)

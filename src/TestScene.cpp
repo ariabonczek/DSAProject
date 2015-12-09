@@ -7,10 +7,7 @@
 #include "Game/CarAI.hpp"
 
 TestScene::TestScene()
-{
-	int time = time();
-
-}
+{}
 
 TestScene::~TestScene()
 {}
