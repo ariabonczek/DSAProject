@@ -37,8 +37,7 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem.fbx")));
 
 	// Making some textures
-	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
-	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/car.png")));
 
 	// Making some materials
 	mats.push_back(new Material());
@@ -48,6 +47,16 @@ void TestScene::LoadAssets()
 	mats.push_back(new Material());
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
+
+	mats.push_back(new Material());
+	mats[2]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
+	mats[2]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
+	mats[2]->SetTexture2D("diffuse", textures[0]);
+
+	mats.push_back(new Material());
+	mats[3]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
+	mats[3]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
+	mats[3]->SetTexture2D("diffuse", textures[0]);
 
 	MakeCars();
 
@@ -226,6 +235,7 @@ void TestScene::MakeCars()
 {
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
 	playerCar->AddComponent<Car>(new Car());
+	playerCar->GetComponent<Car>()->SetEnemey(false);
 
 	Collider* c = new Collider();
 	Box* box = new Box();
@@ -254,7 +264,7 @@ void TestScene::MakeCars()
 		car->AddComponent<Collider>(c);
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
+		car->GetTransform()->SetLocalPosition(rand() % 11 - 5, 1.0f, rand() % 11 - 5);
 		manager->AddObject(manager->GetNextID(), car);
 	}
 	
@@ -297,7 +307,7 @@ void TestScene::MakeGoals()
 		GameObject* tmp;
 		tmp = new GameObject("Goals", meshes[4], mats[0]);
 
-		tmp->AddComponent<Goal>(new Goal());
+		tmp->AddComponent<LuminaGL::Goal>(new LuminaGL::Goal());
 
 		Collider* c = new Collider;
 		c->SetTrigger(true);
@@ -316,6 +326,8 @@ void TestScene::MakeGoals()
 
 	
 	}
+
+	manager->SortGoals();
 }
 void TestScene::MakeArena()
 {

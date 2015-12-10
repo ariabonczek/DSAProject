@@ -5,6 +5,7 @@
 
 #include "../Car.h"
 #include "../GameObjectManager.h"
+class Goal;
 
 NS_BEGIN
 
@@ -21,6 +22,8 @@ private:
 	Car *thisCar;
 	GameObject *thisObj;
 	GameObjectManager *objManager;
+
+	std::vector<GameObject*> goalList;
 
 	// AI values
 	float turnThreshold;
