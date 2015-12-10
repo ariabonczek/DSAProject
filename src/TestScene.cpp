@@ -226,6 +226,7 @@ void TestScene::MakeCars()
 {
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
 	playerCar->AddComponent<Car>(new Car());
+	playerCar->GetComponent<Car>()->SetEnemey(false);
 
 	Collider* c = new Collider();
 	Box* box = new Box();
@@ -254,7 +255,7 @@ void TestScene::MakeCars()
 		car->AddComponent<Collider>(c);
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
+		car->GetTransform()->SetLocalPosition(rand() % 11 - 5, 1.0f, rand() % 11 - 5);
 		manager->AddObject(manager->GetNextID(), car);
 	}
 	
@@ -297,7 +298,7 @@ void TestScene::MakeGoals()
 		GameObject* tmp;
 		tmp = new GameObject("Goals", meshes[4], mats[0]);
 
-		tmp->AddComponent<Goal>(new Goal());
+		tmp->AddComponent<LuminaGL::Goal>(new LuminaGL::Goal());
 
 		Collider* c = new Collider;
 		c->SetTrigger(true);
@@ -316,6 +317,8 @@ void TestScene::MakeGoals()
 
 	
 	}
+
+	manager->SortGoals();
 }
 void TestScene::MakeArena()
 {
