@@ -51,6 +51,7 @@ public:
 	int GetScore();
 	bool InPlay();
 
+	bool IsInvincible();
 
 	void ReSpawn();
 private:
@@ -69,6 +70,8 @@ private:
 	const float MAX_SPEED = 3.0f;
 	const float MAX_FORCE = 10.0f;
 	float mass;
+
+	float invincible;
 
 	bool enemyTeam = false;
 };

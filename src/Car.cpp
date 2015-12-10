@@ -11,6 +11,8 @@ Car::Car()
 	goals = 0;
 	score = 0;
 	inPlay = true;
+
+	invincible = 0;
 }
 
 Car::Car(const Car& object)
@@ -58,8 +60,13 @@ Vector3 Car::GetVelocity() {
 
 void Car::Update(float dt)
 {
-	Rigidbody* r = GetGameObject()->GetComponent<Rigidbody>();
+	if (invincible > 0) {
+		invincible -= dt;
 
+		if (invincible < 0) invincible = 0;
+	}
+
+	Rigidbody* r = GetGameObject()->GetComponent<Rigidbody>();
 	r->SetLinearVelocity(Vector3::ClampMagnitude(r->GetLinearVelocity(), MAX_SPEED));
 }
 
@@ -92,7 +99,9 @@ void Car::CalcForce()
 
 void Car::ApplyForce(Vector3 force)
 {
-	acceleration = acceleration + force;
+	if (invincible != 0) {
+		acceleration = acceleration + force;
+	}
 }
 
 void Car::Rotate(Quaternion rotation)
@@ -139,6 +148,10 @@ bool Car::InPlay()
 	return inPlay;
 }
 
+bool Car::IsInvincible() {
+	return invincible != 0;
+}
+
 void Car::ReSpawn()
 {
 	/*
@@ -150,6 +163,8 @@ void Car::ReSpawn()
 	this->GetGameObject()->GetComponent<Rigidbody>()->AddForce(distance);
 sssssssssssssssssssss	*/
 	p_GameObject->GetComponent<Transform>()->SetLocalPosition(startLocation);
+	invincible = 5;
+	p_GameObject->SetAlpha(0.7f);
 	
 	SetPlay(true);
 	
