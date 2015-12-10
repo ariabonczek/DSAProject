@@ -16,6 +16,7 @@ typedef std::chrono::system_clock::time_point time_point;
 class Timer
 {
 public:
+	Timer();
 	// Initializes the static Timer
 	static void Initialize(void);
 
@@ -49,6 +50,7 @@ private:
 	static std::chrono::duration<float> elapsedTime;
 
 	static int frameRate;
+	
 };
 
 #endif

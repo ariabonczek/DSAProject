@@ -2,12 +2,12 @@
 #ifndef GOALS_H
 #define GOALS_H
 
-#include "Graphics/Transform.hpp"
-#include "Graphics/GameObject.hpp"
-#include "Graphics/LuminaBehaviour.hpp"
+#include "../Graphics/Transform.hpp"
+#include "../Graphics/GameObject.hpp"
+#include "../Graphics/LuminaBehaviour.hpp"
 
-#include "Physics/Collider.hpp"
-#include "Physics/Rigidbody.hpp"
+#include "../Physics/Collider.hpp"
+#include "../Physics/Rigidbody.hpp"
 
 NS_BEGIN
 class Goal : public LuminaBehaviour

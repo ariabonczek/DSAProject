@@ -29,6 +29,7 @@ class GameObjectManager
 public:
 	static GameObjectManager* GetInstance();
 	static void ReleaseInstance(void);
+	void Release(void);
 
 	int GetSize();
 	void InitializeObjects();
@@ -71,7 +72,7 @@ private:
 
 	~GameObjectManager(void);
 
-	void Release(void);
+	
 
 	void Init(void);
 

@@ -2,7 +2,7 @@
 #define CAR_AI
 
 #include "../Graphics/LuminaBehaviour.hpp"
-
+#include "Goal.h"
 #include "../Car.h"
 #include "../GameObjectManager.h"
 class Goal;
@@ -12,7 +12,6 @@ NS_BEGIN
 class CarAI : public LuminaBehaviour {
 public:
 	CarAI();
-
 	void Initialize();
 	void OnAddToGameObject(GameObject*);
 	void Update(float);

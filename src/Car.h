@@ -67,7 +67,7 @@ private:
 	bool inPlay;
 	Vector3 startLocation;
 
-	const float MAX_SPEED = 5.0f;
+	const float MAX_SPEED = 3.0f;
 	const float MAX_FORCE = 10.0f;
 	float mass;
 

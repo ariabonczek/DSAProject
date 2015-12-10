@@ -1,7 +1,6 @@
 #include "GameObjectManager.h"
 #include <math.h>
 
-#include "Goal.h"
 
 NS_BEGIN
 GameObjectManager* GameObjectManager::instance = nullptr;
@@ -80,44 +79,6 @@ GameObject* GameObjectManager::GetCarComponent(){
 	}
 }
 
-/*
-void GameObjectManager::AddToList(GameObject* object)
-{
-	gameObjectList.push_back(object);
-	size++;
-}
-
-void GameObjectManager::AddCar(GameObject* object)
-{
-	gameObjectList.push_back(object);
-	//carList.push_back(object);	
-}
-
-void GameObjectManager::AddCollectible(GameObject* object)
-{
-	gameObjectList.push_back(object);
-	//collectibleList.push_back(object);
-}
-
-GameObject* GameObjectManager::GetFromList(int index)
-{
-	if (index < gameObjectList.size())
-		return gameObjectList[index];
-	return nullptr;
-}
-
-GameObject* GameObjectManager::GetFromList(std::string name)
-{
-	//unsure if needed
-	return nullptr;
-}
-
-int GameObjectManager::GetIndex(std::string name)
-{
-//unsure if needed
-return -1;
-}
-*/
 
 uint GameObjectManager::GetNextID() {
 	uint temp = nextID;

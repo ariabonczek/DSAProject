@@ -41,6 +41,8 @@ public:
 	/// </summary>
 	void AddCollidable(Collider* collider);
 
+	void DeleteObjects();
+
 private:
 	Grid grid;
 

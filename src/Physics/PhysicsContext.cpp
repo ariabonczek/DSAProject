@@ -3,6 +3,7 @@
 #include "Collider.hpp"
 #include "Rigidbody.hpp"
 #include "PhysicsUtility.hpp"
+#include "../Utility/Timer.hpp"
 
 #include "../Graphics/GameObject.hpp"
 #include "../Graphics/TextRenderer.hpp"
@@ -38,7 +39,6 @@ void PhysicsContext::Simulate(float timeStep)
 	// Setup Frame
 	coarse.clear();
 	contacts.clear();
-	grid.FillGrid(m_Objects);
 
 	// Apply external forces
 	for (uint i = 0; i < numCollidables; ++i)
@@ -49,54 +49,39 @@ void PhysicsContext::Simulate(float timeStep)
 		}
 	}
 
-	for (uint x = 0; x < 4; ++x)
+	// Coarse Collision Detection
+	for (uint i = 0; i < numCollidables - 1; ++i)
 	{
-		for (uint z = 0; z < 4; ++z)
+		Collider* c1 = m_Objects[i].collider;
+		for (uint j = i + 1; j < numCollidables; ++j)
 		{
-			std::vector<PhysicsObject*> objs = grid.GetAllAdjacentObjects(x, z);
+			Collider* c2 = m_Objects[j].collider;
+			
+			// TODO: Octree optimization
 
-			uint s = objs.size();
-			if (s <= 1)
-			{
-				continue;
-			}
+			CoarseContainer cc;
 
-			for (uint i = 0; i < s - 1; ++i)
+			// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
+			if (SAT(c1, c2))
 			{
-				Collider* c1 = objs[i]->collider;
-				for (uint j = i + 1; j < s; ++j)
+				if (c1->GetIsTrigger() || c2->GetIsTrigger())
 				{
-					Collider* c2 = objs[j]->collider;
-
-					CoarseContainer cc;
-
-					// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
-					if (SAT(c1, c2))
-					{
-						if (c1->GetIsTrigger() || c2->GetIsTrigger())
-						{
-							c1->GetGameObject()->OnTrigger(c2);
-							c2->GetGameObject()->OnTrigger(c1);
-							continue;
-						}
-
-
-						c1->GetGameObject()->OnCollision(c2);
-						c2->GetGameObject()->OnCollision(c1);
-
-						cc.collider1 = c1;
-						cc.collider2 = c2;
-
-						coarse.push_back(cc);
-					}
+					c1->GetGameObject()->OnTrigger(c2);
+					c2->GetGameObject()->OnTrigger(c1);
+					
+					continue;
 				}
+
+				c1->GetGameObject()->OnCollision(c2);
+				c2->GetGameObject()->OnCollision(c1);				
+
+				cc.collider1 = c1;
+				cc.collider2 = c2;			
+
+				coarse.push_back(cc);
 			}
-
-
 		}
 	}
-
-	// Coarse Collision Detection
 	
 	// Fine Collision Detection
 	for (uint i = 0; i < coarse.size(); ++i)
@@ -157,6 +142,15 @@ void PhysicsContext::AddCollidable(Collider* collider)
 
 	m_Objects.push_back(obj);
 	++numCollidables;
+}
+
+void PhysicsContext::DeleteObjects(){
+	m_Objects.clear();
+
+	//clears just in case 
+	coarse.clear();
+	contacts.clear();
+	numCollidables = 0;
 }
 
 NS_END

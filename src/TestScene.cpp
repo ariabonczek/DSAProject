@@ -7,14 +7,48 @@
 #include "Game/CarAI.hpp"
 
 TestScene::TestScene()
-{}
+{
+	timeLimit = 10; //5 minutes
+	//Timer::Start();
+}
 
 TestScene::~TestScene()
-{}
+{
+	
+}
+
+void TestScene::ResetGame(){
+	//only reset cars and collectibles
+	MakeCars();
+	MakeCollectibles();
+	MakeArena();
+	MakeVectorPlate();
+	MakeGoals();
+	manager->InitializeObjects();
+	
+	gameOver = false;
+	Timer::Initialize();
+	g_PhysicsContext.Initialize(manager->GetList());
+	Update(Timer::GetFrameTime());
+}
+
+void TestScene::TotalDestruction(){
+	//only destroy cars and collectibles
+	//also vector plates if they are random
+	manager->Release();
+    g_PhysicsContext.DeleteObjects();
+}
 
 void TestScene::UpdateTime(){
-
-
+	//Timer::Stop();
+	timePlayed = Timer::GetTotalTime();	
+	
+	if (timePlayed > timeLimit){
+		gameOver = true;
+		//call all destruction
+		TotalDestruction();
+	}
+	//Timer::Stop();
 }
 
 void TestScene::LoadAssets()
@@ -50,7 +84,6 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
 	MakeCars();
-
 	MakeCollectibles();
 	
 	MakeArena();
@@ -80,29 +113,46 @@ void TestScene::LoadAssets()
 
 void TestScene::Update(float dt)
 {
-	m_PhysicsContext.Simulate(dt);
-	DrawHUD();
-	
-	MovePlayer(dt);
+	if (!gameOver){//gameOver = false;
+		UpdateTime();
+		m_PhysicsContext.Simulate(dt);
+		DrawHUD();
 
-	if (freeCamera)
-	{
-		MoveCamera(dt);
+		if (Timer::GetTotalTime() > 13){
+
+			std::string f = "fuck";
+		}
+
+		MovePlayer(dt);
+
+		if (freeCamera)
+		{
+			MoveCamera(dt);
+		}
+		else
+		{
+			CameraSmoothFollow(dt, playerCar->GetTransform());
+		}
+
+		// Press space to swap between wireframe and shaded mode
+		if (Input::GetKeyDown(GLFW_KEY_SPACE))
+		{
+			freeCamera = !freeCamera;
+		}
+
+		playerCar->Update(dt);
+
+		manager->Update(dt);
 	}
-	else
-	{
-		CameraSmoothFollow(dt, playerCar->GetTransform());
+	else{
+		DrawGameOver();
+		if (Input::GetKeyDown(GLFW_KEY_ENTER)) {
+			ResetGame();
+		}
+		//make method that resets everything 
+		//all assets and such should be destroyed here. 
 	}
 
-	// Press space to swap between wireframe and shaded mode
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-	{
-		freeCamera = !freeCamera;
-	}
-
-	playerCar->Update(dt);
-
-	manager->Update(dt);
 }
 
 void TestScene::DrawHUD() {
@@ -113,6 +163,14 @@ void TestScene::DrawHUD() {
 	
 	//render how many crystals
 	g_TextRenderer.RenderText(s.c_str(), 300, 30);
+
+	std::string t = std::to_string(timePlayed);
+	g_TextRenderer.RenderText(t.c_str(), 300,30);
+}
+
+void TestScene::DrawGameOver(){
+	g_TextRenderer.RenderText("GAME OVER BIATCH", 300, 100);
+	g_TextRenderer.RenderText("Press Enter to try again", 300, 200);
 }
 
 void TestScene::Draw()
@@ -226,7 +284,6 @@ void TestScene::MakeCars()
 {
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
 	playerCar->AddComponent<Car>(new Car());
-	playerCar->GetComponent<Car>()->SetEnemey(false);
 
 	Collider* c = new Collider();
 	Box* box = new Box();
@@ -255,7 +312,7 @@ void TestScene::MakeCars()
 		car->AddComponent<Collider>(c);
 		car->AddComponent<Rigidbody>(new Rigidbody());
 		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-		car->GetTransform()->SetLocalPosition(rand() % 11 - 5, 1.0f, rand() % 11 - 5);
+		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
 		manager->AddObject(manager->GetNextID(), car);
 	}
 	
@@ -286,9 +343,7 @@ void TestScene::MakeVectorPlate()
 		tmp->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() % 360));
 		tmp->GetTransform()->SetLocalScale(Vector3(r / 10));
 
-
 		manager->AddObject(manager->GetNextID(), tmp);
-
 	}
 }
 void TestScene::MakeGoals()
@@ -317,112 +372,78 @@ void TestScene::MakeGoals()
 
 	
 	}
-
-	manager->SortGoals();
 }
 void TestScene::MakeArena()
 {
-	GameObject* wall1[4];
-
-	GameObject* wall2[4];
-
-	GameObject* wall3[4];
-
-	GameObject* wall4[4];
-
+	GameObject* wall1;
+	GameObject* wall2;
+	GameObject* wall3;
+	GameObject* wall4;
 	GameObject* floor;
 
 	{
-		for (int i = 0; i < 4; ++i)
-		{
-			float denom = 1.0f / i;
-			wall1[i] = new GameObject("Wall1", meshes[1], mats[0]);
-			wall1[i]->GetTransform()->SetLocalScale(ARENA_SIZE /4 , 2.0f, 1.0f);
-			wall1[i]->GetTransform()->SetLocalPosition(-ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4, 0.0f, -ARENA_SIZE);
+		wall1 = new GameObject("Wall1", meshes[1], mats[0]);
+		wall1->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
+		wall1->GetTransform()->SetLocalPosition(0.0f, 0.0f, -ARENA_SIZE);
 
-			Collider* c = new Collider();
-			Box* box = new Box();
-			box->m_HalfWidth = Vector3(ARENA_SIZE / 4, 2.0f, 1.0f);
-			c->AddBox(box);
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(ARENA_SIZE, 2.0f, 1.0f);
+		c->AddBox(box);
 
-			wall1[i]->AddComponent<Collider>(c);
-
-			manager->AddObject(manager->GetNextID(), wall1[i]);
-		}
+		wall1->AddComponent<Collider>(c);
 	}
 
 	{
-		for (int i = 0; i < 4; ++i)
-		{
-			float denom = 1.0f / i;
-			wall2[i] = new GameObject("Wall2", meshes[1], mats[0]);
-			wall2[i]->GetTransform()->SetLocalScale(ARENA_SIZE / 4, 2.0f, 1.0f);
-			wall2[i]->GetTransform()->SetLocalPosition(-ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4, 0.0f, ARENA_SIZE);
+		wall2 = new GameObject("Wall2", meshes[1], mats[0]);
+		wall2->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
+		wall2->GetTransform()->SetLocalPosition(0.0f, 0.0f, ARENA_SIZE);
 
-			Collider* c = new Collider();
-			Box* box = new Box();
-			box->m_HalfWidth = Vector3(ARENA_SIZE / 4, 2.0f, 1.0f);
-			c->AddBox(box);
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(ARENA_SIZE, 2.0f, 1.0f);
+		c->AddBox(box);
 
-			wall2[i]->AddComponent<Collider>(c);
-			manager->AddObject(manager->GetNextID(), wall2[i]);
-
-		}
+		wall2->AddComponent<Collider>(c);
 	}
 
 	{
-		for (int i = 0; i < 4; ++i)
-		{
-			float denom = 1.0f / i;
-			wall3[i] = new GameObject("Wall3", meshes[1], mats[0]);
-			wall3[i]->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE / 4);
-			wall3[i]->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, -ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4);
+		wall3 = new GameObject("Wall3", meshes[1], mats[0]);
+		wall3->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
+		wall3->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, 0.0f);
 
-			Collider* c = new Collider();
-			Box* box = new Box();
-			box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE / 4);
-			c->AddBox(box);
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE);
+		c->AddBox(box);
 
-			wall3[i]->AddComponent<Collider>(c);
-
-			manager->AddObject(manager->GetNextID(), wall3[i]);
-		}
+		wall3->AddComponent<Collider>(c);
 	}
 
 	{
-		for (int i = 0; i < 4; ++i)
-		{
-			float denom = 1.0f / i;
-			wall4[i] = new GameObject("Wall4", meshes[1], mats[0]);
-			wall4[i]->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE / 4);
-			wall4[i]->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, -ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4);
+		wall4 = new GameObject("Wall4", meshes[1], mats[0]);
+		wall4->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
+		wall4->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, 0.0f);
 
-			Collider* c = new Collider();
-			Box* box = new Box();
-			box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE / 4);
-			c->AddBox(box);
+		Collider* c = new Collider();
+		Box* box = new Box();
+		box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE);
+		c->AddBox(box);
 
-			wall4[i]->AddComponent<Collider>(c);
-
-			manager->AddObject(manager->GetNextID(), wall4[i]);
-		}
+		wall4->AddComponent<Collider>(c);
 	}
 
 	{
 		floor = new GameObject("Floor", meshes[1], mats[0]);
 		floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);
 		floor->GetTransform()->SetLocalPosition(0.0f, -1.0f, 0.0f);
-
-		//Collider* c = new Collider();
-		//Box* box = new Box();
-		//box->m_HalfWidth = Vector3(ARENA_SIZE, 1.0f, ARENA_SIZE);
-		//c->AddBox(box);
-		//
-		//floor->AddComponent<Collider>(c);
 	}
 
+	manager->AddObject(manager->GetNextID(), wall1);
+	manager->AddObject(manager->GetNextID(), wall2);
+	manager->AddObject(manager->GetNextID(), wall3);
+	manager->AddObject(manager->GetNextID(), wall4);
 	manager->AddObject(manager->GetNextID(), floor);
-
 }
 
 void TestScene::MoveCamera(float dt)

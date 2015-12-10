@@ -73,7 +73,4 @@ bool Game::Shutdown()
 
 	return true;
 }
-
-
-
 NS_END
