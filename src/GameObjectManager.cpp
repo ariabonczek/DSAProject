@@ -1,7 +1,6 @@
 #include "GameObjectManager.h"
 #include <math.h>
 
-#include "Goal.h"
 
 NS_BEGIN
 GameObjectManager* GameObjectManager::instance = nullptr;

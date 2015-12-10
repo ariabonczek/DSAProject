@@ -159,7 +159,7 @@
     <ClCompile Include="Physics\Grid.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Goal.cpp">
+    <ClCompile Include="Game\Goal.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -290,7 +290,7 @@
     <ClInclude Include="Physics\Grid.hpp">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Goal.h">
+    <ClInclude Include="Game\Goal.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

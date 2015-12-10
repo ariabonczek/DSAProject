@@ -353,7 +353,7 @@ void TestScene::MakeGoals()
 		GameObject* tmp;
 		tmp = new GameObject("Goals", meshes[4], mats[0]);
 
-		tmp->AddComponent<Goal>(new Goal());
+		tmp->AddComponent<LuminaGL::Goal>(new LuminaGL::Goal());
 
 		Collider* c = new Collider;
 		c->SetTrigger(true);
@@ -369,6 +369,7 @@ void TestScene::MakeGoals()
 		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f, 0.0f, rand() % 100 - 50.0f);
 		tmp->GetTransform()->SetLocalScale(Vector3(1.0f));
 		manager->AddObject(manager->GetNextID(), tmp);
+
 	
 	}
 }

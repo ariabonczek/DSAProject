@@ -7,7 +7,7 @@
 #include "Collectible.h"
 #include "GameObjectManager.h"
 #include "VectorPlate.h"
-#include "Goal.h"
+#include "Game/Goal.h"
 //#include <time.h>
 #include <chrono>
 #include <stdio.h>

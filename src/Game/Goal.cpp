@@ -1,8 +1,8 @@
 #include "Goal.h"
 
-#include "Graphics\Mesh.hpp"
-#include "Physics\Collider.hpp"
-#include "Physics\Rigidbody.hpp"
+#include "../Graphics\Mesh.hpp"
+#include "../Physics\Collider.hpp"
+#include "../Physics\Rigidbody.hpp"
 
 NS_BEGIN
 Goal::Goal()
