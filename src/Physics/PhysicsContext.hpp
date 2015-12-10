@@ -40,6 +40,8 @@ public:
 	/// </summary>
 	void AddCollidable(Collider* collider);
 
+	void DeleteObjects();
+
 private:
 	std::vector<PhysicsObject> m_Objects;
 	uint numCollidables;

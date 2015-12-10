@@ -9,7 +9,7 @@
 #include "VectorPlate.h"
 #include "Goal.h"
 //#include <time.h>
-#include <ctime>
+#include <chrono>
 #include <stdio.h>
 
 #include <vector>
@@ -31,9 +31,14 @@ public:
 	void MakeGoals();
 	void UnloadAssets();
 	void DrawHUD();
+	void DrawGameOver();
 
-	static uint minutesLeft;
-	static uint secondsLeft;
+	void TotalDestruction();
+	void ResetGame();
+
+	float timePlayed;
+	float timeLimit;
+
 
 private:
 	void MoveCamera(float dt);
@@ -43,11 +48,11 @@ private:
 	void CopyLightData();
 
 	PhysicsContext m_PhysicsContext;
-
 	Camera* camera;
 
 	bool polygonFlag;
 	bool freeCamera;
+	bool gameOver = false;
 
 	LuminaBehaviour* testBehaviour;
 	GameObject* playerCar;

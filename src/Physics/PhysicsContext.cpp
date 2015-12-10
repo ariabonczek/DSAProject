@@ -3,6 +3,7 @@
 #include "Collider.hpp"
 #include "Rigidbody.hpp"
 #include "PhysicsUtility.hpp"
+#include "../Utility/Timer.hpp"
 
 #include "../Graphics/GameObject.hpp"
 #include "../Graphics/TextRenderer.hpp"
@@ -65,11 +66,15 @@ void PhysicsContext::Simulate(float timeStep)
 			{
 				if (c1->GetIsTrigger() || c2->GetIsTrigger())
 				{
+
+					if (Timer::GetTotalTime() > 15){
+						std::string f = "Hello";
+					}
 					c1->GetGameObject()->OnTrigger(c2);
 					c2->GetGameObject()->OnTrigger(c1);
+					
 					continue;
 				}
-
 
 				c1->GetGameObject()->OnCollision(c2);
 				c2->GetGameObject()->OnCollision(c1);				
@@ -141,6 +146,15 @@ void PhysicsContext::AddCollidable(Collider* collider)
 
 	m_Objects.push_back(obj);
 	++numCollidables;
+}
+
+void PhysicsContext::DeleteObjects(){
+	m_Objects.clear();
+
+	//clears just in case 
+	coarse.clear();
+	contacts.clear();
+	numCollidables = 0;
 }
 
 NS_END

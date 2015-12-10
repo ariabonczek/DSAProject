@@ -8,16 +8,48 @@
 
 TestScene::TestScene()
 {
-	int time = time();
-
+	timeLimit = 10; //5 minutes
+	//Timer::Start();
 }
 
 TestScene::~TestScene()
-{}
+{
+	
+}
+
+void TestScene::ResetGame(){
+	//only reset cars and collectibles
+	MakeCars();
+	MakeCollectibles();
+	MakeArena();
+	MakeVectorPlate();
+	MakeGoals();
+	manager->InitializeObjects();
+	
+	gameOver = false;
+//	Timer::Initialize();
+	g_PhysicsContext.Initialize(manager->GetList());
+	Update(Timer::GetFrameTime());
+}
+
+void TestScene::TotalDestruction(){
+	//only destroy cars and collectibles
+	//also vector plates if they are random
+	manager->Release();
+    g_PhysicsContext.DeleteObjects();
+}
+
 
 void TestScene::UpdateTime(){
-
-
+	//Timer::Stop();
+	timePlayed = Timer::GetTotalTime();	
+	
+	if (timePlayed > timeLimit){
+		gameOver = true;
+		//call all destruction
+		TotalDestruction();
+	}
+	//Timer::Stop();
 }
 
 void TestScene::LoadAssets()
@@ -53,7 +85,6 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
 	MakeCars();
-
 	MakeCollectibles();
 	
 	MakeArena();
@@ -83,29 +114,46 @@ void TestScene::LoadAssets()
 
 void TestScene::Update(float dt)
 {
-	m_PhysicsContext.Simulate(dt);
-	DrawHUD();
-	
-	MovePlayer(dt);
+	if (!gameOver){//gameOver = false;
+		UpdateTime();
+		m_PhysicsContext.Simulate(dt);
+		DrawHUD();
 
-	if (freeCamera)
-	{
-		MoveCamera(dt);
+		if (Timer::GetTotalTime() > 13){
+
+			std::string f = "fuck";
+		}
+
+		MovePlayer(dt);
+
+		if (freeCamera)
+		{
+			MoveCamera(dt);
+		}
+		else
+		{
+			CameraSmoothFollow(dt, playerCar->GetTransform());
+		}
+
+		// Press space to swap between wireframe and shaded mode
+		if (Input::GetKeyDown(GLFW_KEY_SPACE))
+		{
+			freeCamera = !freeCamera;
+		}
+
+		playerCar->Update(dt);
+
+		manager->Update(dt);
 	}
-	else
-	{
-		CameraSmoothFollow(dt, playerCar->GetTransform());
+	else{
+		DrawGameOver();
+		if (Input::GetKeyDown(GLFW_KEY_ENTER)) {
+			ResetGame();
+		}
+		//make method that resets everything 
+		//all assets and such should be destroyed here. 
 	}
 
-	// Press space to swap between wireframe and shaded mode
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-	{
-		freeCamera = !freeCamera;
-	}
-
-	playerCar->Update(dt);
-
-	manager->Update(dt);
 }
 
 void TestScene::DrawHUD() {
@@ -116,6 +164,14 @@ void TestScene::DrawHUD() {
 	
 	//render how many crystals
 	g_TextRenderer.RenderText(s.c_str(), 300, 30);
+
+	std::string t = std::to_string(timePlayed);
+	g_TextRenderer.RenderText(t.c_str(), 300,30);
+}
+
+void TestScene::DrawGameOver(){
+	g_TextRenderer.RenderText("GAME OVER BIATCH", 300, 100);
+	g_TextRenderer.RenderText("Press Enter to try again", 300, 200);
 }
 
 void TestScene::Draw()
@@ -288,9 +344,7 @@ void TestScene::MakeVectorPlate()
 		tmp->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() % 360));
 		tmp->GetTransform()->SetLocalScale(Vector3(r / 10));
 
-
 		manager->AddObject(manager->GetNextID(), tmp);
-
 	}
 }
 void TestScene::MakeGoals()
@@ -384,13 +438,6 @@ void TestScene::MakeArena()
 		floor = new GameObject("Floor", meshes[1], mats[0]);
 		floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);
 		floor->GetTransform()->SetLocalPosition(0.0f, -1.0f, 0.0f);
-
-		//Collider* c = new Collider();
-		//Box* box = new Box();
-		//box->m_HalfWidth = Vector3(ARENA_SIZE, 1.0f, ARENA_SIZE);
-		//c->AddBox(box);
-		//
-		//floor->AddComponent<Collider>(c);
 	}
 
 	manager->AddObject(manager->GetNextID(), wall1);
@@ -398,7 +445,6 @@ void TestScene::MakeArena()
 	manager->AddObject(manager->GetNextID(), wall3);
 	manager->AddObject(manager->GetNextID(), wall4);
 	manager->AddObject(manager->GetNextID(), floor);
-
 }
 
 void TestScene::MoveCamera(float dt)
