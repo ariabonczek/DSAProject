@@ -8,6 +8,7 @@
 
 TestScene::TestScene()
 {
+	//goes by seconds for how long round is
 	timeLimit = 10; //5 minutes
 	//Timer::Start();
 }
