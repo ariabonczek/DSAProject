@@ -1,6 +1,8 @@
 #include "GameObjectManager.h"
 #include <math.h>
 
+#include "Goal.h"
+
 NS_BEGIN
 GameObjectManager* GameObjectManager::instance = nullptr;
 
@@ -189,6 +191,19 @@ std::vector<GameObject*> GameObjectManager::GetPlayerTeamList() {
 
 std::vector<GameObject*> GameObjectManager::GetEnemyTeamList() {
 	return enemyTeamList;
+}
+
+
+void GameObjectManager::SortGoals() {
+	for (std::unordered_map<uint, GameObject*>::iterator it = objects.begin(); it != objects.end(); it++) {
+		if (it->second->GetComponent<Goal>() == nullptr) continue; // not a goal
+
+		goalList.push_back(it->second);
+	}
+}
+
+std::vector<GameObject*> GameObjectManager::GetGoalObjects() {
+	return goalList;
 }
 
 NS_END

@@ -1,20 +1,97 @@
 #include "Grid.hpp"
 
 #include "../Graphics/GameObject.hpp"
+#include "PhysicsContext.hpp"
 
 NS_BEGIN
 
-Grid::Grid(uint numCellsX, uint numCellsZ, Vector2 cellWidth, Vector2 origin):
-	numCellsX(numCellsX),
-	numCellsZ(numCellsZ),
-	origin(origin)
-
+void GridNode::Add(PhysicsObject* object)
 {
-	objectSets = new std::vector<GameObject>[numCellsX * numCellsZ];
-
+	colliders.push_back(object);
 }
+
+void GridNode::Clear()
+{
+	colliders.clear();
+}
+
+std::vector<PhysicsObject*>& GridNode::GetList()
+{	
+	return colliders;
+}
+
+Grid::Grid()
+{}
 
 Grid::~Grid()
 {}
+
+void Grid::FillGrid(std::vector<PhysicsObject>& objects)
+{
+	// Clear the grid
+	for (uint i = 0; i < numCellsX; ++i)
+	{
+		for (uint j = 0; j < numCellsZ; ++j)
+		{
+			grid[i][j].Clear();
+		}
+	}
+
+	// Fill the grid
+	uint n = objects.size();
+	for (uint i = 0; i < n; ++i)
+	{
+		Transform* t = objects[i].collider->GetGameObject()->GetTransform();
+
+		Vector3 pos = t->GetLocalPosition();
+
+		int x = (int)(pos.x * inverseCellWidth) + 2;
+		int z = (int)(pos.z * -inverseCellWidth) + 2;
+
+		if (x > numCellsX - 1) x = numCellsX - 1;
+		if (x < 0) x = 0;
+
+		if (z > numCellsZ - 1) z = numCellsZ - 1;
+		if (z < 0) z = 0;
+
+		grid[x][z].Add(&objects[i]);
+	}
+}
+
+std::vector<PhysicsObject*> Grid::GetAllAdjacentObjects(uint x, uint z)
+{
+	std::vector<PhysicsObject*> ret;
+
+	ret.insert(ret.end(), grid[x][z].colliders.begin(), grid[x][z].colliders.end());
+	//if (x + 1 < numCellsX)
+	//{
+	//	ret.insert(ret.end(), grid[x + 1][z].colliders.begin(), grid[x][z].colliders.end());
+	//}
+	//if (x - 1 > 0)
+	//{
+	//	ret.insert(ret.end(), grid[x - 1][z].colliders.begin(), grid[x][z].colliders.end());
+	//}
+	//if (z + 1 < numCellsZ)
+	//{
+	//	ret.insert(ret.end(), grid[x][z + 1].colliders.begin(), grid[x][z].colliders.end());
+	//}
+	//if (z - 1 > 0)
+	//{
+	//	ret.insert(ret.end(), grid[x][z - 1].colliders.begin(), grid[x][z].colliders.end());
+	//}
+	//
+	//for (std::vector<PhysicsObject*>::iterator i = ret.begin(); i != ret.end(); ++i)
+	//{
+	//	for (std::vector<PhysicsObject*>::iterator j = i; j != ret.end(); ++j)
+	//	{
+	//		if (*i == *j)
+	//		{
+	//			ret.erase(j);
+	//		}
+	//	}
+	//}
+
+	return ret;
+}
 
 NS_END

@@ -5,23 +5,32 @@
 NS_BEGIN
 
 class GameObject;
+struct PhysicsObject;
+
+static const float inverseCellWidth = 0.04f;
+
+struct GridNode
+{
+	void Add(PhysicsObject* object);
+	void Clear();
+	std::vector<PhysicsObject*>& GetList();
+
+	std::vector<PhysicsObject*> colliders;
+};
 
 class Grid
 {
 public:
-	Grid(uint numCellsX, uint numCellsY, Vector2 cellWidth, Vector2 origin = Vector2::Zero);
+	Grid();
 	~Grid();
 
-
-
+	void FillGrid(std::vector<PhysicsObject>& objects);
+	std::vector<PhysicsObject*> GetAllAdjacentObjects(uint x, uint z);
 private:
-	uint numCellsX;
-	uint numCellsZ;
+	static const uint numCellsX = 4;
+	static const uint numCellsZ = 4;
 
-	Vector2 origin;
-	Vector2 inverseCellWidth;
-
-	std::vector<GameObject>* objectSets;
+	GridNode grid[numCellsX][numCellsZ];
 };
 
 NS_END

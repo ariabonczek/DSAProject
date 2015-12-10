@@ -107,7 +107,7 @@ xcopy "$(SolutionDir)bin\*" "$(OutDir)" /s /y</Command>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Game\CarAI.cpp" />
-    <ClCompile Include="Goals.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\LuminaBehaviour.cpp" />
     <ClCompile Include="Graphics\Data.cpp" />

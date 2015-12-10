@@ -123,6 +123,14 @@ Vector3 Vector3::Clamp(Vector3 v, Vector3 min, Vector3 max)
 	return v;
 }
 
+Vector3 Vector3::ClampMagnitude(Vector3 v, float m)
+{
+	if (v.Length() <= m)
+		return v;
+	v.SetMagnitude(m);
+	return v;
+}
+
 Vector3 Vector3::Cross(Vector3 v1, Vector3 v2) { float x = v1.y * v2.z - v1.z * v2.y; float y = v1.z * v2.x - v1.x * v2.z; float z = v1.x * v2.y - v1.y * v2.x; return Vector3(x, y, z); }
 float   Vector3::Distance(Vector3 v1, Vector3 v2) { Vector3 v = Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z); return sqrtf(v.x*v.x + v.y*v.y + v.z*v.z); }
 float   Vector3::DistanceSquared(Vector3 v1, Vector3 v2) { Vector3 v = Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z); return v.x*v.x + v.y*v.y + v.z*v.z; }

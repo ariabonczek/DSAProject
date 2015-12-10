@@ -27,7 +27,7 @@ void TestScene::ResetGame(){
 	manager->InitializeObjects();
 	
 	gameOver = false;
-//	Timer::Initialize();
+	Timer::Initialize();
 	g_PhysicsContext.Initialize(manager->GetList());
 	Update(Timer::GetFrameTime());
 }
@@ -38,7 +38,6 @@ void TestScene::TotalDestruction(){
 	manager->Release();
     g_PhysicsContext.DeleteObjects();
 }
-
 
 void TestScene::UpdateTime(){
 	//Timer::Stop();
@@ -370,7 +369,6 @@ void TestScene::MakeGoals()
 		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f, 0.0f, rand() % 100 - 50.0f);
 		tmp->GetTransform()->SetLocalScale(Vector3(1.0f));
 		manager->AddObject(manager->GetNextID(), tmp);
-
 	
 	}
 }

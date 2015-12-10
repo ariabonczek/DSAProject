@@ -47,7 +47,6 @@ void VectorPlate::OnTrigger(Collider* c)
 		go = c->GetGameObject();
 
 		rb->AddForce(p_CachedTransform->GetForward() * p_CachedTransform->GetLocalScale().x * 2.0f);
-		std::cout << p_CachedTransform->GetForward() << std::endl;
 	}
 }
 NS_END

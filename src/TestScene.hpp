@@ -68,7 +68,7 @@ private:
 	std::vector<GameObject*> goals;
 
 	const uint NUM_CARS = 5;
-	const float ARENA_SIZE = 50.0f;
+	const float ARENA_SIZE = 49.0f;
 
 	//std::vector<GameObject*> objects
 

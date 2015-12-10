@@ -66,10 +66,6 @@ void PhysicsContext::Simulate(float timeStep)
 			{
 				if (c1->GetIsTrigger() || c2->GetIsTrigger())
 				{
-
-					if (Timer::GetTotalTime() > 15){
-						std::string f = "Hello";
-					}
 					c1->GetGameObject()->OnTrigger(c2);
 					c2->GetGameObject()->OnTrigger(c1);
 					

@@ -2,6 +2,7 @@
 
 #include "../Config.hpp"
 #include "ContactContainer.hpp"
+#include "Grid.hpp"
 #include <unordered_map>
 #include <vector>
 
@@ -43,6 +44,8 @@ public:
 	void DeleteObjects();
 
 private:
+	Grid grid;
+
 	std::vector<PhysicsObject> m_Objects;
 	uint numCollidables;
 

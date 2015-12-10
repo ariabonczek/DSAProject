@@ -11,6 +11,8 @@
 #include "Graphics\Mesh.hpp"
 #include <vector>
 
+class Goal;
+
 NS_BEGIN
 class GameObjectManager 
 {
@@ -57,6 +59,9 @@ public:
 	std::vector<GameObject*> GetPlayerTeamList();
 	std::vector<GameObject*> GetEnemyTeamList();
 
+	void SortGoals();
+	std::vector<GameObject*> GetGoalObjects();
+
 private:
 	int size = 0;
 	GameObjectManager(void);
@@ -73,6 +78,8 @@ private:
 
 	std::vector<GameObject*> playerTeamList;
 	std::vector<GameObject*> enemyTeamList;
+
+	std::vector<GameObject*> goalList;
 };
 
 #endif //_MYGAMEOBJECTMANAGER_H_
