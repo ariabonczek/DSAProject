@@ -37,8 +37,7 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem.fbx")));
 
 	// Making some textures
-	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
-	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/car.png")));
 
 	// Making some materials
 	mats.push_back(new Material());
@@ -48,6 +47,16 @@ void TestScene::LoadAssets()
 	mats.push_back(new Material());
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
+
+	mats.push_back(new Material());
+	mats[2]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
+	mats[2]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
+	mats[2]->SetTexture2D("diffuse", textures[0]);
+
+	mats.push_back(new Material());
+	mats[3]->LoadShader("Shaders/textured.vert", ShaderType::Vertex);
+	mats[3]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
+	mats[3]->SetTexture2D("diffuse", textures[0]);
 
 	MakeCars();
 

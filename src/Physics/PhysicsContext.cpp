@@ -105,8 +105,6 @@ void PhysicsContext::Simulate(float timeStep)
 		if (ContactGeneration(coarse[i].collider1, coarse[i].collider2, cc))
 		{
 			contacts.push_back(cc);
-			std::cout << "Contact Point: " << cc.contactPoint << std::endl;
-		//	std::cout << "Contact Normal: " << cc.contactNormal << std::endl;
 		}
 	}
 	
