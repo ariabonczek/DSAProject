@@ -2,6 +2,7 @@
 
 #include "Mesh.hpp"
 #include "Material.hpp"
+#include "Data.hpp"
 
 NS_BEGIN
 
@@ -40,6 +41,8 @@ GameObject& GameObject::operator=(const GameObject& gameObject)
 
 void GameObject::Initialize()
 {
+	alpha = 1; // won't do anything unless set to something else
+
 	for (std::unordered_map<std::string, LuminaBehaviour*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		it->second->Initialize();
@@ -75,7 +78,10 @@ void GameObject::Draw()
 	material->Bind();
 
 	material->SetFloat4x4("model", GetComponent<Transform>()->GetWorldMatrix());
-	
+	if (alpha >= 0 && alpha <= 1) {
+		material->SetFloat("alpha", alpha);
+	}
+
 	mesh->Draw();
 }
 
@@ -107,6 +113,13 @@ Mesh* GameObject::GetMesh()const
 Material* GameObject::GetMaterial()const
 {
 	return material;
+}
+
+float GameObject::GetAlpha() {
+	return alpha;
+}
+void GameObject::SetAlpha(float v) {
+	alpha = v;
 }
 
 //for cars 

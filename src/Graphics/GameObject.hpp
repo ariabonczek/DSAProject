@@ -81,6 +81,9 @@ public:
 	Transform* GetTransform();
 	Mesh* GetMesh()const;
 	Material* GetMaterial()const;
+
+	float GetAlpha();
+	void SetAlpha(float);
 protected:
 	std::unordered_map<std::string, LuminaBehaviour*> components;
 
@@ -89,6 +92,8 @@ protected:
 	Material* material;
 	int crystals;
 	uint id;
+
+	float alpha; // alpha channel
 };
 
 NS_END
