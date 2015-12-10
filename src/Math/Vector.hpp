@@ -191,6 +191,8 @@ struct Vector3
 	/// </summary>
 	static Vector3 Clamp(Vector3 v, Vector3 min, Vector3 max);
 
+	static Vector3 ClampMagnitude(Vector3 v, float m);
+
 	/// <summary>
 	/// Returns a vector that is perpendicular to both v1 and v2
 	/// </summary>
