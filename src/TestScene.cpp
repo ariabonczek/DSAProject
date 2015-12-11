@@ -9,7 +9,8 @@
 TestScene::TestScene()
 {
 	//goes by seconds for how long round is
-	timeLimit = 10; //5 minutes
+	timeLimit = 50;
+	//timeLimit = 10; //5 minutes
 	//Timer::Start();
 	vectorPlatePos =
 	{
@@ -55,6 +56,16 @@ TestScene::TestScene()
 
 
 	};
+
+	goalPos =
+	{
+		Vector3(45.0f, 0.0f, 45.0f),
+		Vector3(-45.0f, 0.0f, 45.0f),
+		Vector3(-45.0f, 0.0f, -45.0f),
+		Vector3(45.0f, 0.0f, -45.0f),
+	
+	};
+
 }
 
 TestScene::~TestScene()
@@ -69,7 +80,7 @@ void TestScene::ResetGame(){
 	MakeArena();
 	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
 
-	MakeGoals();
+	MakeGoals(goalPos);
 	manager->InitializeObjects();
 	
 	gameOver = false;
@@ -134,7 +145,7 @@ void TestScene::LoadAssets()
 
 	MakeArena();
 	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
-	MakeGoals();
+	MakeGoals(goalPos);
 
 	Collider* d = new Collider();
 	Box* d_box = new Box();
@@ -276,6 +287,7 @@ void TestScene::UnloadAssets()
 		delete l;
 }
 
+/*Not using, keeping in case
 void TestScene::MakeCollectibles() {
 	///TODO - Optimize this
 	Collider* d = new Collider();
@@ -349,6 +361,7 @@ void TestScene::MakeCollectibles() {
 	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
 	manager->AddObject(manager->GetNextID(), gem5);
 }
+*/
 
 void TestScene::MakeCollectibles(uint amount)
 {
@@ -508,6 +521,42 @@ void TestScene::MakeGoals()
 	
 	}
 }
+
+void TestScene::MakeGoals(std::vector<Vector3> location)
+{
+	GameObject* goal;
+	Collider* collider;
+	Box* box;
+	for (uint i = 0; i < location.size(); i++)
+	{
+		goal = new GameObject("Goal" + i, meshes[4], mats[0]);
+		goal->AddComponent<LuminaGL::Goal>(new LuminaGL::Goal());
+
+		collider = new Collider;
+		collider->SetTrigger(true);
+
+		box = new Box();
+		box->m_HalfWidth = Vector3(2.0f);
+		collider->AddBox(box);
+
+		goal->AddComponent<Collider>(collider);
+		goal->AddComponent<Rigidbody>(new Rigidbody());
+
+		goal->GetTransform()->SetLocalPosition(location[i]);
+	
+		if(i == 0)
+			goal->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), -90 - (atan(location[i].z / location[i].x) * 180) / PI));
+		else if (i == 1)
+			goal->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), 90 - (atan(location[i].z / location[i].x) * 180) / PI));
+		else
+			goal->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), (atan(location[i].z / location[i].x) * 180) / PI));
+		std::cout << atan(location[i].z / location[i].x) * 180 / PI<< std::endl;
+		goal->GetTransform()->SetLocalScale(Vector3(2.0f));
+		manager->AddObject(manager->GetNextID(), goal);
+
+	}
+}
+
 void TestScene::MakeArena()
 {
 	GameObject* wall1;

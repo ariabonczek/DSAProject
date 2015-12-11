@@ -32,6 +32,7 @@ public:
 	void MakeVectorPlate();
 	void MakeVectorPlate(std::vector<Vector3> vectorPlatePos, std::vector<float> vectorPlateDirection, float scale);
 	void MakeGoals();
+	void MakeGoals(std::vector<Vector3> goalPos);
 	void UnloadAssets();
 	void DrawHUD();
 	void DrawGameOver();
@@ -69,9 +70,10 @@ private:
 
 	//std::vector<GameObject*> gemList;
 	std::vector<Vector3> vectorPlatePos;
-
-
+	std::vector<Vector3> goalPos;
+	
 	std::vector<float> vectorPlateDirection;
+	
 	std::vector<GameObject*> goals;
 
 	const uint NUM_CARS = 5;
