@@ -6,7 +6,7 @@
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
-#define WINDOW_TITLE "LuminaGL"
+#define WINDOW_TITLE "Bumper League"
 #define MSAA_SAMPLES 4
 #define LUMINA_DEBUG 1
 

@@ -9,7 +9,8 @@ NS_BEGIN
 GameObject::GameObject(std::string name, Mesh* mesh, Material* material):
 name(name),
 mesh(mesh),
-material(material)
+material(material), 
+alpha(1.0f)
 {
 	AddComponent<Transform>(new Transform());
 }
@@ -78,9 +79,9 @@ void GameObject::Draw()
 	material->Bind();
 
 	material->SetFloat4x4("model", GetComponent<Transform>()->GetWorldMatrix());
-	if (alpha >= 0 && alpha <= 1) {
-		material->SetFloat("alpha", alpha);
-	}
+	//if (alpha >= 0 && alpha <= 1) {
+	//	material->SetFloat("alpha", alpha);
+	//}
 
 	mesh->Draw();
 }

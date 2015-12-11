@@ -24,12 +24,12 @@ public:
 	Grid();
 	~Grid();
 
-	void FillGrid(std::vector<PhysicsObject>& objects);
-	std::vector<PhysicsObject*> GetAllAdjacentObjects(uint x, uint z);
-private:
 	static const uint numCellsX = 4;
 	static const uint numCellsZ = 4;
 
+	void FillGrid(std::vector<PhysicsObject>& objects);
+	std::vector<PhysicsObject*> GetAllAdjacentObjects(int x, int z);
+private:
 	GridNode grid[numCellsX][numCellsZ];
 };
 
