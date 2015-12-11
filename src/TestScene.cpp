@@ -11,6 +11,50 @@ TestScene::TestScene()
 	//goes by seconds for how long round is
 	timeLimit = 10; //5 minutes
 	//Timer::Start();
+	vectorPlatePos =
+	{
+		Vector3(25.0f, 0.0f, 25.0f),
+		Vector3(0.0f, 0.0f, 40.0f),
+		Vector3(-25.0f, 0.0f, 25.0f),
+		Vector3(-40.0f, 0.0f, 0.0f),
+		Vector3(-25.0f, 0.0f, -25.0f),
+		Vector3(0.0f, 0.0f, -40.0f),
+		Vector3(25.0f, 0.0f, -25.0f),
+		Vector3(40.0f, 0.0f, 0.0f),
+
+		Vector3(10.0f, 0.0f, 10.0f),
+		Vector3(0.0f, 0.0f, 15.0f),
+		Vector3(-10.0f, 0.0f, 10.0f),
+		Vector3(-15.0f, 0.0f, 0.0f),
+		Vector3(-10.0f, 0.0f, -10.0f),
+		Vector3(0.0f, 0.0f, -15.0f),
+		Vector3(10.0f, 0.0f, -10.0f),
+		Vector3(15.0f, 0.0f, 0.0f)
+	};
+
+	vectorPlateDirection =
+	{
+
+		-45.0f,
+		-90.0f,
+		-135.0f,
+		180.0f,
+		135.0f,
+		90.0f,
+		45.0f,
+		0.0f,
+
+		45.0f,
+		90.0f,
+		135.0f,
+		180.0f,
+		-135.0f,
+		-90.0f,
+		-45.0f,
+		-0.0f
+
+
+	};
 }
 
 TestScene::~TestScene()
@@ -21,9 +65,10 @@ TestScene::~TestScene()
 void TestScene::ResetGame(){
 	//only reset cars and collectibles
 	MakeCars();
-	MakeCollectibles();
+	MakeCollectibles(NUM_COLLECTIBLE);
 	MakeArena();
-	MakeVectorPlate();
+	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
+
 	MakeGoals();
 	manager->InitializeObjects();
 	
@@ -69,7 +114,7 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem3.fbx")));
 
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/vectorplate.fbx")));
-	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem.fbx")));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/goal.fbx")));
 
 	// Making some textures
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
@@ -85,10 +130,10 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
 	MakeCars();
-	MakeCollectibles();
-	
+	MakeCollectibles(NUM_COLLECTIBLE);
+
 	MakeArena();
-	MakeVectorPlate();
+	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
 	MakeGoals();
 
 	Collider* d = new Collider();
@@ -305,6 +350,34 @@ void TestScene::MakeCollectibles() {
 	manager->AddObject(manager->GetNextID(), gem5);
 }
 
+void TestScene::MakeCollectibles(uint amount)
+{
+	Collider* collide;
+	Box* gem_box;
+	GameObject* gem;
+
+	for (int i = 0; i < amount; i++)
+	{
+		collide = new Collider();
+		gem_box = new Box();
+		collide->SetTrigger(true);
+
+		gem_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
+		collide->AddBox(gem_box);
+
+		gem = new GameObject("Gem" + i, meshes[2], mats[0]);
+		gem->AddComponent<Collectible>(new Collectible(2));
+
+		gem->AddComponent<Collider>(collide);
+		gem->GetTransform()->SetLocalPosition(rand() % 80 - 40.0f, 1.0f, rand() % 80 - 40.0f);
+		gem->GetTransform()->SetLocalScale(Vector3(0.4f));
+
+
+		manager->AddObject(manager->GetNextID(), gem);
+	}
+}
+
+
 void TestScene::MakeCars()
 {
 	playerCar = new GameObject("Car", meshes[0], mats[0]);
@@ -363,12 +436,49 @@ void TestScene::MakeVectorPlate()
 		tmp->AddComponent<Collider>(c);
 		tmp->AddComponent<Rigidbody>(new Rigidbody());
 		float r = rand() % 10 + 3;
-		
-		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f , 0.0f, rand() % 100 - 50.0f);
+
+		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f, 0.0f, rand() % 100 - 50.0f);
 		tmp->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() % 360));
 		tmp->GetTransform()->SetLocalScale(Vector3(r / 10));
 
 		manager->AddObject(manager->GetNextID(), tmp);
+	}
+
+}
+
+void TestScene::MakeVectorPlate(std::vector<Vector3> location, std::vector<float> direction, float scale)
+{
+	GameObject* vectorPlate;
+	Collider* collider;
+	Box* box;
+	for (uint i = 0; i < location.size(); i++)
+	{
+		vectorPlate = new GameObject("VectorPlate" + i, meshes[3], mats[0]);
+
+		vectorPlate->AddComponent<VectorPlate>(new VectorPlate());
+
+		collider = new Collider;
+		collider->SetTrigger(true);
+
+		box = new Box();
+		box->m_HalfWidth = Vector3(1.0f);
+		collider->AddBox(box);
+
+		vectorPlate->AddComponent<Collider>(collider);
+		vectorPlate->AddComponent<Rigidbody>(new Rigidbody);
+
+		vectorPlate->GetTransform()->SetLocalPosition(location[i]);
+
+		if (direction.size() >= location.size())
+		{
+			vectorPlate->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), direction[i]));
+		}
+		else
+			vectorPlate->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() % 360));
+
+		vectorPlate->GetTransform()->SetLocalScale(Vector3(scale));
+
+		manager->AddObject(manager->GetNextID(), vectorPlate);
 	}
 }
 void TestScene::MakeGoals()
