@@ -58,38 +58,44 @@ void Grid::FillGrid(std::vector<PhysicsObject>& objects)
 	}
 }
 
-std::vector<PhysicsObject*> Grid::GetAllAdjacentObjects(uint x, uint z)
+std::vector<PhysicsObject*> Grid::GetAllAdjacentObjects(int x, int z)
 {
 	std::vector<PhysicsObject*> ret;
 
 	ret.insert(ret.end(), grid[x][z].colliders.begin(), grid[x][z].colliders.end());
-	//if (x + 1 < numCellsX)
-	//{
-	//	ret.insert(ret.end(), grid[x + 1][z].colliders.begin(), grid[x][z].colliders.end());
-	//}
-	//if (x - 1 > 0)
-	//{
-	//	ret.insert(ret.end(), grid[x - 1][z].colliders.begin(), grid[x][z].colliders.end());
-	//}
-	//if (z + 1 < numCellsZ)
-	//{
-	//	ret.insert(ret.end(), grid[x][z + 1].colliders.begin(), grid[x][z].colliders.end());
-	//}
-	//if (z - 1 > 0)
-	//{
-	//	ret.insert(ret.end(), grid[x][z - 1].colliders.begin(), grid[x][z].colliders.end());
-	//}
-	//
-	//for (std::vector<PhysicsObject*>::iterator i = ret.begin(); i != ret.end(); ++i)
-	//{
-	//	for (std::vector<PhysicsObject*>::iterator j = i; j != ret.end(); ++j)
-	//	{
-	//		if (*i == *j)
-	//		{
-	//			ret.erase(j);
-	//		}
-	//	}
-	//}
+	if (x + 1 < numCellsX)
+	{
+		std::vector<PhysicsObject*> temp = grid[x + 1][z].GetList();
+		ret.insert(ret.end(), temp.begin(), temp.end());
+	}
+	if (x - 1 > 0)
+	{
+		std::vector<PhysicsObject*> temp = grid[x - 1][z].GetList();
+		ret.insert(ret.end(), temp.begin(), temp.end());
+	}
+	if (z + 1 < numCellsZ)
+	{
+		std::vector<PhysicsObject*> temp = grid[x][z + 1].GetList();
+		ret.insert(ret.end(), temp.begin(), temp.end());
+	}
+	if (z - 1 > 0)
+	{
+		std::vector<PhysicsObject*> temp = grid[x][z - 1].GetList();
+		ret.insert(ret.end(), temp.begin(), temp.end());
+	}
+	
+	if (ret.size() > 1)
+	{
+		for (int i = 0; i < ret.size() - 1; ++i)
+		{
+			PhysicsObject* p = ret[i];
+			for (int j = i; j < ret.size(); ++j)
+			{
+				if (p == ret[j])
+					ret.erase(ret.begin() + j);
+			}
+		}
+	}
 
 	return ret;
 }

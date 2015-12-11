@@ -67,7 +67,7 @@ void Car::Update(float dt)
 	}
 
 	Rigidbody* r = GetGameObject()->GetComponent<Rigidbody>();
-	r->SetLinearVelocity(Vector3::ClampMagnitude(r->GetLinearVelocity(), MAX_SPEED));
+	//r->SetLinearVelocity(Vector3::ClampMagnitude(r->GetLinearVelocity(), MAX_SPEED));
 }
 
 void Car::Accelerate(Vector3 acceleration)

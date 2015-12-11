@@ -51,15 +51,18 @@ void PhysicsContext::Simulate(float timeStep)
 		}
 	}
 
-	for (int x = 0; x < 4; ++x)
+	for (int x = 0; x < grid.numCellsX; ++x)
 	{
-		for (int z = 0; z < 4; ++z)
+		for (int z = 0; z < grid.numCellsZ; ++z)
+
 		{
 			std::vector<PhysicsObject*> objs = grid.GetAllAdjacentObjects(x, z);
 			int num = objs.size();
 
+
 			if (num <= 1)
-				continue;
+				if (num < 2)
+					continue;
 
 			for (uint i = 0; i < num - 1; ++i)
 			{
@@ -113,26 +116,26 @@ void PhysicsContext::Simulate(float timeStep)
 		ResolveCollisionSimple(contacts[i]);
 		continue;
 
-		Rigidbody* r1 = contacts[i].rigidbody[0];
-		Rigidbody* r2 = contacts[i].rigidbody[1];
-		
-		if (r1 && r2)
-		{
-			ResolveCollision(r1, r2);
-			continue;
-		}
-		
-		if (r1 && !r2)
-		{
-			ResolveCollision(r1, coarse[i].collider2);
-			continue;
-		}
-		
-		if (!r1 && r2)
-		{
-			ResolveCollision(r2, coarse[i].collider1);
-			continue;
-		}
+		//Rigidbody* r1 = contacts[i].rigidbody[0];
+		//Rigidbody* r2 = contacts[i].rigidbody[1];
+		//
+		//if (r1 && r2)
+		//{
+		//	ResolveCollision(r1, r2);
+		//	continue;
+		//}
+		//
+		//if (r1 && !r2)
+		//{
+		//	ResolveCollision(r1, coarse[i].collider2);
+		//	continue;
+		//}
+		//
+		//if (!r1 && r2)
+		//{
+		//	ResolveCollision(r2, coarse[i].collider1);
+		//	continue;
+		//}
 	}
 
 	// Integrate results
