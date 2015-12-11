@@ -51,12 +51,15 @@ void PhysicsContext::Simulate(float timeStep)
 		}
 	}
 
-	for (int x = 1; x < 3; ++x)
+	for (int x = 0; x < 4; ++x)
 	{
-		for (int z = 1; z < 3; ++z)
+		for (int z = 0; z < 4; ++z)
 		{
 			std::vector<PhysicsObject*> objs = grid.GetAllAdjacentObjects(x, z);
 			int num = objs.size();
+
+			if (num <= 1)
+				continue;
 
 			for (uint i = 0; i < num - 1; ++i)
 			{

@@ -35,7 +35,6 @@ TestScene::TestScene()
 
 	vectorPlateDirection =
 	{
-
 		-45.0f,
 		-90.0f,
 		-135.0f,

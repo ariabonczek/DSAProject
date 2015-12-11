@@ -13,15 +13,10 @@ enum type {
 };
 
 Collectible::Collectible(int e){
-	enumType = e;
 
-	mass = 2.2;
-	size = 2.2;
+	mass = 1.7;
 
-	minSize = 0.2f;
 	minMass = 1.5f;
-
-	maxSize = 0.7f;
 	maxMass = 4.5f;
 	hit = false;
 }
@@ -68,15 +63,13 @@ void Collectible::OnTrigger(Collider* c)
 	if (hit == false) {
 		go_Collector->IncrementCrystals();
 		//do same for maxSize when that's been figured out
-		switch (this->enumType){
-		case 0:
-			Fast();
-		case 1:
-			Slow();
-		case 2:
-			Big();
-		case 3:
-			Small();
+	    float x = rb_Collector->GetMass();
+
+		if (rb_Collector->GetMass() > maxMass) {
+			rb_Collector->SetMass(maxMass);
+		}
+		else {
+			rb_Collector->SetMass(rb_Collector->GetMass() / mass);
 		}
 
 		Destroy();
