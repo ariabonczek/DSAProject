@@ -9,7 +9,7 @@
 TestScene::TestScene()
 {
 	//goes by seconds for how long round is
-	timeLimit = 50;
+	timeLimit = 10;
 	//timeLimit = 10; //5 minutes
 	//Timer::Start();
 	vectorPlatePos =
@@ -80,15 +80,14 @@ void TestScene::ResetGame(){
 	
 	gameOver = false;
 	Timer::Initialize();
-	g_PhysicsContext.Initialize(manager->GetList());
-	Update(Timer::GetFrameTime());
+	m_PhysicsContext.Initialize(manager->GetList());
 }
 
 void TestScene::TotalDestruction(){
 	//only destroy cars and collectibles
 	//also vector plates if they are random
 	manager->Release();
-    g_PhysicsContext.DeleteObjects();
+    m_PhysicsContext.DeleteObjects();
 }
 
 void TestScene::UpdateTime(){
@@ -169,20 +168,20 @@ void TestScene::Update(float dt)
 
 		MovePlayer(dt);
 
-		if (freeCamera)
-		{
-			MoveCamera(dt);
-		}
-		else
-		{
+	//if (freeCamera)
+	//{
+	//	MoveCamera(dt);
+	//}
+	//else
+	//{
 			CameraSmoothFollow(dt, playerCar->GetTransform());
-		}
+	//	}
 
-		// Press space to swap between wireframe and shaded mode
-		if (Input::GetKeyDown(GLFW_KEY_SPACE))
-		{
-			freeCamera = !freeCamera;
-		}
+		//// Press space to swap between wireframe and shaded mode
+		//if (Input::GetKeyDown(GLFW_KEY_SPACE))
+		//{
+		//	freeCamera = !freeCamera;
+		//}
 
 		playerCar->Update(dt);
 		manager->Update(dt);

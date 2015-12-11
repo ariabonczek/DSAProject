@@ -13,6 +13,9 @@ void GameObjectManager::Init(void)
 
 void GameObjectManager::Release(void)
 {
+	//for (std::pair<uint, GameObject*> i : objects)
+	//	delete i.second;
+
 	objects.clear();
 	//carList.clear();
 	//collectibleList.clear();

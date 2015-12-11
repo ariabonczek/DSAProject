@@ -32,6 +32,9 @@ void TextRenderer::Initialize()
 	m_Texture->Generate(GL_LINEAR, GL_CLAMP_TO_EDGE);
 	fontsize = 16;
 	fontColor = Color::Red;
+
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
 }
 
 void TextRenderer::RenderText(const char* text, uint x, uint y)
@@ -41,12 +44,8 @@ void TextRenderer::RenderText(const char* text, uint x, uint y)
 
 	FT_Set_Pixel_Sizes(m_Face, 0, fontsize);
 
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 4, 0);

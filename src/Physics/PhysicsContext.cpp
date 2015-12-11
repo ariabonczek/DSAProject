@@ -10,7 +10,7 @@
 
 NS_BEGIN
 
-PhysicsContext g_PhysicsContext;
+//PhysicsContext g_PhysicsContext;
 
 void PhysicsContext::Initialize(std::unordered_map<uint, GameObject*> allObjects)
 {
@@ -40,6 +40,8 @@ void PhysicsContext::Simulate(float timeStep)
 	coarse.clear();
 	contacts.clear();
 
+	grid.FillGrid(m_Objects);
+
 	// Apply external forces
 	for (uint i = 0; i < numCollidables; ++i)
 	{
@@ -49,40 +51,47 @@ void PhysicsContext::Simulate(float timeStep)
 		}
 	}
 
-	// Coarse Collision Detection
-	for (uint i = 0; i < numCollidables - 1; ++i)
+	for (int x = 1; x < 3; ++x)
 	{
-		Collider* c1 = m_Objects[i].collider;
-		for (uint j = i + 1; j < numCollidables; ++j)
+		for (int z = 1; z < 3; ++z)
 		{
-			Collider* c2 = m_Objects[j].collider;
-			
-			// TODO: Octree optimization
+			std::vector<PhysicsObject*> objs = grid.GetAllAdjacentObjects(x, z);
+			int num = objs.size();
 
-			CoarseContainer cc;
-
-			// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
-			if (SAT(c1, c2))
+			for (uint i = 0; i < num - 1; ++i)
 			{
-				if (c1->GetIsTrigger() || c2->GetIsTrigger())
+				Collider* c1 = objs[i]->collider;
+				for (uint j = i + 1; j < num; ++j)
 				{
-					c1->GetGameObject()->OnTrigger(c2);
-					c2->GetGameObject()->OnTrigger(c1);
-					
-					continue;
+					Collider* c2 = objs[j]->collider;
+
+					CoarseContainer cc;
+
+					// NOTE: SAT IS NOT A COARSE COLLISION DETECTOR
+					if (SAT(c1, c2))
+					{
+						if (c1->GetIsTrigger() || c2->GetIsTrigger())
+						{
+							c1->GetGameObject()->OnTrigger(c2);
+							c2->GetGameObject()->OnTrigger(c1);
+
+							continue;
+						}
+
+						c1->GetGameObject()->OnCollision(c2);
+						c2->GetGameObject()->OnCollision(c1);
+
+						cc.collider1 = c1;
+						cc.collider2 = c2;
+
+						coarse.push_back(cc);
+					}
 				}
-
-				c1->GetGameObject()->OnCollision(c2);
-				c2->GetGameObject()->OnCollision(c1);				
-
-				cc.collider1 = c1;
-				cc.collider2 = c2;			
-
-				coarse.push_back(cc);
 			}
+
 		}
 	}
-	
+
 	// Fine Collision Detection
 	for (uint i = 0; i < coarse.size(); ++i)
 	{

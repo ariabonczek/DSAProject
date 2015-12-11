@@ -42,7 +42,6 @@ public:
 	void AddCollidable(Collider* collider);
 
 	void DeleteObjects();
-
 private:
 	Grid grid;
 
@@ -53,6 +52,6 @@ private:
 	std::vector<ContactContainer> contacts;
 };
 
-extern PhysicsContext g_PhysicsContext;
+//extern PhysicsContext g_PhysicsContext;
 
 NS_END

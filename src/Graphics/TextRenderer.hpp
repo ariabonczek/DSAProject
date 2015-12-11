@@ -32,6 +32,9 @@ private:
 	Material* m_TextMaterial;
 	Texture2D* m_Texture;
 
+	GLuint vao;
+	GLuint vbo;
+
 	uint fontsize;
 	Color fontColor;
 };
