@@ -119,11 +119,6 @@ void TestScene::Update(float dt)
 		m_PhysicsContext.Simulate(dt);
 		DrawHUD();
 
-		if (Timer::GetTotalTime() > 13){
-
-			std::string f = "fuck";
-		}
-
 		MovePlayer(dt);
 
 		if (freeCamera)
@@ -142,7 +137,6 @@ void TestScene::Update(float dt)
 		}
 
 		playerCar->Update(dt);
-
 		manager->Update(dt);
 	}
 	else{
@@ -157,21 +151,51 @@ void TestScene::Update(float dt)
 }
 
 void TestScene::DrawHUD() {
-	g_TextRenderer.RenderText("Crystals Collected: ", 30, 30);
-	//g_TextRenderer.RenderText(" - Enemy Team", 950, 50);
-	
-	std::string s = std::to_string(playerCar->GetCrystals());
-	
-	//render how many crystals
-	g_TextRenderer.RenderText(s.c_str(), 300, 30);
+	g_TextRenderer.RenderText("Player: ", 30, 30);
+	g_TextRenderer.RenderText("Mass: ", 60, 60);
 
-	std::string t = std::to_string(timePlayed);
-	g_TextRenderer.RenderText(t.c_str(), 300,30);
+	std::string m = std::to_string(playerCar->GetComponent<Rigidbody>()->GetMass());
+	g_TextRenderer.RenderText(m.c_str(), 100, 60);
+
+	g_TextRenderer.RenderText("Enemies: ", 1000, 30);
+	
+	std::string p = std::to_string(manager->GetPlayerScore());	
+	//render how many crystals
+	g_TextRenderer.RenderText(p.c_str(), 150, 30);
+
+	std::string e = std::to_string(manager->GetEnemyScore());
+	//render how many crystals
+	g_TextRenderer.RenderText(e.c_str(), 1200, 30);
+
+
+	std::string t = std::to_string(std::floor(timePlayed));
+	g_TextRenderer.RenderText(t.c_str(), 500, 30);
 }
 
 void TestScene::DrawGameOver(){
-	g_TextRenderer.RenderText("GAME OVER BIATCH", 300, 100);
-	g_TextRenderer.RenderText("Press Enter to try again", 300, 200);
+	g_TextRenderer.RenderText("GAME OVER" , 650, 100);
+	std::string p = std::to_string(manager->GetPlayerScore());
+	std::string e = std::to_string(manager->GetEnemyScore());
+
+	if (manager->GetPlayerScore() == manager->GetEnemyScore()){
+		g_TextRenderer.RenderText("Tie", 600, 200);
+	}
+	else{
+		if (manager->GetPlayerScore() > manager->GetEnemyScore()){
+			g_TextRenderer.RenderText("Winner: Player's Team", 500, 200);
+		}
+		else{
+			g_TextRenderer.RenderText("Winner: Enemy Team", 500, 200);
+		}
+	}
+	
+	g_TextRenderer.RenderText("Player Score: ", 300, 400);
+	g_TextRenderer.RenderText(p.c_str(), 500, 400);
+
+	g_TextRenderer.RenderText("Enemy Score: ", 650, 400);
+	g_TextRenderer.RenderText(e.c_str(), 850, 400);
+
+	g_TextRenderer.RenderText("Press Enter to try again", 500, 600);
 }
 
 void TestScene::Draw()

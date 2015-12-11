@@ -46,6 +46,8 @@ void Goal::OnTrigger(Collider* c)
 
 			rb = c->GetGameObject()->GetComponent<Rigidbody>();
 			
+			GameObjectManager::GetInstance()->SetPoints(c->GetGameObject());
+
 			Vector3 distance = rb->GetPosition() - this->GetGameObject()->GetComponent<Rigidbody>()->GetPosition();
 			distance.Normalize();
 			//rb->AddForce(distance);

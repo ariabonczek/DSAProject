@@ -165,7 +165,32 @@ void GameObjectManager::FindCollided(GameObject* hit){
 			break;
 		}
 	}
+}
+void GameObjectManager::SetPoints(GameObject* car){
+	if (car->GetComponent<Car>()->IsEnemy()){
+		for (uint i = 0; i < enemyTeamList.size(); ++i){
+			if (car == enemyTeamList[i]){
+				playerScore++;
+				break;
+			}
+		}
+	}
+	else{
+		for (uint i = 0; i < playerTeamList.size(); ++i){
+			if (car == playerTeamList[i]){
+				enemyScore++;
+				break;
+			}
+		}
+	}
+	
+}
 
+uint GameObjectManager::GetPlayerScore(){
+	return playerScore;
+}
+uint GameObjectManager::GetEnemyScore(){
+	return enemyScore;
 }
 
 void GameObjectManager::SortCarsIntoTeams() {

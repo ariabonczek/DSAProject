@@ -26,8 +26,8 @@ public:
 
 	void Fast();
 	void Slow();
-	void Heavy();
-	void Light();
+	void Big();
+	void Small();
 
 private:
 	Transform* p_CachedTransform;

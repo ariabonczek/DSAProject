@@ -5,7 +5,7 @@
 #include "../Graphics/Transform.hpp"
 #include "../Graphics/GameObject.hpp"
 #include "../Graphics/LuminaBehaviour.hpp"
-
+#include "../GameObjectManager.h"
 #include "../Physics/Collider.hpp"
 #include "../Physics/Rigidbody.hpp"
 

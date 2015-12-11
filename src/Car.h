@@ -75,6 +75,5 @@ private:
 
 	bool enemyTeam = false;
 };
-
 NS_END
 #endif

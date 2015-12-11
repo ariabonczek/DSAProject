@@ -37,7 +37,7 @@ public:
 
 	void RemoveFromList(uint id);
 	void FindCollided(GameObject* hit);
-
+	void SetPoints(GameObject* car);
 	void AddObject(uint id, GameObject* object);
 	GameObject* GetObject(uint id);
 
@@ -62,8 +62,13 @@ public:
 	void SortGoals();
 	std::vector<GameObject*> GetGoalObjects();
 
+	uint GetPlayerScore();
+	uint GetEnemyScore();
+
 private:
 	int size = 0;
+	uint playerScore = 0;
+	uint enemyScore = 0;
 	GameObjectManager(void);
 	
 	GameObjectManager(GameObjectManager const& other);

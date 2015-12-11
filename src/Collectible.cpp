@@ -15,8 +15,8 @@ enum type {
 Collectible::Collectible(int e){
 	enumType = e;
 
-	mass = 1.2;
-	size = 1.2;
+	mass = 2.2;
+	size = 2.2;
 
 	minSize = 0.2f;
 	minMass = 1.5f;
@@ -74,9 +74,9 @@ void Collectible::OnTrigger(Collider* c)
 		case 1:
 			Slow();
 		case 2:
-			Heavy();
+			Big();
 		case 3:
-			Light();
+			Small();
 		}
 
 		Destroy();
@@ -102,18 +102,27 @@ void Collectible::Slow(){
 
 }
 
-void Collectible::Heavy(){
-	float x = rb_Collector->GetMass();
+void Collectible::Big(){
+	//float x = rb_Collector->GetMass();
 	Vector3 sizeTest = go_Collector->GetTransform()->GetLocalScale();
 	if (sizeTest.x > maxSize) {
 		go_Collector->GetTransform()->SetLocalScale(Vector3(maxSize));
 	}
 	else {
-		go_Collector->GetTransform()->SetLocalScale(go_Collector->GetTransform()->GetLocalScale() * size);
+		Vector3 x = go_Collector->GetTransform()->GetLocalScale() * size;
+		go_Collector->GetTransform()->SetLocalScale(x);
+		//Vector3 v = go_Collector->GetTransform()->GetLocalScale();
+	}
+
+	if (rb_Collector->GetMass() > maxMass) {
+		rb_Collector->SetMass(maxMass);
+	}
+	else {
+		rb_Collector->SetMass(rb_Collector->GetMass() * mass);
 	}
 }
 
-void Collectible::Light(){
+void Collectible::Small(){
 	float x = rb_Collector->GetMass();
 	Vector3 sizeTest = go_Collector->GetTransform()->GetLocalScale();
 	if (sizeTest.x < minSize) {

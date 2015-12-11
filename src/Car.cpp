@@ -167,8 +167,5 @@ sssssssssssssssssssss	*/
 	p_GameObject->SetAlpha(0.7f);
 	
 	SetPlay(true);
-	
-	
-	
 }
 NS_END
