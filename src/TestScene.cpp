@@ -448,74 +448,105 @@ void TestScene::MakeGoals(std::vector<Vector3> location)
 
 void TestScene::MakeArena()
 {
-	GameObject* wall1;
-	GameObject* wall2;
-	GameObject* wall3;
-	GameObject* wall4;
+	GameObject* wall1[4];
+
+	GameObject* wall2[4];
+
+	GameObject* wall3[4];
+
+	GameObject* wall4[4];
+
 	GameObject* floor;
 
 	{
-		wall1 = new GameObject("Wall1", meshes[1], mats[0]);
-		wall1->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
-		wall1->GetTransform()->SetLocalPosition(0.0f, 0.0f, -ARENA_SIZE);
+		for (int i = 0; i < 4; ++i)
+		{
+			float denom = 1.0f / i;
+			wall1[i] = new GameObject("Wall1", meshes[1], mats[0]);
+			wall1[i]->GetTransform()->SetLocalScale(ARENA_SIZE / 4, 2.0f, 1.0f);
+			wall1[i]->GetTransform()->SetLocalPosition(-ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4, 0.0f, -ARENA_SIZE);
 
-		Collider* c = new Collider();
-		Box* box = new Box();
-		box->m_HalfWidth = Vector3(ARENA_SIZE, 2.0f, 1.0f);
-		c->AddBox(box);
+			Collider* c = new Collider();
+			Box* box = new Box();
+			box->m_HalfWidth = Vector3(ARENA_SIZE / 4, 2.0f, 1.0f);
+			c->AddBox(box);
 
-		wall1->AddComponent<Collider>(c);
+			wall1[i]->AddComponent<Collider>(c);
+
+			manager->AddObject(manager->GetNextID(), wall1[i]);
+		}
 	}
 
 	{
-		wall2 = new GameObject("Wall2", meshes[1], mats[0]);
-		wall2->GetTransform()->SetLocalScale(ARENA_SIZE, 2.0f, 1.0f);
-		wall2->GetTransform()->SetLocalPosition(0.0f, 0.0f, ARENA_SIZE);
+		for (int i = 0; i < 4; ++i)
+		{
+			float denom = 1.0f / i;
+			wall2[i] = new GameObject("Wall2", meshes[1], mats[0]);
+			wall2[i]->GetTransform()->SetLocalScale(ARENA_SIZE / 4, 2.0f, 1.0f);
+			wall2[i]->GetTransform()->SetLocalPosition(-ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4, 0.0f, ARENA_SIZE);
 
-		Collider* c = new Collider();
-		Box* box = new Box();
-		box->m_HalfWidth = Vector3(ARENA_SIZE, 2.0f, 1.0f);
-		c->AddBox(box);
+			Collider* c = new Collider();
+			Box* box = new Box();
+			box->m_HalfWidth = Vector3(ARENA_SIZE / 4, 2.0f, 1.0f);
+			c->AddBox(box);
 
-		wall2->AddComponent<Collider>(c);
+			wall2[i]->AddComponent<Collider>(c);
+			manager->AddObject(manager->GetNextID(), wall2[i]);
+
+		}
 	}
 
 	{
-		wall3 = new GameObject("Wall3", meshes[1], mats[0]);
-		wall3->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
-		wall3->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, 0.0f);
+		for (int i = 0; i < 4; ++i)
+		{
+			float denom = 1.0f / i;
+			wall3[i] = new GameObject("Wall3", meshes[1], mats[0]);
+			wall3[i]->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE / 4);
+			wall3[i]->GetTransform()->SetLocalPosition(-ARENA_SIZE, 0.0f, -ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4);
 
-		Collider* c = new Collider();
-		Box* box = new Box();
-		box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE);
-		c->AddBox(box);
+			Collider* c = new Collider();
+			Box* box = new Box();
+			box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE / 4);
+			c->AddBox(box);
 
-		wall3->AddComponent<Collider>(c);
+			wall3[i]->AddComponent<Collider>(c);
+
+			manager->AddObject(manager->GetNextID(), wall3[i]);
+		}
 	}
 
 	{
-		wall4 = new GameObject("Wall4", meshes[1], mats[0]);
-		wall4->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE);
-		wall4->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, 0.0f);
+		for (int i = 0; i < 4; ++i)
+		{
+			float denom = 1.0f / i;
+			wall4[i] = new GameObject("Wall4", meshes[1], mats[0]);
+			wall4[i]->GetTransform()->SetLocalScale(1.0f, 2.0f, ARENA_SIZE / 4);
+			wall4[i]->GetTransform()->SetLocalPosition(ARENA_SIZE, 0.0f, -ARENA_SIZE + i * ARENA_SIZE / 2 + ARENA_SIZE / 4);
 
-		Collider* c = new Collider();
-		Box* box = new Box();
-		box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE);
-		c->AddBox(box);
+			Collider* c = new Collider();
+			Box* box = new Box();
+			box->m_HalfWidth = Vector3(1.0f, 2.0f, ARENA_SIZE / 4);
+			c->AddBox(box);
 
-		wall4->AddComponent<Collider>(c);
+			wall4[i]->AddComponent<Collider>(c);
+
+			manager->AddObject(manager->GetNextID(), wall4[i]);
+		}
 	}
 
 	{
 		floor = new GameObject("Floor", meshes[1], mats[0]);
 		floor->GetTransform()->SetLocalScale(ARENA_SIZE, 1.0f, ARENA_SIZE);
 		floor->GetTransform()->SetLocalPosition(0.0f, -1.0f, 0.0f);
+
+		//Collider* c = new Collider();
+		//Box* box = new Box();
+		//box->m_HalfWidth = Vector3(ARENA_SIZE, 1.0f, ARENA_SIZE);
+		//c->AddBox(box);
+		//
+		//floor->AddComponent<Collider>(c);
 	}
 
-	manager->AddObject(manager->GetNextID(), wall1);
-	manager->AddObject(manager->GetNextID(), wall2);
-	manager->AddObject(manager->GetNextID(), wall3);
-	manager->AddObject(manager->GetNextID(), wall4);
 	manager->AddObject(manager->GetNextID(), floor);
 }
 
