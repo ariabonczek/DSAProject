@@ -140,6 +140,7 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
+	
 	MakeCars();
 	MakeCollectibles(NUM_COLLECTIBLE);
 
@@ -408,22 +409,28 @@ void TestScene::MakeCars()
 
 	manager->AddObject(manager->GetNextID(), playerCar);
 
-	for (uint i = 0; i < NUM_CARS; ++i)
+	GameObject* car;
+	for (uint i = 0; i < NUM_CARS * 2; ++i)
 	{
-		GameObject* car = new GameObject("AICar", meshes[0], mats[0]);
+		car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
 		car->AddComponent<CarAI>(new CarAI());
-		car->GetComponent<Car>()->SetEnemey(true);
+		
+		if (i % 2 == 0)
+			car->GetComponent<Car>()->SetEnemey(true);
+		else
+			car->GetComponent<Car>()->SetEnemey(false);
 
-		Collider* c = new Collider();
-		Box* box = new Box();
+		c = new Collider();
+		box = new Box();
 		box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
 		c->AddBox(box);
 
 		car->AddComponent<Collider>(c);
 		car->AddComponent<Rigidbody>(new Rigidbody());
-		car->GetTransform()->SetLocalScale(Vector3(0.3f, 0.3f, 0.3f));
-		car->GetTransform()->SetLocalPosition(5.0f, 1.0f, 0.0f);
+		
+		car->GetTransform()->SetLocalPosition(rand() % 70 - 35.0f, 1.0f, rand() % 70 - 30.0f);
+		car->GetTransform()->SetLocalScale(Vector3(0.3f));
 		manager->AddObject(manager->GetNextID(), car);
 	}
 	
