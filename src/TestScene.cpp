@@ -75,12 +75,7 @@ TestScene::~TestScene()
 
 void TestScene::ResetGame(){
 	//only reset cars and collectibles
-	MakeCars();
-	MakeCollectibles(NUM_COLLECTIBLE);
-	MakeArena();
-	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
-
-	MakeGoals(goalPos);
+	Make();
 	manager->InitializeObjects();
 	
 	gameOver = false;
@@ -140,13 +135,9 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
+	Make();
 	
-	MakeCars();
-	MakeCollectibles(NUM_COLLECTIBLE);
-
-	MakeArena();
-	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
-	MakeGoals(goalPos);
+	
 
 	Collider* d = new Collider();
 	Box* d_box = new Box();
@@ -174,7 +165,7 @@ void TestScene::Update(float dt)
 	if (!gameOver){//gameOver = false;
 		UpdateTime();
 		m_PhysicsContext.Simulate(dt);
-		DrawHUD();
+	
 
 		MovePlayer(dt);
 
@@ -195,6 +186,7 @@ void TestScene::Update(float dt)
 
 		playerCar->Update(dt);
 		manager->Update(dt);
+		
 	}
 	else{
 		DrawGameOver();
@@ -208,25 +200,36 @@ void TestScene::Update(float dt)
 }
 
 void TestScene::DrawHUD() {
-	g_TextRenderer.RenderText("Player: ", 30, 30);
-	g_TextRenderer.RenderText("Mass: ", 60, 60);
+	
+	g_TextRenderer.RenderText("Mass: ", 30, 620);
 
-	std::string m = std::to_string(playerCar->GetComponent<Rigidbody>()->GetMass());
-	g_TextRenderer.RenderText(m.c_str(), 100, 60);
+	std::string s = std::to_string(playerCar->GetComponent<Rigidbody>()->GetMass());
+	g_TextRenderer.RenderText(s.c_str(), 150, 620);
+	
 
-	g_TextRenderer.RenderText("Enemies: ", 1000, 30);
+
+	g_TextRenderer.RenderText("Speed: ", 30, 660);
+
+	std::string m = std::to_string(playerCar->GetComponent<Rigidbody>()->GetLinearVelocity().Length());
+	if(playerCar->GetComponent<Rigidbody>()->GetLinearVelocity().Length() > .001)
+		g_TextRenderer.RenderText(m.c_str(), 150, 660);
+	else 
+		g_TextRenderer.RenderText("0", 150, 660);
+	
 	
 	std::string p = std::to_string(manager->GetPlayerScore());	
+
+	g_TextRenderer.RenderText("Player: ", 30, 700);
 	//render how many crystals
-	g_TextRenderer.RenderText(p.c_str(), 150, 30);
+	g_TextRenderer.RenderText(p.c_str(), 150, 700);
 
 	std::string e = std::to_string(manager->GetEnemyScore());
 	//render how many crystals
-	g_TextRenderer.RenderText(e.c_str(), 1200, 30);
+	g_TextRenderer.RenderText(e.c_str(), 1200, 700);
+	g_TextRenderer.RenderText("Enemies: ", 1000, 700);
 
-
-	std::string t = std::to_string(std::floor(timePlayed));
-	g_TextRenderer.RenderText(t.c_str(), 500, 30);
+	std::string t = std::to_string(std::floor(timeLimit - timePlayed));
+	g_TextRenderer.RenderText(t.c_str(), 500, 700);
 }
 
 void TestScene::DrawGameOver(){
@@ -269,6 +272,7 @@ void TestScene::Draw()
 	}*/
 
 	manager->Draw();
+	DrawHUD();
 }
 
 void TestScene::UnloadAssets()
@@ -288,89 +292,24 @@ void TestScene::UnloadAssets()
 		delete l;
 }
 
-/*Not using, keeping in case
-void TestScene::MakeCollectibles() {
-	///TODO - Optimize this
-	Collider* d = new Collider();
-	d->SetTrigger(true);
-	Box* d_box = new Box();
-	d_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	d->AddBox(d_box);
 
-	//Collectible
-	gem1 = new GameObject("Gem1", meshes[2], mats[0]);
-	gem1->AddComponent<Collectible>(new Collectible(2));
+void TestScene::Make()
+{
+	MakeCars();
+	MakeCollectibles(NUM_COLLECTIBLE);
 
-	gem1->AddComponent<Collider>(d);
-	gem1->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem1->GetTransform()->SetLocalPosition(-15.0f, 2.0f, 25.0f);
-	manager->AddObject(manager->GetNextID(),gem1);
+	MakeArena();
+	MakeVectorPlate(vectorPlatePos, vectorPlateDirection, VECTORPLATE_SCALE);
+	MakeGoals(goalPos);
 
-	Collider* a = new Collider();
-	a->SetTrigger(true);
-	Box* a_box = new Box();
-	a_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	a->AddBox(a_box);
-
-	gem2 = new GameObject("Gem2", meshes[2], mats[0]);
-	gem2->AddComponent<Collectible>(new Collectible(2));
-
-	gem2->AddComponent<Collider>(a);
-	gem2->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem2->GetTransform()->SetLocalPosition(5.0f, 2.0f, 5.0f);
-	manager->AddObject(manager->GetNextID(), gem2);
-
-	Collider* b = new Collider();
-	b->SetTrigger(true);
-	Box* b_box = new Box();
-	b_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	b->AddBox(b_box);
-
-	gem3 = new GameObject("Gem3", meshes[2], mats[0]);
-	gem3->AddComponent<Collectible>(new Collectible(2));
-
-	gem3->AddComponent<Collider>(b);
-	gem3->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem3->GetTransform()->SetLocalPosition(20.0f, 2.0f, 30.0f);
-	manager->AddObject(manager->GetNextID(), gem3);
-
-	Collider* c = new Collider();
-	c->SetTrigger(true);
-	Box* c_box = new Box();
-	c_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	c->AddBox(c_box);
-
-	gem4 = new GameObject("Gem4", meshes[2], mats[0]);
-	gem4->AddComponent<Collectible>(new Collectible(2));
-
-	gem4->AddComponent<Collider>(c);
-	gem4->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem4->GetTransform()->SetLocalPosition(-35.0f, 2.0f, -10.0f);
-	manager->AddObject(manager->GetNextID(), gem4);
-	
-	Collider* e = new Collider();
-	e->SetTrigger(true);
-	Box* e_box = new Box();
-	e_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
-	e->AddBox(e_box);
-
-	gem5 = new GameObject("Gem5", meshes[2], mats[0]);
-	gem5->AddComponent<Collectible>(new Collectible(2));
-
-	gem5->AddComponent<Collider>(e);
-	gem5->GetTransform()->SetLocalScale(Vector3(0.4f));
-	gem5->GetTransform()->SetLocalPosition(30.0f, 2.0f, -10.0f);
-	manager->AddObject(manager->GetNextID(), gem5);
 }
-*/
-
 void TestScene::MakeCollectibles(uint amount)
 {
 	Collider* collide;
 	Box* gem_box;
 	GameObject* gem;
 
-	for (int i = 0; i < amount; i++)
+	for (int i = 0; i < amount * 2; i++)
 	{
 		collide = new Collider();
 		gem_box = new Box();
@@ -410,16 +349,16 @@ void TestScene::MakeCars()
 	manager->AddObject(manager->GetNextID(), playerCar);
 
 	GameObject* car;
-	for (uint i = 0; i < NUM_CARS * 2; ++i)
+	for (uint i = 0; i < NUM_CARS; ++i)
 	{
 		car = new GameObject("AICar", meshes[0], mats[0]);
 		car->AddComponent<Car>(new Car());
 		car->AddComponent<CarAI>(new CarAI());
 		
-		if (i % 2 == 0)
+		//if (i % 2 == 0)
 			car->GetComponent<Car>()->SetEnemey(true);
-		else
-			car->GetComponent<Car>()->SetEnemey(false);
+		/*else
+			car->GetComponent<Car>()->SetEnemey(false);*/
 
 		c = new Collider();
 		box = new Box();
@@ -435,35 +374,6 @@ void TestScene::MakeCars()
 	}
 	
 	manager->SortCarsIntoTeams();
-}
-
-void TestScene::MakeVectorPlate()
-{
-	for (int i = 0; i < 20; i++)
-	{
-		GameObject* tmp;
-		tmp = new GameObject("VectorPlate", meshes[3], mats[0]);
-
-		tmp->AddComponent<VectorPlate>(new VectorPlate());
-
-		Collider* c = new Collider;
-		c->SetTrigger(true);
-
-		Box* box = new Box();
-		box->m_HalfWidth = Vector3(1.0f);
-		c->AddBox(box);
-
-		tmp->AddComponent<Collider>(c);
-		tmp->AddComponent<Rigidbody>(new Rigidbody());
-		float r = rand() % 10 + 3;
-
-		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f, 0.0f, rand() % 100 - 50.0f);
-		tmp->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), rand() % 360));
-		tmp->GetTransform()->SetLocalScale(Vector3(r / 10));
-
-		manager->AddObject(manager->GetNextID(), tmp);
-	}
-
 }
 
 void TestScene::MakeVectorPlate(std::vector<Vector3> location, std::vector<float> direction, float scale)
@@ -501,33 +411,6 @@ void TestScene::MakeVectorPlate(std::vector<Vector3> location, std::vector<float
 		manager->AddObject(manager->GetNextID(), vectorPlate);
 	}
 }
-void TestScene::MakeGoals()
-{
-	for (int i = 0; i < 5; i++)
-	{
-		GameObject* tmp;
-		tmp = new GameObject("Goals", meshes[4], mats[0]);
-
-		tmp->AddComponent<LuminaGL::Goal>(new LuminaGL::Goal());
-
-		Collider* c = new Collider;
-		c->SetTrigger(true);
-
-		Sphere* sphere = new Sphere();
-		sphere->m_Radius = 1.0f;
-		c->AddSphere(sphere);
-
-		tmp->AddComponent<Collider>(c);
-		tmp->AddComponent<Rigidbody>(new Rigidbody());
-		
-		
-		tmp->GetTransform()->SetLocalPosition(rand() % 100 - 50.0f, 0.0f, rand() % 100 - 50.0f);
-		tmp->GetTransform()->SetLocalScale(Vector3(1.0f));
-		manager->AddObject(manager->GetNextID(), tmp);
-
-	
-	}
-}
 
 void TestScene::MakeGoals(std::vector<Vector3> location)
 {
@@ -557,7 +440,7 @@ void TestScene::MakeGoals(std::vector<Vector3> location)
 			goal->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), 90 - (atan(location[i].z / location[i].x) * 180) / PI));
 		else
 			goal->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), (atan(location[i].z / location[i].x) * 180) / PI));
-		std::cout << atan(location[i].z / location[i].x) * 180 / PI<< std::endl;
+		//std::cout << atan(location[i].z / location[i].x) * 180 / PI<< std::endl;
 		goal->GetTransform()->SetLocalScale(Vector3(2.0f));
 		manager->AddObject(manager->GetNextID(), goal);
 

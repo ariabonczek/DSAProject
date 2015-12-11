@@ -22,7 +22,7 @@ void TextRenderer::Initialize()
 	error = FT_Init_FreeType(&m_Library);
 	if (error)
 	{
-		std::cout << "[TextRenderer] FT Library failed to initialize." << std::endl;
+		//std::cout << "[TextRenderer] FT Library failed to initialize." << std::endl;
 		return;
 	}
 
@@ -105,7 +105,7 @@ void TextRenderer::SetFont(const char* filepath)
 	switch (error)
 	{
 	case FT_Err_Unknown_File_Format:
-		std::cout << "[TextRenderer] Font file format unsupported by FreeType." << std::endl;
+	//	std::cout << "[TextRenderer] Font file format unsupported by FreeType." << std::endl;
 		break;
 	}
 }

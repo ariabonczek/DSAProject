@@ -68,7 +68,7 @@ public:
 		if (components.find(typeid(T).name()) != components.end())
 		{
 #if _DEBUG
-			std::cout << "[GameObject] Oh noes" << std::endl;
+			//std::cout << "[GameObject] Oh noes" << std::endl;
 #endif
 			return;
 		}

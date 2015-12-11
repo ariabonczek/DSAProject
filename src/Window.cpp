@@ -99,7 +99,7 @@ void Window::PrintFrameRate()
 	if (elapsedTime5 > 5.0f)
 	{
 		elapsedTime5 -= 5.0f;
-		std::cout << "FPS: " << frameRate << std::endl;
+		//std::cout << "FPS: " << frameRate << std::endl;
 	}
 }
 

@@ -93,7 +93,7 @@ bool Material::LoadShader(std::string filepath, ShaderType type)
 		int length;
 		glGetShaderiv(*index, GL_INFO_LOG_LENGTH, &length);
 		glGetShaderInfoLog(*index, length, 0, log);
-		std::cout << "Shader error in " << filepath << ": " << log << std::endl;
+		//std::cout << "Shader error in " << filepath << ": " << log << std::endl;
 
 		return 0;
 	}
@@ -159,7 +159,7 @@ void Material::SetFloat(std::string name, float& value)
 	int location = glGetUniformLocation(program, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
+		//std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
 	}
 	glProgramUniform1f(program, location, value);
 }
@@ -169,7 +169,7 @@ void Material::SetFloat2(std::string name, Vector2& value)
 	int location = glGetUniformLocation(program, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
+		//std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
 	}
 	glProgramUniform2f(program, location, value.x, value.y);
 }
@@ -179,7 +179,7 @@ void Material::SetFloat3(std::string name, Vector3& value)
 	int location = glGetUniformLocation(program, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
+		//std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
 	}
 	glProgramUniform3f(program, location, value.x, value.y, value.z);
 }
@@ -189,7 +189,7 @@ void Material::SetFloat4(std::string name, Vector4& value)
 	int location = glGetUniformLocation(program, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
+		//std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
 	}
 	glProgramUniform4f(program, location, value.x, value.y, value.z, value.w);
 }
@@ -199,7 +199,7 @@ void Material::SetFloat4x4(std::string name, Matrix& value)
 	int location = glGetUniformLocation(program, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
+		//std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
 	}
 	glProgramUniformMatrix4fv(program, location, 1, GL_TRUE, &value.m11);
 }
@@ -209,7 +209,7 @@ void Material::SetColor(std::string name, Color& color)
 	int location = glGetUniformLocation(program, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
+		//std::cout << "Attempt made to set invalid uniform variable: " << name << std::endl;
 	}
 	glProgramUniform4f(program, location, color.r, color.g, color.b, color.a);
 }

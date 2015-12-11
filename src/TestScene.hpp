@@ -25,17 +25,15 @@ public:
 	void LoadAssets();
 	void Update(float dt);
 	void Draw();
-	void MakeCollectibles();
 	void MakeCollectibles(uint amount);
 	void MakeCars();
 	void MakeArena();
-	void MakeVectorPlate();
 	void MakeVectorPlate(std::vector<Vector3> vectorPlatePos, std::vector<float> vectorPlateDirection, float scale);
-	void MakeGoals();
 	void MakeGoals(std::vector<Vector3> goalPos);
 	void UnloadAssets();
 	void DrawHUD();
 	void DrawGameOver();
+	void Make();
 
 	void TotalDestruction();
 	void ResetGame();
@@ -76,7 +74,7 @@ private:
 	
 	std::vector<GameObject*> goals;
 
-	const uint NUM_CARS = 2;
+	const uint NUM_CARS = 3;
 	const uint NUM_COLLECTIBLE = 10;
 	const uint VECTORPLATE_SCALE = 1.5f;
 	const float ARENA_SIZE = 49.0f;

@@ -39,7 +39,7 @@ void LuminaBehaviour::OnAddToGameObject(GameObject* gameObject)
 	if (p_GameObject)
 	{
 #if _DEBUG
-		std::cout << "[LuminaBehaviour] Tried to add a second LuminaBehaviour instance to a GameObject." << std::endl;
+		//std::cout << "[LuminaBehaviour] Tried to add a second LuminaBehaviour instance to a GameObject." << std::endl;
 #endif
 		return;
 	}

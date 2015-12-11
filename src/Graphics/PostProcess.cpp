@@ -79,7 +79,7 @@ bool PostProcess::LoadShader(std::string filepath, ShaderType type)
 
 	if (!shaderCode)
 	{
-		std::cout << "[PostProcess] Shader text not loaded from: " << filepath << std::endl;
+		//std::cout << "[PostProcess] Shader text not loaded from: " << filepath << std::endl;
 		return 0;
 	}
 
@@ -113,7 +113,7 @@ bool PostProcess::LoadShader(std::string filepath, ShaderType type)
 		int length;
 		glGetShaderiv(*index, GL_INFO_LOG_LENGTH, &length);
 		glGetShaderInfoLog(*index, length, 0, log);
-		std::cout << log << std::endl;
+		//std::cout << log << std::endl;
 
 		return 0;
 	}
@@ -129,7 +129,7 @@ bool PostProcess::LoadShader(std::string filepath, ShaderType type)
 		int length;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
 		glGetShaderInfoLog(program, length, 0, log);
-		std::cout << log << std::endl;
+		//std::cout << log << std::endl;
 		glDeleteProgram(program);
 
 		return 0;
