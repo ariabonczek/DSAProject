@@ -55,8 +55,7 @@ void Collectible::OnTrigger(Collider* c)
 
 	if (go_Collector->GetComponent<Car>()->IsEnemy())
 	{
-		uint p = GameObjectManager::GetInstance()->GetEnemyScore() + 1;
-		GameObjectManager::GetInstance()->SetEnemyScore(p);
+		GameObjectManager::GetInstance()->SetEnemyScore(GameObjectManager::GetInstance()->GetEnemyScore() + 1);
 	}
 	else
 	{
@@ -66,6 +65,4 @@ void Collectible::OnTrigger(Collider* c)
 	Destroy();
 	
 }
-
-
 NS_END

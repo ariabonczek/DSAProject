@@ -62,16 +62,16 @@ public:
 	void SortGoals();
 	std::vector<GameObject*> GetGoalObjects();
 
-	uint GetPlayerScore();
-	uint GetEnemyScore();
+	int GetPlayerScore();
+	int GetEnemyScore();
 
-	void SetPlayerScore(uint p);
-	void SetEnemyScore(uint e);
+	void SetPlayerScore(int p);
+	void SetEnemyScore(int e);
 
 private:
 	int size = 0;
-	uint playerScore = 0;
-	uint enemyScore = 0;
+	int playerScore = 0;
+	int enemyScore = 0;
 	GameObjectManager(void);
 	
 	GameObjectManager(GameObjectManager const& other);

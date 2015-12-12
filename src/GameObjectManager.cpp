@@ -189,18 +189,18 @@ void GameObjectManager::SetPoints(GameObject* car){
 	
 }
 
-uint GameObjectManager::GetPlayerScore(){
+int GameObjectManager::GetPlayerScore(){
 	return playerScore;
 }
-uint GameObjectManager::GetEnemyScore(){
+int GameObjectManager::GetEnemyScore(){
 	return enemyScore;
 }
 
-void GameObjectManager::SetPlayerScore(uint p){
+void GameObjectManager::SetPlayerScore(int p){
 	playerScore = p;
 }
 
-void GameObjectManager::SetEnemyScore(uint e){
+void GameObjectManager::SetEnemyScore(int e){
 	enemyScore = e;
 }
 
