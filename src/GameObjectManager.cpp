@@ -9,8 +9,6 @@ void GameObjectManager::Init(void)
 {
 	size = 0;
 	nextID = 0;
-	playerScore = 0;
-	enemyScore = 0;
 }
 
 void GameObjectManager::Release(void)
