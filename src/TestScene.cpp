@@ -54,6 +54,7 @@ TestScene::TestScene()
 		90.0f,
 		0.0f
 
+
 	};
 
 	goalPos =
@@ -122,7 +123,7 @@ void TestScene::LoadAssets()
 
 	// Making some textures
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/carFlameTextrue.png")));
-	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/gemRamp.png")));
+	
 	// Making some materials
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
@@ -136,12 +137,6 @@ void TestScene::LoadAssets()
 	mats[2]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[2]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
 	mats[2]->SetTexture2D("diffuse", textures[0]);
-
-	mats.push_back(new Material());
-	mats[3]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
-	mats[3]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
-	mats[3]->SetTexture2D("diffuse", textures[1]);
-
 
 	Make();
 	
@@ -272,12 +267,20 @@ void TestScene::Draw()
 	mats[2]->SetFloat4x4("view", camera->GetView());
 	mats[2]->SetFloat4x4("projection", camera->GetProjection());
 
-	mats[3]->SetFloat4x4("view", camera->GetView());
-	mats[3]->SetFloat4x4("projection", camera->GetProjection());
+	
+
+	//mats[0]->SetFloat4x4("view", camera->GetView());
+	//mats[0]->SetFloat4x4("projection", camera->GetProjection());
    
 	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
+
+	mats[2]->SetColor("lightColor", lights[0]->lightData.color);
+	mats[2]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
+	mats[2]->SetFloat3("lightDirection", lights[0]->lightData.direction);
+
+
 	/*
 	for (GameObject* o : objects)
 	{
@@ -331,7 +334,7 @@ void TestScene::MakeCollectibles(uint amount)
 		gem_box->m_HalfWidth = Vector3(1.0f, 1.0f, 1.0f);
 		collide->AddBox(gem_box);
 
-		gem = new GameObject("Gem" + i, meshes[2], mats[3]);
+		gem = new GameObject("Gem" + i, meshes[2], mats[0]);
 		gem->AddComponent<Collectible>(new Collectible(2));
 
 		gem->AddComponent<Collider>(collide);
