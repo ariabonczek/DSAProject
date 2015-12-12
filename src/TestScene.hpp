@@ -74,7 +74,7 @@ private:
 	
 	std::vector<GameObject*> goals;
 
-	const uint NUM_CARS = 3;
+	const uint NUM_CARS = 1;
 	const uint NUM_COLLECTIBLE = 10;
 	const uint VECTORPLATE_SCALE = 1.5f;
 	const float ARENA_SIZE = 49.0f;

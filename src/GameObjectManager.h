@@ -65,6 +65,9 @@ public:
 	uint GetPlayerScore();
 	uint GetEnemyScore();
 
+	void SetPlayerScore(uint p);
+	void SetEnemyScore(uint e);
+
 private:
 	int size = 0;
 	uint playerScore = 0;

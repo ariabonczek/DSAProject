@@ -196,6 +196,14 @@ uint GameObjectManager::GetEnemyScore(){
 	return enemyScore;
 }
 
+void GameObjectManager::SetPlayerScore(uint p){
+	playerScore = p;
+}
+
+void GameObjectManager::SetEnemyScore(uint e){
+	enemyScore = e;
+}
+
 void GameObjectManager::SortCarsIntoTeams() {
 	playerTeamList.clear();
 	enemyTeamList.clear();

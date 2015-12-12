@@ -64,6 +64,8 @@ public:
 
 	Vector3 GetAngularVelocity()const;
 	void    SetAngularVelocity(Vector3 velocity);
+
+	void ClampLinearVelocity();
 private:
 	Matrix m_Inertia;
 	Vector3 m_Position;

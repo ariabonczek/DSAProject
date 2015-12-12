@@ -80,12 +80,15 @@ void Rigidbody::Integrate()
 
 	m_LinearVelocity = (m_LinearVelocity + linearAcceleration) * m_LinearDamping;
 	m_AngularVelocity = (m_AngularVelocity + angularAcceleration) * m_AngularDamping;
+	
+	ClampLinearVelocity();
 
 	m_Position += m_LinearVelocity;
 	m_Orientation = (Quaternion::CreateFromEulerAngles(m_AngularVelocity) * m_Orientation).Normalized();
 
 	GetGameObject()->GetTransform()->SetLocalPosition(m_Position);
 	GetGameObject()->GetTransform()->SetLocalRotation(m_Orientation);
+
 
 	m_TorqueAccumulator = Vector3::Zero;
 	m_ForceAccumulator = Vector3::Zero;
@@ -189,6 +192,13 @@ Vector3 Rigidbody::GetLinearVelocity()const
 void Rigidbody::SetLinearVelocity(Vector3 velocity)
 {
 	m_LinearVelocity = velocity;
+	
+}
+
+void Rigidbody::ClampLinearVelocity(){
+	if (m_LinearVelocity.Length() > 2.0f){
+		m_LinearVelocity.SetMagnitude(2.0f);
+	}
 }
 
 Vector3 Rigidbody::GetAngularVelocity()const

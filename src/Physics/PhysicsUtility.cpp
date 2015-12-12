@@ -527,6 +527,7 @@ void ResolveCollision(ContactContainer cc)
 		{
 			// Calculate Closing Velocity
 			Vector3 velocity = Vector3::Cross(cc.rigidbody[0]->GetAngularVelocity(), relativeQ1);
+			
 			velocity += cc.rigidbody[0]->GetLinearVelocity();
 
 			Vector3 contactVelocity = velocity * basisMatrix;
@@ -614,12 +615,14 @@ void ResolveCollisionSimple(ContactContainer cc)
 	if (cc.rigidbody[0])
 	{
 		cc.rigidbody[0]->AddForce(delta * n);
+		cc.rigidbody[0]->ClampLinearVelocity();
 	}
 	
 	if (cc.rigidbody[1])
 	{
 		cc.rigidbody[1]->AddForce(delta * -n);
-	}
+		cc.rigidbody[1]->ClampLinearVelocity();
+	}	
 
 }
 
@@ -642,6 +645,7 @@ void ResolveCollision(Rigidbody* r1, Rigidbody* r2)
 
 	r1->AddForce(delta * n);
 	r2->AddForce(delta * -n);
+	
 }
 
 void ResolveCollision(Rigidbody* r, Collider* c)

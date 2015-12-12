@@ -24,10 +24,6 @@ public:
 	void OnTrigger(Collider*c);
 	void OnAddToGameObject(GameObject* object);
 
-	void Fast();
-	void Slow();
-	void Big();
-	void Small();
 
 private:
 	Transform* p_CachedTransform;
@@ -41,13 +37,10 @@ private:
 
 	//using this for 
 	float mass;	//affects SPEED
-	float size;  //affects SIZE of model
 
 	float minMass;
-	float minSize;
-
 	float maxMass;
-	float maxSize;
+
 
 	bool hit;
 };

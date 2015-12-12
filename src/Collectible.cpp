@@ -5,16 +5,9 @@
 class GameObjectManager;
 NS_BEGIN
 
-enum type {
-	fast = 0,
-	slow = 1,
-	heavy = 2,
-	light = 3
-};
-
 Collectible::Collectible(int e){
 
-	mass = 1.7;
+	mass = 1.8f;
 
 	minMass = 1.5f;
 	maxMass = 4.5f;
@@ -60,69 +53,19 @@ void Collectible::OnTrigger(Collider* c)
 	rb_Collector = c->GetRigidbody();
 	go_Collector = c->GetGameObject();
 
-	if (hit == false) {
-		go_Collector->IncrementCrystals();
-		//do same for maxSize when that's been figured out
-	    float x = rb_Collector->GetMass();
-
-		if (rb_Collector->GetMass() > maxMass) {
-			rb_Collector->SetMass(maxMass);
-		}
-		else {
-			rb_Collector->SetMass(rb_Collector->GetMass() / mass);
-		}
-
-		Destroy();
+	if (go_Collector->GetComponent<Car>()->IsEnemy())
+	{
+		uint p = GameObjectManager::GetInstance()->GetEnemyScore() + 1;
+		GameObjectManager::GetInstance()->SetEnemyScore(p);
 	}
+	else
+	{
+		uint p = GameObjectManager::GetInstance()->GetPlayerScore() + 1;
+		GameObjectManager::GetInstance()->SetPlayerScore(p);
+	}
+	Destroy();
+	
 }
 
-void Collectible::Fast(){
-	if (rb_Collector->GetMass() > maxMass) {
-		rb_Collector->SetMass(maxMass);
-	}
-	else {
-		rb_Collector->SetMass(rb_Collector->GetMass() * mass);
-	}
-}
 
-void Collectible::Slow(){
-	if (rb_Collector->GetMass() < minMass) {
-		rb_Collector->SetMass(minMass);
-	}
-	else {
-		rb_Collector->SetMass(rb_Collector->GetMass() / mass);
-	}
-
-}
-
-void Collectible::Big(){
-	//float x = rb_Collector->GetMass();
-	Vector3 sizeTest = go_Collector->GetTransform()->GetLocalScale();
-	if (sizeTest.x > maxSize) {
-		go_Collector->GetTransform()->SetLocalScale(Vector3(maxSize));
-	}
-	else {
-		Vector3 x = go_Collector->GetTransform()->GetLocalScale() * size;
-		go_Collector->GetTransform()->SetLocalScale(x);
-		//Vector3 v = go_Collector->GetTransform()->GetLocalScale();
-	}
-
-	if (rb_Collector->GetMass() > maxMass) {
-		rb_Collector->SetMass(maxMass);
-	}
-	else {
-		rb_Collector->SetMass(rb_Collector->GetMass() * mass);
-	}
-}
-
-void Collectible::Small(){
-	float x = rb_Collector->GetMass();
-	Vector3 sizeTest = go_Collector->GetTransform()->GetLocalScale();
-	if (sizeTest.x < minSize) {
-		go_Collector->GetTransform()->SetLocalScale(Vector3(minSize));
-	}
-	else {
-		go_Collector->GetTransform()->SetLocalScale(go_Collector->GetTransform()->GetLocalScale() / size);
-	}
-}
 NS_END
