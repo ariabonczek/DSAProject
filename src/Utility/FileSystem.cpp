@@ -144,9 +144,9 @@ MeshData FileSystem::AssimpProcessMesh(aiMesh* mesh, const aiScene* scene)
 			memset(&temp.tangent, 0, sizeof(float) * 3);
 		}
 		// UVs
-		if (mesh->mTextureCoords[0])
+		if (mesh->mTextureCoords)
 		{
-			memcpy(&temp.texcoord, &mesh->mTextureCoords[i], sizeof(float) * 2);
+			memcpy(&temp.texcoord, &mesh->mTextureCoords[0][i], sizeof(float) * 2);
 		}
 		else
 		{

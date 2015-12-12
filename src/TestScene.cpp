@@ -35,7 +35,7 @@ TestScene::TestScene()
 
 	vectorPlateDirection =
 	{
-		45.0f,
+		-45.0f,
 	//	-90.0f,
 	//	-135.0f,
 	//	180.0f,
@@ -122,9 +122,13 @@ void TestScene::LoadAssets()
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/goal.fbx")));
 
 	// Making some textures
+
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/car.png")));
+
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/carFlameTextrue.png")));
+
 	// Making some materials
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
@@ -138,6 +142,11 @@ void TestScene::LoadAssets()
 	mats[2]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[2]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 	mats[2]->SetTexture2D("diffuse", textures[2]);
+	Make();
+
+	mats[2]->LoadShader("Shaders/textured.frag", ShaderType::Fragment);
+	mats[2]->SetTexture2D("diffuse", textures[0]);
+
 	Make();
 
 	Collider* d = new Collider();
@@ -263,6 +272,13 @@ void TestScene::Draw()
 {
 	mats[0]->SetFloat4x4("view", camera->GetView());
 	mats[0]->SetFloat4x4("projection", camera->GetProjection());
+
+	mats[2]->SetFloat4x4("view", camera->GetView());
+	mats[2]->SetFloat4x4("projection", camera->GetProjection());
+
+	//mats[0]->SetFloat4x4("view", camera->GetView());
+	//mats[0]->SetFloat4x4("projection", camera->GetProjection());
+   
 	mats[0]->SetColor("lightColor", lights[0]->lightData.color);
 	mats[0]->SetFloat("lightIntensity", lights[0]->lightData.intensity);
 	mats[0]->SetFloat3("lightDirection", lights[0]->lightData.direction);
@@ -352,7 +368,7 @@ void TestScene::MakeCars()
 	GameObject* car;
 	for (uint i = 0; i < NUM_CARS; ++i)
 	{
-		car = new GameObject("AICar", meshes[0], mats[0]);
+		car = new GameObject("AICar", meshes[0], mats[2]);
 		car->AddComponent<Car>(new Car());
 		car->AddComponent<CarAI>(new CarAI());
 		
