@@ -5,7 +5,8 @@
 class GameObjectManager;
 NS_BEGIN
 
-Collectible::Collectible(int e){
+Collectible::Collectible(int e):
+enabled(true){
 
 	mass = 1.8f;
 
@@ -50,6 +51,12 @@ Collectible& Collectible::operator=(const Collectible& c)
 
 void Collectible::OnTrigger(Collider* c)
 {
+	if (!enabled)
+	{
+		return;
+	}
+
+	enabled = false;
 	rb_Collector = c->GetRigidbody();
 	go_Collector = c->GetGameObject();
 
@@ -63,6 +70,5 @@ void Collectible::OnTrigger(Collider* c)
 		GameObjectManager::GetInstance()->SetPlayerScore(p);
 	}
 	Destroy();
-	
 }
 NS_END

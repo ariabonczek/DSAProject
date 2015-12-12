@@ -41,7 +41,7 @@ private:
 	float minMass;
 	float maxMass;
 
-
+	bool enabled;
 	bool hit;
 };
 
