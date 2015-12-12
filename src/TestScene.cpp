@@ -15,43 +15,43 @@ TestScene::TestScene()
 	vectorPlatePos =
 	{
 		Vector3(25.0f, 0.0f, 25.0f),
-		Vector3(0.0f, 0.0f, 40.0f),
-		Vector3(-25.0f, 0.0f, 25.0f),
-		Vector3(-40.0f, 0.0f, 0.0f),
-		Vector3(-25.0f, 0.0f, -25.0f),
-		Vector3(0.0f, 0.0f, -40.0f),
-		Vector3(25.0f, 0.0f, -25.0f),
-		Vector3(40.0f, 0.0f, 0.0f),
+	//	Vector3(0.0f, 0.0f, 40.0f),
+	//	Vector3(-25.0f, 0.0f, 25.0f),
+	//	Vector3(-40.0f, 0.0f, 0.0f),
+	//	Vector3(-25.0f, 0.0f, -25.0f),
+	//	Vector3(0.0f, 0.0f, -40.0f),
+	//	Vector3(25.0f, 0.0f, -25.0f),
+	//	Vector3(40.0f, 0.0f, 0.0f),
 
-		Vector3(10.0f, 0.0f, 10.0f),
-		Vector3(0.0f, 0.0f, 15.0f),
-		Vector3(-10.0f, 0.0f, 10.0f),
-		Vector3(-15.0f, 0.0f, 0.0f),
-		Vector3(-10.0f, 0.0f, -10.0f),
-		Vector3(0.0f, 0.0f, -15.0f),
-		Vector3(10.0f, 0.0f, -10.0f),
-		Vector3(15.0f, 0.0f, 0.0f)
+	//	Vector3(10.0f, 0.0f, 10.0f),
+	//	Vector3(0.0f, 0.0f, 15.0f),
+	//	Vector3(-10.0f, 0.0f, 10.0f),
+	//	Vector3(-15.0f, 0.0f, 0.0f),
+	//	Vector3(-10.0f, 0.0f, -10.0f),
+	//	Vector3(0.0f, 0.0f, -15.0f),
+	//	Vector3(10.0f, 0.0f, -10.0f),
+	//	Vector3(15.0f, 0.0f, 0.0f)
 	};
 
 	vectorPlateDirection =
 	{
-		-45.0f,
-		-90.0f,
-		-135.0f,
-		180.0f,
-		135.0f,
-		90.0f,
 		45.0f,
-		0.0f,
-
-		45.0f,
-		90.0f,
-		135.0f,
-		180.0f,
-		-135.0f,
-		-90.0f,
-		-45.0f,
-		-0.0f
+	//	-90.0f,
+	//	-135.0f,
+	//	180.0f,
+	//	135.0f,
+	//	90.0f,
+	//	45.0f,
+	//	0.0f,
+	//
+	//	45.0f,
+	//	90.0f,
+	//	135.0f,
+	//	180.0f,
+	//	-135.0f,
+	//	-90.0f,
+	//	-45.0f,
+	//	-0.0f
 
 
 	};
@@ -76,7 +76,8 @@ void TestScene::ResetGame(){
 	//only reset cars and collectibles
 	Make();
 	manager->InitializeObjects();
-	
+	manager->SetEnemyScore(0);
+	manager->SetPlayerScore(0);
 	gameOver = false;
 	Timer::Initialize();
 	m_PhysicsContext.Initialize(manager->GetList());
@@ -113,7 +114,7 @@ void TestScene::LoadAssets()
 	camera->Initialize();
 
 	// Making some meshes
-	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.fbx")));
+	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/car.obj")));
 	meshes.push_back(new Mesh(MeshBuilder::CreateCube(1.0f, Color(0.2f, 0.2f, 0.2f, 1.0f))));
 	meshes.push_back(new Mesh(FileSystem::LoadMesh("Meshes/gem3.fbx")));
 
@@ -123,7 +124,7 @@ void TestScene::LoadAssets()
 	// Making some textures
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/MaidOfTime.png")));
 	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/brick_diff.jpg")));
-
+	textures.push_back(new Texture2D(FileSystem::LoadImageFile("Textures/car.png")));
 	// Making some materials
 	mats.push_back(new Material());
 	mats[0]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
@@ -133,9 +134,11 @@ void TestScene::LoadAssets()
 	mats[1]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
 	mats[1]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
 
+	mats.push_back(new Material());
+	mats[2]->LoadShader("Shaders/default.vert", ShaderType::Vertex);
+	mats[2]->LoadShader("Shaders/boundingBox.frag", ShaderType::Fragment);
+	mats[2]->SetTexture2D("diffuse", textures[2]);
 	Make();
-	
-	
 
 	Collider* d = new Collider();
 	Box* d_box = new Box();
@@ -331,7 +334,7 @@ void TestScene::MakeCollectibles(uint amount)
 
 void TestScene::MakeCars()
 {
-	playerCar = new GameObject("Car", meshes[0], mats[0]);
+	playerCar = new GameObject("Car", meshes[0], mats[2]);
 	playerCar->AddComponent<Car>(new Car());
 
 	Collider* c = new Collider();
