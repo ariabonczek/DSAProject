@@ -12,11 +12,9 @@ uniform vec4 lightColor;
 uniform vec3 lightDirection;
 uniform float lightIntensity;
 
-uniform float alpha;
-
 void main()
 {
 	float diffFactor = dot(-lightDirection, _normal);
 
-	finalColor = vec4((_color * (lightColor * diffFactor * lightIntensity)).rgb, alpha);
+	finalColor = vec4((_color * (lightColor * diffFactor * lightIntensity)).rgb, 1.0);
 }
